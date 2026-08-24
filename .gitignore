@@ -1,0 +1,25 @@
+# node
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# eval run scratch (published results are committed under data/ deliberately)
+runs/
+.cache/
+
+# os / editor
+.DS_Store
+*.log
+.idea/
+.vscode/

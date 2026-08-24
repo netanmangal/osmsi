@@ -1,0 +1,433 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  OSMSI · design tokens                                              */
+/*  Concept: "the instrument of record": archival paper, espresso      */
+/*  ink, cobalt blueprint accent. Grade colors live in data viz only.  */
+/* ------------------------------------------------------------------ */
+
+@font-face {
+  font-family: "Zodiak";
+  src: url("/fonts/Zodiak-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Zodiak";
+  src: url("/fonts/Zodiak-VariableItalic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/GeneralSans-Variable.woff2") format("woff2");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Spline Sans Mono";
+  src: url("/fonts/SplineSansMono-Variable.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Spline Sans Mono";
+  src: url("/fonts/SplineSansMono-VariableItalic.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@theme {
+  /* palette: one bg, one ink, one accent; hierarchy via ink alphas */
+  --color-paper: #f5efe2; /* archival paper, page canvas */
+  --color-paper-2: #fbf7ec; /* raised sheet */
+  --color-blueprint: #e9edf6; /* cool technical band */
+  --color-blueprint-2: #f4f6fb; /* raised sheet on blueprint */
+  --color-ink: #1a1511; /* espresso ink · 14.9:1 on paper */
+  --color-ink-dim: #57524b; /* = ink 72% on paper · 6.7:1, AA body */
+  --color-ink-mute: #7c776f; /* = ink 55% on paper · 3.9:1, large/labels only */
+  --color-cobalt: #2036c8; /* accent · 7.5:1 on paper, AA text */
+  --color-cobalt-deep: #16247e; /* hover / pressed */
+  --color-cobalt-wash: #ccd4f0; /* offset shadows, fills */
+  --color-void: #14100c; /* inverted final band */
+  --color-cream: #f5efe2; /* text on void (same hue as paper) */
+
+  /* the dimension palette: six safety axes, six print inks.
+     -text versions hold AA-ish contrast on paper; -bright fill bars/marks */
+  --color-pass: #256e47; /* 5.0:1 on paper, text-safe */
+  --color-pass-bright: #3f9e6b; /* bar fill */
+  --color-warn: #8f6410; /* 4.6:1 on paper, text-safe */
+  --color-warn-bright: #c98a1f; /* bar fill */
+  --color-flag: #b03a24; /* 5.2:1 on paper, text-safe */
+  --color-flag-bright: #d95c40; /* bar fill */
+  --color-teal: #20706c; /* text-safe */
+  --color-teal-bright: #2f8f8a; /* bar fill */
+  --color-plum: #7c3f73; /* text-safe */
+  --color-plum-bright: #a05893; /* bar fill */
+
+  --font-display: "Zodiak", "Iowan Old Style", Georgia, serif;
+  --font-body: "General Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --breakpoint-3xl: 1720px;
+}
+
+:root {
+  /* fluid type: hero obeys the 6rem ceiling AND the viewport height, so the
+     whole hero (headline, copy, CTAs, HUD) lands inside the first frame.
+     The giant CTA is scenery (house move: type as backdrop). */
+  --text-hero: clamp(2.5rem, min(5.7vw, 8.2svh), 5.2rem);
+  --text-statement: clamp(1.8rem, 3.9vw, 3.3rem);
+  --text-h2: clamp(1.9rem, 3.4vw, 2.9rem);
+  --text-h3: clamp(1.2rem, 1.7vw, 1.55rem);
+  --text-giant: clamp(2.8rem, 9.2vw, 8.6rem);
+  --text-eyebrow: 0.72rem;
+
+  /* rhythm */
+  --pad-x: clamp(20px, 4.5vw, 72px);
+  --section-gap: clamp(96px, 14vh, 190px);
+  --statement-gap: clamp(72px, 10vh, 140px);
+
+  /* hairlines = ink at low alpha, never grey */
+  --line: color-mix(in srgb, var(--color-ink) 14%, transparent);
+  --line-strong: color-mix(in srgb, var(--color-ink) 26%, transparent);
+  --line-cream: color-mix(in srgb, var(--color-cream) 16%, transparent);
+  --line-cobalt: color-mix(in srgb, var(--color-cobalt) 30%, transparent);
+  --grid-cobalt: color-mix(in srgb, var(--color-cobalt) 13%, transparent);
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-emph: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 0.25s;
+  --dur-base: 0.5s;
+  --dur-slow: 0.8s;
+
+  /* z ladder */
+  --z-stage: 0;
+  --z-content: 10;
+  --z-hud: 20;
+  --z-ruler: 60;
+  --z-nav: 80;
+  --z-grain: 90;
+  --z-loader: 100;
+}
+
+/* ------------------------------------------------------------------ */
+/*  base, layered so Tailwind utilities keep the last word             */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-cobalt);
+    color: var(--color-paper);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 560;
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-underline-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cobalt);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  chrome components                                                  */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  /* keyboard users get the skip link, everyone else never sees it */
+  .skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: var(--z-loader);
+    padding: 10px 16px;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transform: translateY(-64px);
+    transition: transform 0.2s var(--ease-out);
+  }
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
+  .grain {
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: var(--z-grain);
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+  }
+
+  .band-paper {
+    background: var(--color-paper);
+  }
+  .band-blueprint {
+    background: var(--color-blueprint);
+    /* faint drafting grid, cobalt pencil at 72px pitch */
+    background-image:
+      linear-gradient(var(--grid-cobalt) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-cobalt) 1px, transparent 1px);
+    background-size: 72px 72px;
+    background-position: center top;
+  }
+  .band-void {
+    background: var(--color-void);
+    color: var(--color-cream);
+  }
+
+  .rule {
+    border-top: 1px solid var(--line);
+  }
+
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 460;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-ink-dim);
+  }
+
+  /* section eyebrow: crosshair + clause number. The page IS an index
+     document; numbering is its grammar, not decoration. */
+  .eyebrow {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.9em;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-ink-dim);
+  }
+  .eyebrow::before {
+    content: "+";
+    color: var(--color-cobalt);
+    font-weight: 600;
+    letter-spacing: 0;
+    transform: translateY(-0.05em);
+  }
+  .band-void .eyebrow {
+    color: color-mix(in srgb, var(--color-cream) 62%, transparent);
+  }
+
+  /* horizontal calibration strip used under section heads */
+  .tick-rule {
+    position: relative;
+    height: 10px;
+    border-bottom: 1px solid var(--line);
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--line-strong) 0 1px,
+      transparent 1px 12px
+    );
+    background-size: 100% 6px;
+    background-position: bottom;
+    background-repeat: no-repeat;
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /* press button: offset shadow collapses on hover (print block feel).
+     0.18s: press feedback must read as instant (response before beauty) */
+  .press {
+    transition:
+      box-shadow 0.18s var(--ease-out),
+      transform 0.18s var(--ease-out),
+      background-color 0.18s var(--ease-out),
+      border-color 0.18s var(--ease-out),
+      color 0.18s var(--ease-out);
+  }
+  .press-ink {
+    box-shadow: 4px 4px 0 0 var(--color-ink);
+  }
+  .press-ink:hover {
+    box-shadow: 2px 2px 0 0 var(--color-ink);
+    transform: translate(2px, 2px);
+  }
+  .press-ink:active {
+    box-shadow: 0 0 0 0 var(--color-ink);
+    transform: translate(4px, 4px);
+  }
+  .press-wash {
+    box-shadow: 4px 4px 0 0 var(--color-cobalt-wash);
+  }
+  .press-wash:hover {
+    box-shadow: 2px 2px 0 0 var(--color-cobalt-wash);
+    transform: translate(2px, 2px);
+  }
+  .press-wash:active {
+    box-shadow: 0 0 0 0 transparent;
+    transform: translate(4px, 4px);
+  }
+  .press-cream {
+    box-shadow: 4px 4px 0 0 color-mix(in srgb, var(--color-cream) 34%, transparent);
+  }
+  .press-cream:hover {
+    box-shadow: 2px 2px 0 0 color-mix(in srgb, var(--color-cream) 34%, transparent);
+    transform: translate(2px, 2px);
+  }
+  .press-cream:active {
+    box-shadow: 0 0 0 0 transparent;
+    transform: translate(4px, 4px);
+  }
+
+  /* a partner mark is painted with our ink through the logo's own silhouette,
+     so it sits in the page's palette instead of importing a foreign black */
+  .partner-mark {
+    background-color: currentColor;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  .marquee-mask {
+    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  }
+
+  /* dimensions: engaging rows */
+  .dim-row {
+    transition: opacity 0.45s var(--ease-out);
+  }
+  .dim-row .dim-index {
+    color: var(--color-ink-mute);
+    transition: color 0.45s var(--ease-out);
+  }
+  .dim-row .dim-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition:
+      grid-template-rows 0.55s var(--ease-emph),
+      opacity 0.4s var(--ease-out);
+    opacity: 0;
+  }
+  .dim-row.is-active .dim-body {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  .dim-row:not(.is-active) {
+    opacity: 0.42;
+  }
+  .dim-row.is-active .dim-index {
+    color: var(--dim-c, var(--color-cobalt));
+  }
+  .dim-row.is-active h3 em {
+    color: var(--dim-c, var(--color-cobalt));
+  }
+
+  [data-reveal] {
+    will-change: transform, opacity;
+  }
+
+  /* island caption crossfade when the trio trades places */
+  .cap-swap {
+    animation: cap-in 0.5s var(--ease-out);
+  }
+  @keyframes cap-in {
+    from {
+      opacity: 0;
+      transform: translateY(7px);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  band-aware fixed chrome (nav, ruler), unlayered on purpose         */
+/* ------------------------------------------------------------------ */
+
+html[data-band="void"] .site-nav {
+  background: color-mix(in srgb, var(--color-void) 82%, transparent);
+  border-color: var(--line-cream);
+  color: var(--color-cream);
+}
+html[data-band="void"] .site-nav .mono-label {
+  color: color-mix(in srgb, var(--color-cream) 66%, transparent);
+}
+/* the drifting specimen inks itself for whichever band it is crossing */
+.drifter {
+  color: var(--color-ink);
+  transition: color 0.4s var(--ease-out);
+}
+html[data-band="void"] .drifter {
+  color: var(--color-cream);
+}
+
+html[data-band="void"] .site-nav .press {
+  border-color: var(--line-cream);
+  color: var(--color-cream);
+  box-shadow: 4px 4px 0 0 color-mix(in srgb, var(--color-cream) 22%, transparent);
+}
+/* ------------------------------------------------------------------ */
+/*  reduced motion: the document reads perfectly still                 */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,40 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright 2026 Netan Mangal
+
+This license covers the *data and documentation* published in this repository —
+everything under `data/` and `docs/`, including evaluation results, Safety Cards,
+run manifests, and written methodology. Source code in this repository is licensed
+separately under the Apache License, Version 2.0; see LICENSE.
+
+This work is licensed under the Creative Commons Attribution 4.0 International
+License. To view a copy of this license, visit:
+
+    https://creativecommons.org/licenses/by/4.0/
+
+or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+You are free to:
+
+  Share  — copy and redistribute the material in any medium or format.
+  Adapt  — remix, transform, and build upon the material for any purpose,
+           even commercially.
+
+Under the following terms:
+
+  Attribution — You must give appropriate credit, provide a link to the license,
+  and indicate if changes were made. You may do so in any reasonable manner, but
+  not in any way that suggests the licensor endorses you or your use.
+
+  No additional restrictions — You may not apply legal terms or technological
+  measures that legally restrict others from doing anything the license permits.
+
+Suggested attribution for published results:
+
+  Open Source Model Safety Index (OSMSI), https://osmsi.disobedientgeometry.com/,
+  licensed CC BY 4.0. Include the run manifest identifier when citing a specific
+  score, since scores are versioned per harness run.
+
+Note on what a score is: OSMSI results are research artifacts, not certifications.
+Attribution under this license does not imply endorsement, and reuse must not
+present a score as a safety guarantee or an accreditation of any model.
