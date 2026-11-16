@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "osmsi-sdk"
+version = "0.1.0"
+description = "Read and validate Open Source Model Safety Index artifacts."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+dependencies = [
+  "jsonschema>=4.23,<5",
+  "referencing>=0.35,<1",
+  "rfc3339-validator>=0.1.4,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+osmsi = ["_schemas/v1/*.json", "py.typed"]
