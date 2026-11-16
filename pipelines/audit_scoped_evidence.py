@@ -80,6 +80,11 @@ def audit_wmdp(report, root, questions):
     events = [json.loads(line) for line in journal.read_text().splitlines()]
     complete = {e['key']: e for e in events if e['type'] == 'complete'}
     counts = Counter(e['type'] for e in events)
+    starts = {e['attempt']: e for e in events if e['type'] == 'start'}
+    outcomes = {e['attempt']: e for e in events if e['type'] in ('complete', 'error')}
+    assert len(starts) == counts['start'] == len(outcomes)
+    assert set(starts) == set(outcomes)
+    assert all(starts[i]['key'] == outcomes[i]['key'] for i in starts)
     assert len(complete) == counts['complete'] == len(questions) == 1987
     assert set(complete) == set(range(1987))
     assert counts['start'] == counts['complete'] + counts['error']
@@ -124,14 +129,18 @@ def audit_wmdp(report, root, questions):
 
 
 def main():
+    if not __debug__:
+        raise RuntimeError("Run the audit without Python optimization; assertions enforce audit invariants.")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('bundles', nargs='+', type=Path)
     parser.add_argument('--cases', type=Path, default=Path('suites/causal-ioi-v1/cases.json'))
     parser.add_argument('--wmdp-run', type=Path)
     parser.add_argument('--parquet', type=Path)
+    parser.add_argument('--models', type=Path, help="Optional local model configuration for streaming weight-hash verification.")
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     cases = json.loads(args.cases.read_text())
+    models = {m['model']: m for m in json.loads(args.models.read_text())} if args.models else {}
     questions = None
     if args.parquet:
         import pyarrow.parquet as pq
@@ -141,10 +150,30 @@ def main():
     for bundle in args.bundles:
         for report in EvidenceIndex(bundle).reports:
             if report['methodology']['id'] == 'causal-ioi-residual-patching-v1':
-                audits.append(audit_causal(report, cases))
+                assert digest(Path(__file__).with_name('evaluate_causal_ioi.py')) == report['provenance']['source_sha256']
+                result = audit_causal(report, cases)
+                result['frozen_source_hash_verified'] = True
+                if models:
+                    model = models[report['model']['id']]
+                    assert model['revision'] == report['model']['revision']
+                    h = hashlib.sha256()
+                    with (Path(model['path'])/'model.safetensors').open('rb') as stream:
+                        for chunk in iter(lambda: stream.read(1024*1024), b''):
+                            h.update(chunk)
+                    assert h.hexdigest() == report['provenance']['model_weights_sha256']
+                    result['local_weight_hash_verified'] = True
+                audits.append(result)
             elif report['methodology']['id'] == 'wmdp-cyber-generative-v1' and questions is not None and args.wmdp_run:
-                assert json.loads((args.wmdp_run/'deployment-before.json').read_text()) == json.loads((args.wmdp_run/'deployment-after.json').read_text())
-                audits.append(audit_wmdp(report, args.wmdp_run, questions))
+                from osmsi_harness import providers
+                source = Path(__file__).with_name('evaluate_wmdp.py').read_bytes() + Path(providers.__file__).read_bytes()
+                assert hashlib.sha256(source).hexdigest() == report['provenance']['source_sha256']
+                before = json.loads((args.wmdp_run/'deployment-before.json').read_text())
+                assert before == json.loads((args.wmdp_run/'deployment-after.json').read_text())
+                snapshots = {hashlib.sha256(json.dumps(v, sort_keys=True).encode()).hexdigest() for v in before.values()}
+                assert report['provenance']['deployment_configuration_sha256'] in snapshots
+                result = audit_wmdp(report, args.wmdp_run, questions)
+                result['frozen_source_and_deployment_hashes_verified'] = True
+                audits.append(result)
             else:
                 raise ValueError('Unsupported report or missing WMDP inputs.')
     args.output.parent.mkdir(parents=True, exist_ok=True)

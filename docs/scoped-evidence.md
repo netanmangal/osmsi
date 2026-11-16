@@ -110,6 +110,7 @@ all separate model bundles to the command if experiments were run separately:
 out/evidence-venv/bin/python pipelines/audit_scoped_evidence.py \
   runs/capability/bundle runs/causal-ioi/bundle \
   --wmdp-run runs/capability --parquet out/wmdp-cyber.parquet \
+  --models out/weight-models.json \
   --output out/scoped-audit.json
 ```
 
