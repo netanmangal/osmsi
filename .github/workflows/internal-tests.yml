@@ -1,0 +1,21 @@
+name: provider checks (offline)
+
+on:
+  push:
+    branches: [main]
+    paths: ["internal-tests/**", ".github/workflows/internal-tests.yml"]
+  pull_request:
+    paths: ["internal-tests/**", ".github/workflows/internal-tests.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m unittest discover -s internal-tests/superlinked -p 'test_*.py'
