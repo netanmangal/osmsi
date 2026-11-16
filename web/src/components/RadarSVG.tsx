@@ -23,12 +23,12 @@ export default function RadarSVG({
   labels = true,
   className,
 }: {
-  values: Record<DimKey, { v: number }> | number[];
+  values: Partial<Record<DimKey, { v: number }>> | (number | null)[];
   size?: number;
   labels?: boolean;
   className?: string;
 }) {
-  const vals = Array.isArray(values) ? values : ORDER.map((k) => values[k].v);
+  const vals = Array.isArray(values) ? values : ORDER.map((k) => values[k]?.v ?? null);
   const c = size / 2;
   const r = size / 2 - (labels ? 30 : 8);
 
@@ -47,7 +47,7 @@ export default function RadarSVG({
       className={className}
       role="img"
       aria-label={`Safety radar: ${ORDER.map(
-        (_, i) => `${DIMENSIONS[i].abbr} ${Math.round(vals[i])}`
+        (_, i) => `${DIMENSIONS[i].abbr} ${vals[i] === null ? "not measured" : Math.round(vals[i]!)}`
       ).join(", ")} out of 100`}
     >
       <g fill="none" stroke="var(--color-ink)">
@@ -59,14 +59,15 @@ export default function RadarSVG({
           return <line key={i} x1={c} y1={c} x2={x} y2={y} strokeWidth="1" opacity="0.12" />;
         })}
       </g>
-      <polygon
-        points={radarPoints(c, c, r, vals)}
+      {vals.every((value) => value !== null) && <polygon
+        points={radarPoints(c, c, r, vals as number[])}
         fill="color-mix(in srgb, var(--color-cobalt) 17%, transparent)"
         stroke="var(--color-cobalt)"
         strokeWidth="1.5"
         strokeLinejoin="round"
-      />
+      />}
       {vals.map((v, i) => {
+        if (v === null) return null;
         const [x, y] = radarPoint(c, c, r, i, v);
         return <circle key={i} cx={x} cy={y} r="2.6" fill="var(--color-cobalt)" />;
       })}

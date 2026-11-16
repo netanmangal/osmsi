@@ -29,12 +29,15 @@ export default function Preloader() {
 
   useEffect(() => {
     let done = false;
+    let disposed = false;
+    let finishTimer: number | undefined;
+    let fallbackTimer: number | undefined;
     const t0 = performance.now();
     const parts: Record<Key, number> = { fonts: 0, load: 0, scenes: 0, frame: 0 };
     const display = { v: 0 };
 
     const finish = () => {
-      if (done) return;
+      if (done || disposed) return;
       done = true;
       window.dispatchEvent(new CustomEvent("osmsi:enter"));
       if (prefersReduced() || !rootRef.current) {
@@ -51,6 +54,7 @@ export default function Preloader() {
     };
 
     const render = () => {
+      if (disposed) return;
       const target = STAGES.reduce((sum, s) => sum + parts[s.key] * s.weight, 0);
       /* name the thing we are genuinely still waiting for */
       const pending = STAGES.find((s) => parts[s.key] < 1);
@@ -68,14 +72,15 @@ export default function Preloader() {
         },
         onComplete: () => {
           if (target >= 100) {
-            window.setTimeout(finish, Math.max(0, MIN_MS - (performance.now() - t0)));
+            window.clearTimeout(finishTimer);
+            finishTimer = window.setTimeout(finish, Math.max(0, MIN_MS - (performance.now() - t0)));
           }
         },
       });
     };
 
     const mark = (k: Key) => {
-      if (parts[k] === 1) return;
+      if (disposed || parts[k] === 1) return;
       parts[k] = 1;
       render();
     };
@@ -84,16 +89,19 @@ export default function Preloader() {
     document.fonts.ready.then(() => mark("fonts"));
 
     /* 2. the document and its subresources */
-    if (document.readyState === "complete") mark("load");
-    else window.addEventListener("load", () => mark("load"), { once: true });
+    const onLoad = () => mark("load");
+    if (document.readyState === "complete") onLoad();
+    else window.addEventListener("load", onLoad, { once: true });
 
     /* 3. the scene chunks, started now rather than when React reaches them */
-    preloadScenes().then(() => mark("scenes"));
+    const renderScenes = !prefersReduced() && webglAvailable();
+    if (renderScenes) preloadScenes().then(() => mark("scenes"));
+    else mark("scenes");
 
     /* 4. the hero's first painted frame. Without WebGL that frame will never
           come, so the stage is satisfied as soon as we know that. */
     const onHero = () => mark("frame");
-    if (!webglAvailable()) window.setTimeout(onHero, 0);
+    if (!renderScenes) fallbackTimer = window.setTimeout(onHero, 0);
     else window.addEventListener("osmsi:hero-ready", onHero, { once: true });
 
     const safety = window.setTimeout(() => {
@@ -104,8 +112,14 @@ export default function Preloader() {
     render();
 
     return () => {
+      disposed = true;
+      window.removeEventListener("load", onLoad);
       window.removeEventListener("osmsi:hero-ready", onHero);
       window.clearTimeout(safety);
+      window.clearTimeout(finishTimer);
+      window.clearTimeout(fallbackTimer);
+      gsap.killTweensOf(display);
+      if (rootRef.current) gsap.killTweensOf(rootRef.current);
     };
   }, []);
 
@@ -119,7 +133,7 @@ export default function Preloader() {
     >
       <div className="mono-label flex items-center justify-between">
         <span>OSMSI · safety instrument</span>
-        <span className="hidden sm:block">harness v0.4.2</span>
+        <span className="hidden sm:block">open evaluation framework</span>
       </div>
 
       <div className="flex flex-col items-start gap-5">
@@ -144,7 +158,7 @@ export default function Preloader() {
 
       <div className="mono-label flex items-center justify-between">
         <span>open weights · measured safety</span>
-        <span className="tnum">2026-08-08</span>
+        <span className="tnum">pilot release</span>
       </div>
     </div>
   );

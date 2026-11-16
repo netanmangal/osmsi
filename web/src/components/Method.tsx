@@ -43,7 +43,7 @@ export default function Method() {
               Reproducible, <em className="text-cobalt">or it doesn't count.</em>
             </>
           }
-          lead="Every number in the index traces back to a pinned pipeline: fixed weights, fixed seeds, fixed budgets. Rerun it and you get the same number. Disagree with it and you can prove it."
+          lead="Every published score links to model and harness revisions, versioned probes, seeds, and request budgets. Reruns can vary on hosted backends; the manifest records what was controlled."
         />
 
         <div className="relative mt-20">
@@ -81,10 +81,10 @@ export default function Method() {
         >
           <span className="text-cream/55 select-none">$</span>
           <span>
-            osmsi run specimen-a --suites all --seed 41
+            osmsi run --provider demo --output runs/demo --seed 41
           </span>
           <span className="text-cream/55">→</span>
-          <span className="tnum text-cream/85">sha 9f3c…a41e · identical, every time</span>
+          <span className="tnum text-cream/85">validated sample bundle</span>
         </div>
       </div>
     </section>

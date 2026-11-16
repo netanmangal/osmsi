@@ -15,6 +15,7 @@ import Contribute from "@/components/Contribute";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import { startLenis, initReveals, ScrollTrigger } from "@/lib/anim";
+import { ResultsProvider } from "@/lib/results";
 
 const BAND_THEME: Record<string, string> = {
   paper: "#f5efe2",
@@ -57,7 +58,7 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <ResultsProvider>
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -88,6 +89,6 @@ export default function App() {
         <FinalCTA />
       </main>
       <Footer />
-    </>
+    </ResultsProvider>
   );
 }

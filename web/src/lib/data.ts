@@ -27,7 +27,7 @@ export const DIMENSIONS: Dimension[] = [
     abbr: "JBR",
     blurb:
       "Roleplay traps, many-shot escalation, encoded payloads. How long do refusals hold under siege?",
-    probe: "2,400 attack templates · 6 escalation ladders",
+    probe: "pilot: synthetic policy-boundary probes",
     hue: { ink: "#2036c8", bright: "#2036c8" },
   },
   {
@@ -37,7 +37,7 @@ export const DIMENSIONS: Dimension[] = [
     abbr: "CAP",
     blurb:
       "Uplift probes across cyber, bio, chem and fraud. What could a motivated actor actually extract?",
-    probe: "capability ceilings measured, not assumed",
+    probe: "specialist benchmark contribution needed",
     hue: { ink: "#b03a24", bright: "#d95c40" },
   },
   {
@@ -47,7 +47,7 @@ export const DIMENSIONS: Dimension[] = [
     abbr: "INJ",
     blurb:
       "Poisoned documents, hostile tool output, indirect orders. Does the model serve its user or its attacker?",
-    probe: "142 injection vectors · 3 privilege tiers",
+    probe: "pilot: untrusted-document instruction boundaries",
     hue: { ink: "#8f6410", bright: "#c98a1f" },
   },
   {
@@ -57,7 +57,7 @@ export const DIMENSIONS: Dimension[] = [
     abbr: "CAL",
     blurb:
       "Confidence should track correctness. We score the gap between what a model knows and what it claims.",
-    probe: "ECE · Brier · selective abstention",
+    probe: "pilot: confidence and Brier loss",
     hue: { ink: "#20706c", bright: "#2f8f8a" },
   },
   {
@@ -67,7 +67,7 @@ export const DIMENSIONS: Dimension[] = [
     abbr: "AGT",
     blurb:
       "Tool access, long horizons, delegated authority. What happens when nobody watches the loop?",
-    probe: "sandboxed agent runs · 40 task families",
+    probe: "pilot: simulated tool-authorization decisions",
     hue: { ink: "#7c3f73", bright: "#a05893" },
   },
   {
@@ -77,7 +77,7 @@ export const DIMENSIONS: Dimension[] = [
     abbr: "INT",
     blurb:
       "Open weights should buy understanding. We probe features, circuits and deception indicators.",
-    probe: "sparse autoencoders · linear probe battery",
+    probe: "weight-access evaluation contribution needed",
     hue: { ink: "#256e47", bright: "#3f9e6b" },
   },
 ];
@@ -272,31 +272,31 @@ export const PIPELINE: PipelineStep[] = [
   {
     index: "01",
     name: "Watch",
-    blurb: "New open-weight releases are detected within hours, straight from the hubs and registries.",
+    blurb: "Collect model candidates from the public registry. Review licensing and backend availability before a run.",
     hue: { ink: "#2036c8", bright: "#2036c8" },
   },
   {
     index: "02",
     name: "Pin",
-    blurb: "Weights, tokenizer, harness and seeds are version-locked. Every run is addressable forever.",
+    blurb: "Record model and harness revisions, versioned probes, seeds, and sampling parameters in the run manifest.",
     hue: { ink: "#8f6410", bright: "#c98a1f" },
   },
   {
     index: "03",
     name: "Run",
-    blurb: "Six suites execute in sandboxed pipelines. Same hardware class, same budgets, no cherry-picking.",
+    blurb: "Run the selected pilot or contributed suites with explicit request budgets. Failures stay in the attempt journal.",
     hue: { ink: "#b03a24", bright: "#d95c40" },
   },
   {
     index: "04",
     name: "Score",
-    blurb: "Each dimension ships with confidence intervals and failure exhibits. Never a single aggregate.",
+    blurb: "Report each measured dimension with its interval and limitations. Leave unmeasured dimensions open.",
     hue: { ink: "#20706c", bright: "#2f8f8a" },
   },
   {
     index: "05",
     name: "Publish",
-    blurb: "A Safety Card and an index row go public, with diffs against the previous harness version.",
+    blurb: "Validate and review the bundle, then publish its cards and manifests to the static index.",
     hue: { ink: "#256e47", bright: "#3f9e6b" },
   },
 ];

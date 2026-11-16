@@ -11,14 +11,14 @@ const PATHS = [
     tag: "researchers",
     hue: "#2036c8",
     line: "Bring a suite.",
-    body: "New risks need new probes. The harness is modular by design: a suite is a container, a scoring spec and a manifest. Deception probes and constitutional-alignment audits are next in queue.",
+    body: "Contribute versioned probes with a threat model, scoring method, and documented limits. Harmful-capability and weight-access interpretability benchmarks need specialist contributions.",
     cta: "Read the suite spec",
   },
   {
     tag: "developers",
     hue: "#8f6410",
     line: "Gate a deploy.",
-    body: "Pull dimension scores over the API, pin a minimum band in CI, and block the fine-tune that quietly regressed injection resistance from reaching production.",
+    body: "Read validated cards with the Python SDK, compare compatible runs, and add checks for the dimensions your deployment depends on.",
     cta: "See the schema",
   },
   {

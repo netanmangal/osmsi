@@ -4,19 +4,21 @@ import RevisionCloud from "@/components/deco/RevisionCloud";
 import { gsap, prefersReduced, scrollToHash } from "@/lib/anim";
 import { importProvingBench, webglAvailable } from "@/lib/preload";
 import SceneBoundary from "@/components/SceneBoundary";
+import RadarSVG from "@/components/RadarSVG";
+import { useResults } from "@/lib/results";
 
 const ProvingBench = lazy(importProvingBench);
 
-const HUD = [
-  { k: "suites", label: "suites", value: "06" },
-  { k: "specimens", label: "specimens", value: "08" },
-  { k: "harness", label: "harness", value: "v0.4.2" },
-  { k: "lastcal", label: "last cal", value: "2026-08-07" },
-];
-
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
-  const [canRender] = useState(() => typeof window !== "undefined" && webglAvailable());
+  const results = useResults();
+  const [canRender] = useState(() => typeof window !== "undefined" && !prefersReduced() && webglAvailable());
+  const hud = [
+    { k: "dimensions", label: "dimensions", value: "06" },
+    { k: "suites", label: "pilot suites", value: "04" },
+    { k: "harness", label: "harness", value: "v0.1.0" },
+    { k: "runs", label: "measured runs", value: results.status === "ready" ? String(results.runs.filter((run) => !run.card.sample).length) : "—" },
+  ];
 
   /* Entrance choreography, fired when the preloader wipes away. */
   useEffect(() => {
@@ -60,9 +62,9 @@ export default function Hero() {
           </h1>
 
           <p data-hero-fade className="text-ink-dim mt-5 max-w-[52ch] text-[1.05rem] leading-[1.62]">
-            OSMSI benchmarks every notable open-weight release across six safety dimensions, then
-            publishes the pipelines, the prompts and the doubt. A public index anyone can rerun,
-            audit and extend.
+            An open framework for measuring model safety across six dimensions.
+            Run the pilot suites, inspect the evidence, and help build an index
+            whose methods are as public as its results.
           </p>
 
           <div data-hero-fade className="mt-6 flex flex-wrap items-center gap-4">
@@ -85,7 +87,7 @@ export default function Hero() {
             data-hero-fade
             className="mt-10 grid max-w-[560px] grid-cols-2 border-t border-(--line) sm:grid-cols-4"
           >
-            {HUD.map(({ k, label, value }) => (
+            {hud.map(({ k, label, value }) => (
               <div
                 key={k}
                 className="border-r border-(--line) py-3 pr-4 even:border-r-0 first:pl-0 sm:px-4 sm:first:pl-0 sm:even:border-r sm:last:border-r-0"
@@ -131,12 +133,12 @@ export default function Hero() {
               open source model safety index
             </span>
             <span className="mono-label tnum absolute right-8 -bottom-1 text-[0.6rem]">
-              6 suites · in cycle
+              six dimensions · open methodology
             </span>
           </div>
 
           {/* no WebGL means no bench, and the loader is told not to wait */}
-          {canRender && (
+          {canRender ? (
             <SceneBoundary
               onFail={() => window.dispatchEvent(new CustomEvent("osmsi:hero-ready"))}
             >
@@ -144,7 +146,9 @@ export default function Hero() {
                 <ProvingBench />
               </Suspense>
             </SceneBoundary>
-          )}
+          ) : <div className="flex h-full items-center justify-center p-8" aria-label="Static six-dimension instrument">
+            <RadarSVG values={[null, null, null, null, null, null]} size={420} />
+          </div>}
         </div>
       </div>
     </section>
