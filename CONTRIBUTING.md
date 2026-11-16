@@ -4,8 +4,9 @@ OSMSI is modular on purpose: the safety risks worth measuring in a year are not 
 worth measuring today, so the framework is built to absorb new evaluation suites without
 reshaping the core. Contributed suites are the most valuable thing you can send.
 
-**Status: early.** The harness and schemas are in progress, so the suite interface below
-describes the intended shape rather than a frozen API. If you want to build a suite now,
+**Status: early.** Draft artifact schemas and a local SDK exist; the harness is still
+unimplemented. The suite interface below describes an intended shape rather than a
+frozen API. If you want to build a suite now,
 open an issue first and we will settle the interface together instead of you guessing.
 
 ## Ground rules
@@ -50,8 +51,19 @@ npm run dev
 npm run build      # must typecheck clean before you open a PR
 ```
 
-**Python subtrees** (`harness/`, `suites/`, `sdk/python/`) — each will carry its own
-`pyproject.toml`; see the README in the relevant directory for current state.
+**Python SDK and artifact pipeline** (Python 3.10+):
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e sdk/python
+python -m unittest discover -s sdk/python/tests
+python -m unittest discover -s pipelines -p 'test_*.py'
+```
+
+Schema changes belong in `sdk/python/src/osmsi/_schemas/`, the single copy bundled
+with the SDK. See `schemas/README.md` for versioning and cross-artifact invariants.
+The harness and suites still have no executable implementations.
 
 ## Adding an evaluation suite
 

@@ -1,0 +1,32 @@
+name: Python SDK and artifact pipeline
+
+on:
+  push:
+    branches: [main]
+    paths: ["sdk/python/**", "pipelines/**", ".github/workflows/python.yml"]
+  pull_request:
+    paths: ["sdk/python/**", "pipelines/**", ".github/workflows/python.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install build
+      # Build the wheel from the sdist, then test the installed package.
+      - run: python -m build sdk/python --outdir out/packages
+      - run: python -m pip install out/packages/*.whl
+      - run: python -m unittest discover -s sdk/python/tests
+      - run: python -m unittest discover -s pipelines -p 'test_*.py'
+      - run: >-
+          python pipelines/stage_results.py sdk/python/tests/fixtures/sample-run
+          --destination out/ci-sample-bundle --allow-samples

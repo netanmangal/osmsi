@@ -6,8 +6,9 @@ Card across six dimensions: jailbreak resistance, harmful capability, prompt
 injection, uncertainty calibration, agentic safety, and interpretability.
 
 **This is early work.** The website runs, but its scores are illustrative and use
-anonymized specimens. The evaluation harness, benchmarking pipeline, schemas, and
-end-user SDK are not implemented yet. Scores are research artifacts, not certifications.
+anonymized specimens. A Python SDK and artifact-staging pipeline now read and
+validate local results; the evaluation harness and automated benchmarking are
+still to come. Scores are research artifacts, not certifications.
 
 ## Run the website
 
@@ -31,9 +32,9 @@ for its design and development notes.
 | `web/` | Public website and sample index |
 | `harness/` | Planned evaluation runner and model adapters |
 | `suites/` | Planned evaluation suites, one per safety dimension |
-| `pipelines/` | Planned discovery, evaluation, and publishing jobs |
-| `sdk/python/` | Planned Python SDK for end users |
-| `schemas/` | Planned shared contracts for cards, manifests, and index rows |
+| `pipelines/` | Validate and stage local result bundles; scheduling is planned |
+| `sdk/python/` | Python SDK for typed, validated local results |
+| `schemas/` | Draft contract documentation; JSON Schemas ship with the SDK |
 | `data/` | Published results; no real runs yet |
 | `internal-tests/` | Reusable, opt-in provider checks |
 | `docs/` | Architecture, methodology, and project decisions |
@@ -42,6 +43,20 @@ Each component owns its dependencies. The root npm scripts are shortcuts for the
 website; Python components can be developed without installing the web toolchain.
 The intended data flow and component boundaries are in
 [docs/architecture.md](docs/architecture.md).
+
+## Try the Python tools
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e sdk/python
+python pipelines/stage_results.py sdk/python/tests/fixtures/sample-run \
+  --destination out/sample-bundle --allow-samples
+```
+
+This stages a synthetic fixture, not a real evaluation. See the
+[SDK examples](sdk/python/README.md) to read the bundle and the
+[pipeline notes](pipelines/README.md) for input requirements. Neither needs API keys.
 
 Keep credentials in an ignored `.env` file or environment variables. Raw provider
 responses and local runs stay out of Git. Nothing from private experiments is

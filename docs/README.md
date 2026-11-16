@@ -2,6 +2,10 @@
 
 **Status: in progress.**
 
+Start with [architecture.md](architecture.md) for what is implemented and how the
+components fit together. The [artifact contracts](../schemas/README.md) describe
+the draft format used by the SDK and staging pipeline.
+
 Written methodology and project governance — the prose half of the transparency claim. A
 reproducible pipeline that nobody can read is not transparent, so the reasoning behind
 each dimension belongs here in full.

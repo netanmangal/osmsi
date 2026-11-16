@@ -6,14 +6,18 @@ Published evaluation output: Safety Cards, index rows, and the run manifests tha
 them. These are the citable artifacts of the project, committed to the repo on purpose so
 that any published score has a permanent, diffable record.
 
-Planned layout:
+Each reviewed release will use the SDK's bundle layout:
 
 ```
-data/
-├── cards/       one Safety Card per model per harness version
-├── manifests/   run manifests referenced by those cards
-└── index/       the leaderboard rows the site consumes
+data/<release>/
+├── cards/       one Safety Card per run ID
+├── manifests/   matching run manifests
+└── index.json   run references for the SDK
 ```
+
+Use `pipelines/stage_results.py` to validate and stage a bundle in `out/` before
+review. Staging does not publish or approve results. Sample fixtures stay under
+the SDK tests and are rejected by staging unless explicitly allowed.
 
 Rules for anything landing here:
 
