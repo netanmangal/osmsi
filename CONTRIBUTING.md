@@ -30,20 +30,22 @@ versions, and recorded seeds matter more here than they do in most projects.
 | `web/` | the public site (Vite + React + TS) |
 | `harness/` | evaluation runner core — schedules suites, records runs |
 | `suites/` | evaluation suites, one directory per dimension |
+| `pipelines/` | discovery, evaluation, and publishing jobs |
 | `sdk/python/` | the `osmsi` SDK |
+| `internal-tests/` | opt-in provider checks; no credentials or captured responses |
 | `schemas/` | JSON Schema for Safety Cards, run manifests, index rows |
 | `data/` | published results and Safety Cards |
 | `docs/` | methodology and governance |
 
-Each subtree owns its tooling. There is no workspace layer.
+Each subtree owns its tooling. Root npm scripts delegate to `web/`.
 
 ## Development setup
 
 **Site:**
 
 ```bash
-cd web
-npm install
+nvm use           # optional; otherwise use Node.js 22+
+npm run setup
 npm run dev
 npm run build      # must typecheck clean before you open a PR
 ```
@@ -79,6 +81,8 @@ See `suites/README.md` for the current directory conventions and the six dimensi
 - Site changes: `npm run build` must exit clean, and both fallbacks must survive —
   `prefers-reduced-motion: reduce` and no-WebGL. Both are documented in `web/README.md`.
 - Do not commit generated artifacts, `node_modules/`, virtualenvs, or local run scratch.
+- Keep `.env` files and raw API responses out of commits. Provider checks are opt-in;
+  automated tests should use fake responses and need no keys.
 
 ## Reporting a safety concern
 

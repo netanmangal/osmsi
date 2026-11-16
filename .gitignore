@@ -3,6 +3,14 @@ node_modules/
 dist/
 dist-ssr/
 *.local
+*.tsbuildinfo
+
+# credentials (only empty examples belong in git)
+.env
+.env.*
+!.env.example
+*.key
+*.pem
 
 # python
 __pycache__/
@@ -17,6 +25,8 @@ venv/
 # eval run scratch (published results are committed under data/ deliberately)
 runs/
 .cache/
+out/
+*.response.json
 
 # os / editor
 .DS_Store

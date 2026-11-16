@@ -15,4 +15,5 @@ Intended surface:
 - **Compare** — diff two cards (two models, or one model across two harness versions),
   since a score only means something next to the run that produced it.
 
-Ships as `osmsi` on PyPI. Will carry its own `pyproject.toml`.
+No package has been released from this repository. The SDK will carry its own
+`pyproject.toml`; its package name and public API are not settled yet.

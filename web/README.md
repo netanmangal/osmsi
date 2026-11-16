@@ -18,13 +18,19 @@ need numbers they can cite and rerun.
 
 ## Develop
 
+Use Node.js 22 or newer. From `web/`:
+
 ```bash
-npm install
+npm ci
 npm run dev        # http://localhost:5173
 npm run build      # tsc -b && vite build  →  dist/
 npm run preview    # serve dist/ locally
 npm run typecheck  # tsc -b --noEmit
 ```
+
+The repository root also exposes `npm run setup`, `npm run dev`, and
+`npm run build`. No environment file or API key is needed for the website.
+Production hosting should serve `web/dist/` at the domain root.
 
 `@/` resolves to `src/` (`vite.config.ts`).
 
@@ -66,7 +72,7 @@ Scale is fluid via clamp: `--text-hero`, `--text-statement`, `--text-h2`, `--tex
 ## Motion and fallbacks
 
 Lenis smooth scroll (lerp 0.115) with the house ease `cubic-bezier(.22,1,.36,1)`. The
-preloader reports real progress (fonts, load, hero canvas) with a minimum 1100ms hold.
+preloader reports real progress (fonts, load, scene modules, hero canvas) with a minimum 900ms hold.
 `Dimensions` is a pinned scrub that assembles the radar one axis per segment;
 `Leaderboard` re-orders through GSAP Flip on sort; `SafetyCard` tilts to the pointer.
 
