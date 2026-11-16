@@ -16,6 +16,9 @@ dependencies = [
   "rfc3339-validator>=0.1.4,<1",
 ]
 
+[project.scripts]
+osmsi = "osmsi.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
