@@ -16,6 +16,7 @@ and do not imply that those URLs are currently hosted.
 | `run-manifest.json` | Model and harness revisions, suite versions, dataset revisions, seed, parameters, timestamps |
 | `safety-card.json` | Run identity, per-dimension scores and intervals, concerns, strengths |
 | `index.json` | Run IDs and model IDs referring to cards and manifests in a bundle |
+| `suite-descriptor.json` | Versioned probe messages, answer keys, scorer, license, and limitations |
 
 ## Bundle layout
 
@@ -53,5 +54,6 @@ The committed example is under
 [`sdk/python/tests/fixtures/sample-run/`](../sdk/python/tests/fixtures/sample-run/),
 not `data/`. No evaluation produced its numbers.
 
-The website still uses its existing TypeScript demo data. Wiring it to published
-bundles and defining a suite-descriptor contract are future work.
+The website imports these schemas directly and validates published bundles with
+Ajv before rendering them. Its old TypeScript specimens remain explicitly labeled
+format previews, separate from measurements.

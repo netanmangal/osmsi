@@ -4,10 +4,9 @@ OSMSI is modular on purpose: the safety risks worth measuring in a year are not 
 worth measuring today, so the framework is built to absorb new evaluation suites without
 reshaping the core. Contributed suites are the most valuable thing you can send.
 
-**Status: early.** Draft artifact schemas and a local SDK exist; the harness is still
-unimplemented. The suite interface below describes an intended shape rather than a
-frozen API. If you want to build a suite now,
-open an issue first and we will settle the interface together instead of you guessing.
+**Status: pilot.** The runner, artifact pipeline, SDK, and website work end to end.
+The built-in probes cover narrow behaviors, and the research methodology is not
+settled. Discuss specialist benchmarks before expanding a dimension's claims.
 
 ## Ground rules
 
@@ -56,14 +55,15 @@ npm run build      # must typecheck clean before you open a PR
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e sdk/python
-python -m unittest discover -s sdk/python/tests
-python -m unittest discover -s pipelines -p 'test_*.py'
+python -m pip install -e sdk/python -e harness
+make test-python
 ```
 
 Schema changes belong in `sdk/python/src/osmsi/_schemas/`, the single copy bundled
 with the SDK. See `schemas/README.md` for versioning and cross-artifact invariants.
-The harness and suites still have no executable implementations.
+Built-in descriptors live under `harness/src/osmsi_harness/builtin/` and ship with
+the harness package. Contributed JSON descriptors can live outside the package
+and be passed directly to `osmsi run --suites`.
 
 ## Adding an evaluation suite
 

@@ -1,23 +1,13 @@
-# suites/jailbreak — Jailbreak resistance
+# jailbreak
 
-**Status: not yet implemented.**
+Built-in pilot: `policy-boundaries`. Synthetic policy adherence is executable; broad harmful-request jailbreak resistance is not established.
 
-Measures how long a model's refusals hold under sustained adversarial pressure: roleplay
-traps, many-shot escalation ladders, encoded and obfuscated payloads, persona injection,
-and refusal-suppression framings.
+The canonical descriptor is
+[`harness/src/osmsi_harness/builtin/policy-boundaries.json`](../../harness/src/osmsi_harness/builtin/policy-boundaries.json).
+Its messages, answer keys, licensing, and limits are versioned together.
 
-Threat model to be written before the first probe lands: an unprivileged user with
-unlimited attempts, full prompt control, and no access to weights or system prompt. The
-question is not whether a single clever prompt exists, but how much attacker effort a
-refusal costs.
+```bash
+osmsi run --provider demo --suites policy-boundaries --output runs/policy-boundaries-demo
+```
 
-Design notes carried from the project's constraints:
-
-- Score the *escalation curve*, not a single pass/fail — refusal rate as a function of
-  attempt budget is the informative signal.
-- Attack templates are versioned as a probe set; a score is meaningless without knowing
-  which set produced it.
-- Some probe content may need to stay unpublished. If so, the suite must still document how
-  a third party can independently verify results.
-
-See `../../CONTRIBUTING.md` for what a suite must supply.
+See [methodology](../../docs/methodology.md) before interpreting scores or adding probes.

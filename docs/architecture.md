@@ -1,46 +1,42 @@
-# Repository architecture
+# Architecture
 
-The public repository owns the website, artifact contracts, Python reader, and
-local artifact pipeline. The website is a standalone static app using illustrative
-fixtures from `web/src/lib/data.ts`; it does not call the SDK or a backend yet.
-
-## Component boundaries
-
-- `harness/` will execute suites, call model adapters, and record run manifests.
-- `suites/` will own probes, threat models, and per-dimension scoring.
-- `pipelines/` currently validates and stages result bundles. Model discovery,
-  scheduling, and publication are future jobs.
-- `schemas/` documents the draft artifact contracts. Their canonical JSON files
-  ship inside `sdk/python/src/osmsi/_schemas/` so installed readers can use them
-  offline. Both the SDK and pipeline validate against these files.
-- `data/` is reserved for reviewed real results. Local output belongs in ignored
-  `runs/` or `out/` directories. Test fixtures remain under the SDK tests.
-- `sdk/python/` exposes typed, validated local results to end users. It will later
-  add remote reads and evaluation entry points.
-- `internal-tests/` holds opt-in provider checks. These are separate from offline
-  tests and from private scratch repositories.
-
-The planned flow is:
+The repository contains a runnable evaluation and publication path:
 
 ```text
-pipelines -> harness + suites -> artifact validation -> data -> website / SDK
+registry discovery → candidate review → harness + suites
+                                      ↓
+                              card + run manifest
+                                      ↓
+                          validation + publication review
+                                      ↓
+                              static results bundle
+                                ↙             ↘
+                             website       Python SDK
 ```
 
-The artifact validation and local SDK read are implemented. There is no automated
-model discovery, evaluation harness, public API, or remote result publication.
-Validation checks recorded provenance; it cannot establish that a claimed run
-actually happened or that its scoring method is scientifically sound.
+`harness/` owns provider adapters, sequential execution, budgets, journaling, and
+scoring. It packages the built-in descriptors so installed users do not need a
+checkout. Contributed descriptors are ordinary JSON files, not executable plugins.
 
-## Development and deployment
+`sdk/python/` owns the artifact reader, shared validation, downloads, comparisons,
+and CLI. Its bundled JSON Schemas are the single source used by Python and by the
+website's Ajv validators. `schemas/` documents those contracts.
 
-Each component owns its dependencies: `web/package.json` for the app and
-`sdk/python/pyproject.toml` for the reader. Root npm commands delegate to `web/`.
-The artifact pipeline uses the installed SDK rather than a second validator.
+`pipelines/` discovers candidates, stages validated bundles, and exports reviewed
+results to `web/public/results/`. Discovery does not automatically spend provider
+credits. The manually triggered benchmark workflow runs at most eight requests
+and uploads only a result bundle for review.
 
-Website CI builds `web/dist/`, which a static host can serve at the domain root.
-Python CI builds a source distribution and wheel, then tests the installed wheel
-and stages a sample bundle. Neither workflow deploys or publishes a release.
+`web/` is a static React app. It fetches the index and its linked cards/manifests,
+validates them, and renders measured dimensions and their limitations. Empty,
+loading, and failed loads are explicit. Sample specimens are separate from real
+measurements; incomplete radars do not fill missing dimensions with zero.
 
-Provider keys belong in the environment of a local check or a future harness
-worker. Never place them in browser code or a `VITE_*` variable. The SDK and
-artifact pipeline need no credentials.
+`data/` stores versioned published results. `runs/` and `out/` are ignored local
+working directories. Response journals and provider credentials are never browser
+assets. `internal-tests/` contains opt-in connectivity checks; automated tests use
+fake provider responses.
+
+The research scope remains experimental: four pilot suites cover narrow behaviors,
+and two dimensions require specialist contributions. The software supports those
+extensions, but does not claim that the current probes measure general safety.

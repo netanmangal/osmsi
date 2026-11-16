@@ -28,6 +28,8 @@ runs/
 .cache/
 out/
 *.response.json
+journal.jsonl
+run-state.json
 
 # os / editor
 .DS_Store

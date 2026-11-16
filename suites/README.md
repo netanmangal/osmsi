@@ -1,27 +1,39 @@
-# suites
+# Evaluation suites
 
-**Status: not yet implemented.**
+Suites are versioned JSON documents containing messages, expected responses,
+scoring rules, licensing, and limitations. The runner accepts either a built-in
+name or a path to a contributed descriptor. The built-in source lives in
+[`harness/src/osmsi_harness/builtin/`](../harness/src/osmsi_harness/builtin/) so it
+also ships in installed harness packages.
 
-The evaluation suites, one directory per safety dimension. This is where the framework's
-modularity promise actually lives: a suite is self-contained, versioned, and contributable
-without touching the harness.
+| Dimension | Built-in coverage |
+| --- | --- |
+| Jailbreak resistance | `policy-boundaries`: 8 direct attempts to override a synthetic policy |
+| Prompt injection | `injection-boundaries`: 8 untrusted-document instruction attacks |
+| Uncertainty calibration | `factual-calibration`: 12 easy factual questions with confidence |
+| Agentic safety | `tool-authorization`: 8 simulated single-step action choices |
+| Harmful capability | No built-in claim; needs a specialist, licensed benchmark |
+| Interpretability | No built-in claim; needs weight access and a justified measurement |
 
-| Directory | Dimension | Measures |
-| --- | --- | --- |
-| `jailbreak/` | Jailbreak resistance | Roleplay traps, many-shot escalation, encoded payloads. How long do refusals hold under siege? |
-| `harmful-capability/` | Harmful capability | Uplift probes across cyber, bio, chem, fraud. What could a motivated actor actually extract? |
-| `prompt-injection/` | Prompt injection | Poisoned documents, hostile tool output, indirect orders. Does the model serve its user or its attacker? |
-| `calibration/` | Uncertainty calibration | Whether confidence tracks correctness — ECE, Brier, selective abstention. |
-| `agentic-safety/` | Agentic safety | Tool access, long horizons, delegated authority. What happens when nobody watches the loop? |
-| `interpretability/` | Interpretability | Features, circuits, and deception indicators, where the weights allow it. |
+The four built-ins are **pilot checks**, not validated proxies for an entire
+safety dimension. Missing coverage is displayed as “not measured.”
 
-Each suite is expected to declare a written threat model, deterministic versioned probes,
-a scoring function with a documented range and interval method, licensing for any dataset
-it brings, and a rough per-model call budget. See `../CONTRIBUTING.md` for the full
-requirements before starting one.
+## Add a suite
 
-Suites score their own dimension only. Nothing here aggregates across dimensions — that is
-a deliberate non-goal.
+Copy a built-in descriptor, give it a new ID and version, and document the threat
+model, licensing, and limits. Every probe needs a unique ID, a message sequence,
+and an expected response. Available scorers are `exact`, `json-choice`, and
+`calibration`; their definitions are in [methodology.md](../docs/methodology.md).
 
-New dimensions are welcome as new risks emerge; open an issue before adding a directory,
-since a new dimension changes the Safety Card schema and every published card with it.
+```bash
+osmsi run --provider demo --suites path/to/suite.json --output runs/custom-demo
+```
+
+The descriptor is validated against the bundled `suite-descriptor` schema and
+hashed into the manifest. Changing any probe, answer key, or scoring metadata
+changes that hash. The demo provider only checks the plumbing and always produces
+sample artifacts; evaluate against a real backend to measure model responses.
+
+New scoring methods belong in `harness/src/osmsi_harness/suites.py` with tests and
+a documented normalization and interval method. Do not invent a model-wide grade
+or turn an unavailable dimension into zero.

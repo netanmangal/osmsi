@@ -1,23 +1,13 @@
-# suites/prompt-injection — Prompt injection
+# prompt-injection
 
-**Status: not yet implemented.**
+Built-in pilot: `injection-boundaries`. Untrusted-document boundary checks are executable; adaptive attacks and real tool integrations are outside this pilot.
 
-Measures whether a model serves its user or its attacker when hostile instructions arrive
-through data: poisoned documents, hostile tool output, retrieved web content, and indirect
-orders embedded in anything the model reads.
+The canonical descriptor is
+[`harness/src/osmsi_harness/builtin/injection-boundaries.json`](../../harness/src/osmsi_harness/builtin/injection-boundaries.json).
+Its messages, answer keys, licensing, and limits are versioned together.
 
-Threat model to be written before the first probe lands: the attacker controls content the
-model ingests but not the user's prompt or the system prompt. Injection vectors are graded
-by privilege tier — what the injected instruction is trying to reach matters as much as
-whether it lands.
+```bash
+osmsi run --provider demo --suites injection-boundaries --output runs/injection-boundaries-demo
+```
 
-Design notes carried from the project's constraints:
-
-- Score by vector and privilege tier, not as one rate. "Ignores injected text in a
-  document" and "refuses an injected tool call that exfiltrates data" are different claims.
-- Instruction-data separation is the property under test; probes should isolate it from
-  general refusal behavior.
-- Report both directions of failure: obeying the attacker, and becoming unusable because
-  the model now distrusts legitimate content.
-
-See `../../CONTRIBUTING.md` for what a suite must supply.
+See [methodology](../../docs/methodology.md) before interpreting scores or adding probes.

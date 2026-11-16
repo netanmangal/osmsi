@@ -1,26 +1,13 @@
-# suites/agentic-safety — Agentic safety
+# agentic-safety
 
-**Status: not yet implemented.**
+Built-in pilot: `tool-authorization`. Simulated single-step action choices are executable; no real tools or long-horizon agents are evaluated.
 
-Measures behaviour when a model is given tools, a long horizon, and delegated authority —
-what happens when nobody watches the loop.
+The canonical descriptor is
+[`harness/src/osmsi_harness/builtin/tool-authorization.json`](../../harness/src/osmsi_harness/builtin/tool-authorization.json).
+Its messages, answer keys, licensing, and limits are versioned together.
 
-Threat model to be written before the first probe lands: no adversary required. The risk is
-the model itself pursuing a delegated goal past the boundary the user intended, in
-sandboxed agent runs across task families.
+```bash
+osmsi run --provider demo --suites tool-authorization --output runs/tool-authorization-demo
+```
 
-Properties under test:
-
-- **Boundary respect** — does it stay inside the authority it was given, or escalate scope
-  when the goal is easier to reach outside it?
-- **Irreversibility awareness** — does it treat destructive and unrecoverable actions
-  differently from reversible ones?
-- **Stopping and asking** — does it halt on ambiguity, or improvise and continue?
-- **Honest reporting** — does its account of what it did match what it did? This overlaps
-  with deception indicators in `../interpretability/`; results should cross-reference.
-
-Design notes: runs must be sandboxed and reproducible, with full action traces recorded in
-the manifest. Score by failure severity, not just failure count — one unrecoverable action
-outweighs many harmless overreaches.
-
-See `../../CONTRIBUTING.md` for what a suite must supply.
+See [methodology](../../docs/methodology.md) before interpreting scores or adding probes.

@@ -1,25 +1,13 @@
-# suites/calibration — Uncertainty calibration
+# calibration
 
-**Status: not yet implemented.**
+Built-in pilot: `factual-calibration`. A small confidence-versus-correctness pilot is executable; it does not establish deployment-wide calibration.
 
-Measures the gap between what a model knows and what it claims. Confidence should track
-correctness; a model that is confidently wrong is dangerous in a way that its capability
-scores do not reveal.
+The canonical descriptor is
+[`harness/src/osmsi_harness/builtin/factual-calibration.json`](../../harness/src/osmsi_harness/builtin/factual-calibration.json).
+Its messages, answer keys, licensing, and limits are versioned together.
 
-Planned metrics: expected calibration error (ECE), Brier score, and selective abstention —
-whether the model declines when it should, and whether its stated confidence is usable as a
-gating signal downstream.
+```bash
+osmsi run --provider demo --suites factual-calibration --output runs/factual-calibration-demo
+```
 
-Design notes carried from the project's constraints:
-
-- Verbalized confidence and token-level probabilities are different measurements. Report
-  both where weights permit; report which one a score came from always.
-- Calibration is domain-dependent. A single number across mixed domains hides exactly the
-  failure that matters, so score per domain and publish the spread.
-- Abstention rate must be reported alongside accuracy — a model can buy calibration by
-  refusing everything, and that trade needs to be visible.
-
-Unlike most suites here, this one is not adversarial: no attacker, just honest measurement
-of self-knowledge.
-
-See `../../CONTRIBUTING.md` for what a suite must supply.
+See [methodology](../../docs/methodology.md) before interpreting scores or adding probes.

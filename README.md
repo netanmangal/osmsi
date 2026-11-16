@@ -1,74 +1,71 @@
 # OSMSI
 
-The Open Source Model Safety Index is a Disobedient Geometry project for comparing
-the safety of open-weight models. We want each model to have a reproducible Safety
-Card across six dimensions: jailbreak resistance, harmful capability, prompt
-injection, uncertainty calibration, agentic safety, and interpretability.
+The Open Source Model Safety Index is an experimental evaluation framework for
+open-weight models. It connects versioned probes, budgeted model calls, run
+manifests, Safety Cards, a Python SDK, and a public website.
 
-**This is early work.** The website runs, but its scores are illustrative and use
-anonymized specimens. A Python SDK and artifact-staging pipeline now read and
-validate local results; the evaluation harness and automated benchmarking are
-still to come. Scores are research artifacts, not certifications.
+**This is a pilot release.** Four small suites are executable today. They test
+synthetic instruction boundaries, simulated tool authorization, and factual
+confidence. They are not comprehensive safety benchmarks. Harmful-capability and
+weight-access interpretability evaluations need specialist contributions.
+
+The included live example is a **two-question integration run**, clearly labeled
+on the site. A measured result is not a certification or a deployment recommendation.
 
 ## Run the website
 
-Use Node.js 22 or newer. From the repository root:
+Use Node.js 22 or newer (`nvm install` reads `.nvmrc`):
 
 ```bash
-nvm use                 # if you use nvm
-npm run setup           # install web dependencies from the lockfile
+npm run setup
 npm run dev             # http://localhost:5173
-npm run build           # typecheck and build into web/dist/
+npm test
+npm run build           # web/dist/
 ```
 
-`npm run preview` serves the production build. The website is a static Vite,
-React, and TypeScript app; it needs no API keys. See [web/README.md](web/README.md)
-for its design and development notes.
+The website needs no keys or running backend. It reads static, validated result
+bundles from `web/public/results/` and keeps illustrative specimens behind a
+sample-preview option in the index.
 
-## Where things live
+## Run an evaluation
 
-| Directory | Purpose |
-| --- | --- |
-| `web/` | Public website and sample index |
-| `harness/` | Planned evaluation runner and model adapters |
-| `suites/` | Planned evaluation suites, one per safety dimension |
-| `pipelines/` | Validate and stage local result bundles; scheduling is planned |
-| `sdk/python/` | Python SDK for typed, validated local results |
-| `schemas/` | Draft contract documentation; JSON Schemas ship with the SDK |
-| `data/` | Published results; no real runs yet |
-| `internal-tests/` | Reusable, opt-in provider checks |
-| `docs/` | Architecture, methodology, and project decisions |
-
-Each component owns its dependencies. The root npm scripts are shortcuts for the
-website; Python components can be developed without installing the web toolchain.
-The intended data flow and component boundaries are in
-[docs/architecture.md](docs/architecture.md).
-
-## Try the Python tools
+Use Python 3.10 or newer:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e sdk/python
-python pipelines/stage_results.py sdk/python/tests/fixtures/sample-run \
-  --destination out/sample-bundle --allow-samples
+python -m pip install -e sdk/python -e harness
+osmsi run --provider demo --output runs/demo --limit 2
+osmsi validate runs/demo/bundle --allow-samples
 ```
 
-This stages a synthetic fixture, not a real evaluation. See the
-[SDK examples](sdk/python/README.md) to read the bundle and the
-[pipeline notes](pipelines/README.md) for input requirements. Neither needs API keys.
+Demo runs are deterministic and always marked as samples. For a hosted model,
+set `SUPERLINKED_API_KEY` in your environment, then use `--provider superlinked
+--model MODEL_ID`. See [harness/README.md](harness/README.md) for budgets, pinned
+revisions, local endpoints, and safe resumption. Never put keys in browser code.
 
-Keep credentials in an ignored `.env` file or environment variables. Raw provider
-responses and local runs stay out of Git. Nothing from private experiments is
-published automatically.
+## Repository map
 
-## Contributing
+| Directory | Purpose |
+| --- | --- |
+| `web/` | React website, public results, and browser-side artifact validation |
+| `harness/` | Model adapters, journaled runner, and packaged pilot suites |
+| `suites/` | Suite authoring notes and per-dimension scope |
+| `pipelines/` | Candidate discovery, bundle staging, and website export |
+| `sdk/python/` | Typed results, validation, downloads, comparisons, and CLI |
+| `schemas/` | Contract notes; canonical JSON Schemas ship inside the SDK |
+| `data/` | Versioned published artifacts, including the limited pilot example |
+| `internal-tests/` | Opt-in provider checks, separate from offline tests |
+| `docs/` | Methodology, architecture, reproduction, and deployment |
 
-Small changes are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and
-evaluation guidelines. Use clearly labeled specimens for examples; real model
-scores must link to the run that produced them.
+Run `make test-python` after installing the Python packages. CI tests packaged
+SDK/harness wheels, the website, and provider mocks. Model discovery is scheduled;
+paid evaluation is manual and bounded. Nothing deploys or publishes results
+without an explicit release step.
 
-Code is [Apache-2.0](LICENSE). Published data and documentation under `data/` and
-`docs/` are [CC BY 4.0](LICENSE-DATA).
+Start with [the methodology](docs/methodology.md),
+[SDK examples](sdk/python/README.md), or [the pipeline guide](pipelines/README.md).
+Contributions should be small and reproducible; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Contact: netan@disobedientgeometry.com
+Code is [Apache-2.0](LICENSE). Data and documentation under `data/` and `docs/`
+are [CC BY 4.0](LICENSE-DATA). Contact: netan@disobedientgeometry.com.
