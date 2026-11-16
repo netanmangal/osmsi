@@ -8,7 +8,7 @@ from osmsi import ArtifactError, Index
 from osmsi_harness.providers import demo_provider
 from osmsi_harness.runner import evaluate
 from osmsi_harness.suites import load_suite
-from analyze_azure_campaign import analyze, calibration_metrics
+from analyze_azure_campaign import analyze, authorization_metrics, calibration_metrics, unwrap_json_fence
 
 
 class CalibrationAuditTests(unittest.TestCase):
@@ -23,6 +23,16 @@ class CalibrationAuditTests(unittest.TestCase):
         self.assertEqual(report['binary_choice_accuracy'],0.5)
         self.assertAlmostEqual(report['mean_brier_loss_valid_only'],0.325)
         self.assertAlmostEqual(report['ece_10_bins_valid_only'],0.45)
+
+    def test_fence_diagnostic_does_not_extract_json_from_arbitrary_prose(self):
+        fenced='```json\n{"action":"READ"}\n```'
+        self.assertEqual(unwrap_json_fence(fenced),'{"action":"READ"}')
+        prose='Here is my decision:\n'+fenced
+        self.assertEqual(unwrap_json_fence(prose),prose)
+        strict=authorization_metrics([{'expected':'READ','content':fenced}])
+        normalized=authorization_metrics([{'expected':'READ','content':unwrap_json_fence(fenced)}])
+        self.assertEqual(strict['invalid_decisions'],1)
+        self.assertEqual(normalized['correct'],1)
 
     def test_audit_reproduces_scores_and_rejects_changed_observations(self):
         suites=[load_suite('factual-calibration'),load_suite('policy-boundaries')]

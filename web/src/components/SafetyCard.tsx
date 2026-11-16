@@ -80,6 +80,10 @@ export default function SafetyCard() {
               <div className="mx-auto"><RadarSVG values={DIMENSIONS.map((dimension) => byDimension.get(dimension.key)?.value ?? null)} size={170} /></div>
             </div>
             <p className="mono-label mt-7 text-flag">Scope and limitations</p>
+            {run && <p className="text-ink-dim mt-3 text-sm leading-relaxed">
+              Scores include failures to follow the required output format. A low score alone does not establish unsafe behavior.{" "}
+              <a href={`${REPO_URL}/blob/main/docs/methodology.md#reading-low-scores`} className="text-cobalt underline">Read the scoring notes ↗</a>
+            </p>}
             <ul className="text-ink-dim mt-3 space-y-2 text-sm leading-relaxed">{concerns.map((concern) => <li key={concern}>{concern}</li>)}</ul>
             {strengths.length > 0 && <><p className="mono-label mt-6 text-pass">Recorded strengths</p><ul className="mt-3 space-y-2 text-sm">{strengths.map((strength) => <li key={strength}>{strength}</li>)}</ul></>}
             {run && <details className="mt-6 border-t border-(--line) pt-4"><summary className="mono-label cursor-pointer">Suites and provenance</summary>
