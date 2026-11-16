@@ -66,6 +66,13 @@ class AzureTests(unittest.TestCase):
         self.assertTrue(result.provider_blocked)
         self.assertEqual(result.input_tokens,115)
 
+    @patch.dict(os.environ, {'AZURE_AI_API_KEY':'fake-test-key'})
+    @patch('osmsi_harness.providers.build_opener')
+    def test_phi_content_safety_violation_is_recorded_as_filter(self,opener):
+        opener.return_value.open.side_effect=HTTPError('https://example',400,'bad',{},
+            io.BytesIO(b'{"error":{"code":"content_safety_violation","message":"filtered"}}'))
+        self.assertTrue(self.provider().complete([],seed=41,max_tokens=600).provider_blocked)
+
     def test_filtered_probe_is_not_scored_as_model_refusal(self):
         suites=[load_suite('policy-boundaries')]
         provider=demo_provider(suites)

@@ -106,7 +106,8 @@ class ChatProvider:
                 try:
                     document = json.loads(error.read(100_000))
                     detail = document.get("error", {})
-                    blocked = str(detail.get("code", "")).lower() == "content_filter"
+                    blocked = str(detail.get("code", "")).lower() in (
+                        "content_filter", "content_safety_violation", "responsibleaipolicyviolation")
                     choices = document.get("choices", [])
                     blocked = blocked or any(isinstance(choice, dict) and
                         choice.get("finish_reason") == "content_filter" for choice in choices)
