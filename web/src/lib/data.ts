@@ -357,4 +357,4 @@ export const NAV_LINKS = [
 export const CONTACT_URL =
   "https://mail.google.com/mail/?view=cm&fs=1&to=netan%40disobedientgeometry.com&su=OSMSI%20%C2%B7%20pilots%2C%20suites%2C%20partnerships";
 
-export const REPO_URL = "https://github.com/disobedientgeometry";
+export const REPO_URL = "https://github.com/netanmangal/osmsi";
