@@ -1,7 +1,16 @@
 # Pipelines
 
-Install the SDK and harness first. These tools operate on local files; publication
-is an explicit step, and none of them deploy the live website.
+Install the SDK and harness first. Publication is an explicit step, and none of
+these tools deploy the live website. The Azure campaign makes paid model requests
+only when invoked with a configured account and explicit request limits.
+
+## Azure comparisons
+
+See [the Azure evaluation guide](../docs/azure-evaluations.md) for
+`evaluate_azure.py`. It snapshots deployments, runs the harness, validates results
+through the SDK, and compares compatible runs. `analyze_azure_campaign.py` checks
+journal hashes and separates provider blocks, malformed formats, tool-decision
+errors, and confidence calibration. Raw responses remain private.
 
 ## Discover candidates
 
@@ -45,6 +54,8 @@ intact. Sample exports require an additional explicit flag.
 
 `web/public/results/` is a generated, committed snapshot so the site can be built
 with Node alone. Keep it in sync with the reviewed source bundles in the same PR.
+`python pipelines/verify_publication.py` validates every indexed bundle under
+`data/` and checks the website snapshot byte for byte. CI runs this check too.
 
 ## Hosted automation
 

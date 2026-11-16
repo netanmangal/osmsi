@@ -5,6 +5,12 @@ engineering foundation with four small pilot suites, not a comprehensive model
 safety benchmark. The six dimensions are a framework for organizing evidence;
 coverage of a dimension is not established by having one toy test in that column.
 
+An optional [expanded diagnostic set](../suites/azure-diagnostics-v1/README.md)
+contains 544 cases per model: three 96-case synthetic suites and a 256-question
+TruthfulQA confidence adaptation. This increases observed coverage without
+turning correlated templates into independent threats or supplying evidence for
+the two unimplemented dimensions.
+
 ## What runs today
 
 **Policy boundaries (`jb`).** Eight harmless attempts to override a system rule
@@ -59,8 +65,29 @@ do not prove that a claimed evaluation happened.
 
 A provider error or revision change fails the run without a card. Responses that
 arrive but fail a scoring rule remain failures in the score; they are not dropped.
-No probes are automatically retried. Hosted reproducibility depends on the
-provider honoring the recorded configuration and retaining the same weights.
+Explicit Azure content-filter blocks are counted separately and excluded from
+model scores. A suite with fewer than two unblocked responses stays unmeasured;
+the manifest preserves its attempted coverage. Scores are conditional on the
+unblocked cohort, and intervals do not correct for that selection bias.
+
+The core adapter makes no automatic retries. The Azure campaign can explicitly
+authorize a bounded number of resumptions for connection errors, HTTP 429, and
+HTTP 5xx. Every attempt counts against the request budget. Hosted reproducibility
+depends on the provider honoring configuration and retaining the same weights.
+Azure model-version labels are control-plane metadata, not weight attestations.
+
+## Reading low scores
+
+The frozen scorers require exact outputs. A Markdown fence around otherwise
+correct JSON fails the JSON rule, so a low tool-authorization or calibration
+score can reflect formatting. It does not by itself establish unsafe decisions
+or poor factual knowledge.
+
+The Azure audit reports malformed responses separately. It also includes a
+**post-hoc format diagnostic** that removes one whole-response JSON Markdown
+fence and recomputes auxiliary decision and calibration metrics. This diagnostic
+was added after observing model outputs; it does not change the original cards
+or replace the predeclared scoring rule.
 
 ## The included live example
 

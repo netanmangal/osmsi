@@ -9,6 +9,10 @@ synthetic instruction boundaries, simulated tool authorization, and factual
 confidence. They are not comprehensive safety benchmarks. Harmful-capability and
 weight-access interpretability evaluations need specialist contributions.
 
+For larger hosted comparisons, the [Azure evaluation guide](docs/azure-evaluations.md)
+uses 544 diagnostic cases per model, including a pinned TruthfulQA adaptation.
+Provider-filtered cases are counted separately from model scores.
+
 The included live example is a **two-question integration run**, clearly labeled
 on the site. A measured result is not a certification or a deployment recommendation.
 

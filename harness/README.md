@@ -10,6 +10,10 @@ osmsi run --list-suites
 osmsi run --provider demo --output runs/demo --limit 2
 ```
 
+Azure deployments are supported with `--provider azure`, `--deployment`,
+`--model-version`, and an HTTPS account origin in `--base-url`. See
+[the Azure guide](../docs/azure-evaluations.md) for a bounded multi-model campaign.
+
 The packaged suites live in `src/osmsi_harness/builtin/`. All four are pilots with
 explicit limits; see [the methodology](../docs/methodology.md).
 
@@ -65,3 +69,8 @@ Request and credit limits can be raised explicitly. Failed runs emit no card.
 
 Custom suite files can be passed to `--suites`. Choose one suite per dimension.
 No contributed probe can execute Python or shell commands through this runner.
+
+Explicit Azure content-filter blocks are recorded separately and excluded from
+model scores. A suite with fewer than two unblocked responses stays unmeasured;
+other completed suites can still produce a card. Non-filter HTTP errors still
+fail the run. Reported token usage may omit charges for filtered or failed calls.
