@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["sdk/python/**", "harness/**", "pipelines/**", "suites/**", "data/**", ".github/workflows/python.yml"]
+    paths: ["sdk/python/**", "harness/**", "pipelines/**", "suites/**", "data/**", "web/public/results/**", ".github/workflows/python.yml"]
   pull_request:
-    paths: ["sdk/python/**", "harness/**", "pipelines/**", "suites/**", "data/**", ".github/workflows/python.yml"]
+    paths: ["sdk/python/**", "harness/**", "pipelines/**", "suites/**", "data/**", "web/public/results/**", ".github/workflows/python.yml"]
 
 permissions:
   contents: read
@@ -35,4 +35,4 @@ jobs:
           --destination out/ci-sample-bundle --allow-samples
       - run: osmsi run --provider demo --output runs/ci-demo --limit 2
       - run: osmsi validate runs/ci-demo/bundle --allow-samples
-      - run: osmsi validate data/pilots/2026-11-16
+      - run: python pipelines/verify_publication.py
