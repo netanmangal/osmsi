@@ -1,0 +1,1735 @@
+{
+  "version": "1.0.0",
+  "seed": 93,
+  "license": "Apache-2.0",
+  "cases": [
+    {
+      "id": "discovery-0-david-mary",
+      "split": "discovery",
+      "template": 0,
+      "io": "David",
+      "subject": "Mary",
+      "clean": "When David and Mary went to the store, Mary gave a book to",
+      "corrupt": "When David and Mary went to the store, David gave a book to"
+    },
+    {
+      "id": "discovery-0-alice-sarah",
+      "split": "discovery",
+      "template": 0,
+      "io": "Alice",
+      "subject": "Sarah",
+      "clean": "When Alice and Sarah went to the store, Sarah gave a book to",
+      "corrupt": "When Alice and Sarah went to the store, Alice gave a book to"
+    },
+    {
+      "id": "discovery-0-james-bob",
+      "split": "discovery",
+      "template": 0,
+      "io": "James",
+      "subject": "Bob",
+      "clean": "When James and Bob went to the store, Bob gave a book to",
+      "corrupt": "When James and Bob went to the store, James gave a book to"
+    },
+    {
+      "id": "discovery-1-james-bob",
+      "split": "discovery",
+      "template": 1,
+      "io": "James",
+      "subject": "Bob",
+      "clean": "After Bob and James arrived at the park, Bob handed a drink to",
+      "corrupt": "After Bob and James arrived at the park, James handed a drink to"
+    },
+    {
+      "id": "discovery-0-tom-john",
+      "split": "discovery",
+      "template": 0,
+      "io": "Tom",
+      "subject": "John",
+      "clean": "When Tom and John went to the store, John gave a book to",
+      "corrupt": "When Tom and John went to the store, Tom gave a book to"
+    },
+    {
+      "id": "discovery-1-bob-sarah",
+      "split": "discovery",
+      "template": 1,
+      "io": "Bob",
+      "subject": "Sarah",
+      "clean": "After Sarah and Bob arrived at the park, Sarah handed a drink to",
+      "corrupt": "After Sarah and Bob arrived at the park, Bob handed a drink to"
+    },
+    {
+      "id": "discovery-0-tom-sarah",
+      "split": "discovery",
+      "template": 0,
+      "io": "Tom",
+      "subject": "Sarah",
+      "clean": "When Tom and Sarah went to the store, Sarah gave a book to",
+      "corrupt": "When Tom and Sarah went to the store, Tom gave a book to"
+    },
+    {
+      "id": "discovery-1-alice-sarah",
+      "split": "discovery",
+      "template": 1,
+      "io": "Alice",
+      "subject": "Sarah",
+      "clean": "After Sarah and Alice arrived at the park, Sarah handed a drink to",
+      "corrupt": "After Sarah and Alice arrived at the park, Alice handed a drink to"
+    },
+    {
+      "id": "discovery-1-bob-alice",
+      "split": "discovery",
+      "template": 1,
+      "io": "Bob",
+      "subject": "Alice",
+      "clean": "After Alice and Bob arrived at the park, Alice handed a drink to",
+      "corrupt": "After Alice and Bob arrived at the park, Bob handed a drink to"
+    },
+    {
+      "id": "discovery-0-david-john",
+      "split": "discovery",
+      "template": 0,
+      "io": "David",
+      "subject": "John",
+      "clean": "When David and John went to the store, John gave a book to",
+      "corrupt": "When David and John went to the store, David gave a book to"
+    },
+    {
+      "id": "discovery-1-alice-john",
+      "split": "discovery",
+      "template": 1,
+      "io": "Alice",
+      "subject": "John",
+      "clean": "After John and Alice arrived at the park, John handed a drink to",
+      "corrupt": "After John and Alice arrived at the park, Alice handed a drink to"
+    },
+    {
+      "id": "discovery-0-alice-tom",
+      "split": "discovery",
+      "template": 0,
+      "io": "Alice",
+      "subject": "Tom",
+      "clean": "When Alice and Tom went to the store, Tom gave a book to",
+      "corrupt": "When Alice and Tom went to the store, Alice gave a book to"
+    },
+    {
+      "id": "discovery-1-bob-john",
+      "split": "discovery",
+      "template": 1,
+      "io": "Bob",
+      "subject": "John",
+      "clean": "After John and Bob arrived at the park, John handed a drink to",
+      "corrupt": "After John and Bob arrived at the park, Bob handed a drink to"
+    },
+    {
+      "id": "discovery-0-david-alice",
+      "split": "discovery",
+      "template": 0,
+      "io": "David",
+      "subject": "Alice",
+      "clean": "When David and Alice went to the store, Alice gave a book to",
+      "corrupt": "When David and Alice went to the store, David gave a book to"
+    },
+    {
+      "id": "discovery-0-bob-james",
+      "split": "discovery",
+      "template": 0,
+      "io": "Bob",
+      "subject": "James",
+      "clean": "When Bob and James went to the store, James gave a book to",
+      "corrupt": "When Bob and James went to the store, Bob gave a book to"
+    },
+    {
+      "id": "discovery-1-mary-alice",
+      "split": "discovery",
+      "template": 1,
+      "io": "Mary",
+      "subject": "Alice",
+      "clean": "After Alice and Mary arrived at the park, Alice handed a drink to",
+      "corrupt": "After Alice and Mary arrived at the park, Mary handed a drink to"
+    },
+    {
+      "id": "discovery-0-alice-david",
+      "split": "discovery",
+      "template": 0,
+      "io": "Alice",
+      "subject": "David",
+      "clean": "When Alice and David went to the store, David gave a book to",
+      "corrupt": "When Alice and David went to the store, Alice gave a book to"
+    },
+    {
+      "id": "discovery-1-sarah-bob",
+      "split": "discovery",
+      "template": 1,
+      "io": "Sarah",
+      "subject": "Bob",
+      "clean": "After Bob and Sarah arrived at the park, Bob handed a drink to",
+      "corrupt": "After Bob and Sarah arrived at the park, Sarah handed a drink to"
+    },
+    {
+      "id": "discovery-1-mary-david",
+      "split": "discovery",
+      "template": 1,
+      "io": "Mary",
+      "subject": "David",
+      "clean": "After David and Mary arrived at the park, David handed a drink to",
+      "corrupt": "After David and Mary arrived at the park, Mary handed a drink to"
+    },
+    {
+      "id": "discovery-1-james-john",
+      "split": "discovery",
+      "template": 1,
+      "io": "James",
+      "subject": "John",
+      "clean": "After John and James arrived at the park, John handed a drink to",
+      "corrupt": "After John and James arrived at the park, James handed a drink to"
+    },
+    {
+      "id": "discovery-1-james-mary",
+      "split": "discovery",
+      "template": 1,
+      "io": "James",
+      "subject": "Mary",
+      "clean": "After Mary and James arrived at the park, Mary handed a drink to",
+      "corrupt": "After Mary and James arrived at the park, James handed a drink to"
+    },
+    {
+      "id": "discovery-0-john-mary",
+      "split": "discovery",
+      "template": 0,
+      "io": "John",
+      "subject": "Mary",
+      "clean": "When John and Mary went to the store, Mary gave a book to",
+      "corrupt": "When John and Mary went to the store, John gave a book to"
+    },
+    {
+      "id": "discovery-0-john-alice",
+      "split": "discovery",
+      "template": 0,
+      "io": "John",
+      "subject": "Alice",
+      "clean": "When John and Alice went to the store, Alice gave a book to",
+      "corrupt": "When John and Alice went to the store, John gave a book to"
+    },
+    {
+      "id": "discovery-1-mary-john",
+      "split": "discovery",
+      "template": 1,
+      "io": "Mary",
+      "subject": "John",
+      "clean": "After John and Mary arrived at the park, John handed a drink to",
+      "corrupt": "After John and Mary arrived at the park, Mary handed a drink to"
+    },
+    {
+      "id": "discovery-0-bob-tom",
+      "split": "discovery",
+      "template": 0,
+      "io": "Bob",
+      "subject": "Tom",
+      "clean": "When Bob and Tom went to the store, Tom gave a book to",
+      "corrupt": "When Bob and Tom went to the store, Bob gave a book to"
+    },
+    {
+      "id": "discovery-1-david-tom",
+      "split": "discovery",
+      "template": 1,
+      "io": "David",
+      "subject": "Tom",
+      "clean": "After Tom and David arrived at the park, Tom handed a drink to",
+      "corrupt": "After Tom and David arrived at the park, David handed a drink to"
+    },
+    {
+      "id": "discovery-1-john-sarah",
+      "split": "discovery",
+      "template": 1,
+      "io": "John",
+      "subject": "Sarah",
+      "clean": "After Sarah and John arrived at the park, Sarah handed a drink to",
+      "corrupt": "After Sarah and John arrived at the park, John handed a drink to"
+    },
+    {
+      "id": "discovery-1-sarah-tom",
+      "split": "discovery",
+      "template": 1,
+      "io": "Sarah",
+      "subject": "Tom",
+      "clean": "After Tom and Sarah arrived at the park, Tom handed a drink to",
+      "corrupt": "After Tom and Sarah arrived at the park, Sarah handed a drink to"
+    },
+    {
+      "id": "discovery-0-mary-tom",
+      "split": "discovery",
+      "template": 0,
+      "io": "Mary",
+      "subject": "Tom",
+      "clean": "When Mary and Tom went to the store, Tom gave a book to",
+      "corrupt": "When Mary and Tom went to the store, Mary gave a book to"
+    },
+    {
+      "id": "discovery-1-tom-mary",
+      "split": "discovery",
+      "template": 1,
+      "io": "Tom",
+      "subject": "Mary",
+      "clean": "After Mary and Tom arrived at the park, Mary handed a drink to",
+      "corrupt": "After Mary and Tom arrived at the park, Tom handed a drink to"
+    },
+    {
+      "id": "discovery-0-david-tom",
+      "split": "discovery",
+      "template": 0,
+      "io": "David",
+      "subject": "Tom",
+      "clean": "When David and Tom went to the store, Tom gave a book to",
+      "corrupt": "When David and Tom went to the store, David gave a book to"
+    },
+    {
+      "id": "discovery-0-alice-bob",
+      "split": "discovery",
+      "template": 0,
+      "io": "Alice",
+      "subject": "Bob",
+      "clean": "When Alice and Bob went to the store, Bob gave a book to",
+      "corrupt": "When Alice and Bob went to the store, Alice gave a book to"
+    },
+    {
+      "id": "discovery-1-david-mary",
+      "split": "discovery",
+      "template": 1,
+      "io": "David",
+      "subject": "Mary",
+      "clean": "After Mary and David arrived at the park, Mary handed a drink to",
+      "corrupt": "After Mary and David arrived at the park, David handed a drink to"
+    },
+    {
+      "id": "discovery-1-david-alice",
+      "split": "discovery",
+      "template": 1,
+      "io": "David",
+      "subject": "Alice",
+      "clean": "After Alice and David arrived at the park, Alice handed a drink to",
+      "corrupt": "After Alice and David arrived at the park, David handed a drink to"
+    },
+    {
+      "id": "discovery-0-sarah-tom",
+      "split": "discovery",
+      "template": 0,
+      "io": "Sarah",
+      "subject": "Tom",
+      "clean": "When Sarah and Tom went to the store, Tom gave a book to",
+      "corrupt": "When Sarah and Tom went to the store, Sarah gave a book to"
+    },
+    {
+      "id": "discovery-0-james-tom",
+      "split": "discovery",
+      "template": 0,
+      "io": "James",
+      "subject": "Tom",
+      "clean": "When James and Tom went to the store, Tom gave a book to",
+      "corrupt": "When James and Tom went to the store, James gave a book to"
+    },
+    {
+      "id": "discovery-0-james-david",
+      "split": "discovery",
+      "template": 0,
+      "io": "James",
+      "subject": "David",
+      "clean": "When James and David went to the store, David gave a book to",
+      "corrupt": "When James and David went to the store, James gave a book to"
+    },
+    {
+      "id": "discovery-1-mary-james",
+      "split": "discovery",
+      "template": 1,
+      "io": "Mary",
+      "subject": "James",
+      "clean": "After James and Mary arrived at the park, James handed a drink to",
+      "corrupt": "After James and Mary arrived at the park, Mary handed a drink to"
+    },
+    {
+      "id": "discovery-1-mary-sarah",
+      "split": "discovery",
+      "template": 1,
+      "io": "Mary",
+      "subject": "Sarah",
+      "clean": "After Sarah and Mary arrived at the park, Sarah handed a drink to",
+      "corrupt": "After Sarah and Mary arrived at the park, Mary handed a drink to"
+    },
+    {
+      "id": "discovery-1-sarah-mary",
+      "split": "discovery",
+      "template": 1,
+      "io": "Sarah",
+      "subject": "Mary",
+      "clean": "After Mary and Sarah arrived at the park, Mary handed a drink to",
+      "corrupt": "After Mary and Sarah arrived at the park, Sarah handed a drink to"
+    },
+    {
+      "id": "discovery-0-sarah-james",
+      "split": "discovery",
+      "template": 0,
+      "io": "Sarah",
+      "subject": "James",
+      "clean": "When Sarah and James went to the store, James gave a book to",
+      "corrupt": "When Sarah and James went to the store, Sarah gave a book to"
+    },
+    {
+      "id": "discovery-1-john-james",
+      "split": "discovery",
+      "template": 1,
+      "io": "John",
+      "subject": "James",
+      "clean": "After James and John arrived at the park, James handed a drink to",
+      "corrupt": "After James and John arrived at the park, John handed a drink to"
+    },
+    {
+      "id": "discovery-1-mary-tom",
+      "split": "discovery",
+      "template": 1,
+      "io": "Mary",
+      "subject": "Tom",
+      "clean": "After Tom and Mary arrived at the park, Tom handed a drink to",
+      "corrupt": "After Tom and Mary arrived at the park, Mary handed a drink to"
+    },
+    {
+      "id": "discovery-1-tom-sarah",
+      "split": "discovery",
+      "template": 1,
+      "io": "Tom",
+      "subject": "Sarah",
+      "clean": "After Sarah and Tom arrived at the park, Sarah handed a drink to",
+      "corrupt": "After Sarah and Tom arrived at the park, Tom handed a drink to"
+    },
+    {
+      "id": "discovery-0-david-james",
+      "split": "discovery",
+      "template": 0,
+      "io": "David",
+      "subject": "James",
+      "clean": "When David and James went to the store, James gave a book to",
+      "corrupt": "When David and James went to the store, David gave a book to"
+    },
+    {
+      "id": "discovery-0-james-john",
+      "split": "discovery",
+      "template": 0,
+      "io": "James",
+      "subject": "John",
+      "clean": "When James and John went to the store, John gave a book to",
+      "corrupt": "When James and John went to the store, James gave a book to"
+    },
+    {
+      "id": "discovery-0-alice-mary",
+      "split": "discovery",
+      "template": 0,
+      "io": "Alice",
+      "subject": "Mary",
+      "clean": "When Alice and Mary went to the store, Mary gave a book to",
+      "corrupt": "When Alice and Mary went to the store, Alice gave a book to"
+    },
+    {
+      "id": "discovery-1-bob-david",
+      "split": "discovery",
+      "template": 1,
+      "io": "Bob",
+      "subject": "David",
+      "clean": "After David and Bob arrived at the park, David handed a drink to",
+      "corrupt": "After David and Bob arrived at the park, Bob handed a drink to"
+    },
+    {
+      "id": "discovery-0-david-sarah",
+      "split": "discovery",
+      "template": 0,
+      "io": "David",
+      "subject": "Sarah",
+      "clean": "When David and Sarah went to the store, Sarah gave a book to",
+      "corrupt": "When David and Sarah went to the store, David gave a book to"
+    },
+    {
+      "id": "discovery-1-james-sarah",
+      "split": "discovery",
+      "template": 1,
+      "io": "James",
+      "subject": "Sarah",
+      "clean": "After Sarah and James arrived at the park, Sarah handed a drink to",
+      "corrupt": "After Sarah and James arrived at the park, James handed a drink to"
+    },
+    {
+      "id": "discovery-1-david-bob",
+      "split": "discovery",
+      "template": 1,
+      "io": "David",
+      "subject": "Bob",
+      "clean": "After Bob and David arrived at the park, Bob handed a drink to",
+      "corrupt": "After Bob and David arrived at the park, David handed a drink to"
+    },
+    {
+      "id": "discovery-0-john-james",
+      "split": "discovery",
+      "template": 0,
+      "io": "John",
+      "subject": "James",
+      "clean": "When John and James went to the store, James gave a book to",
+      "corrupt": "When John and James went to the store, John gave a book to"
+    },
+    {
+      "id": "discovery-1-alice-mary",
+      "split": "discovery",
+      "template": 1,
+      "io": "Alice",
+      "subject": "Mary",
+      "clean": "After Mary and Alice arrived at the park, Mary handed a drink to",
+      "corrupt": "After Mary and Alice arrived at the park, Alice handed a drink to"
+    },
+    {
+      "id": "discovery-0-alice-james",
+      "split": "discovery",
+      "template": 0,
+      "io": "Alice",
+      "subject": "James",
+      "clean": "When Alice and James went to the store, James gave a book to",
+      "corrupt": "When Alice and James went to the store, Alice gave a book to"
+    },
+    {
+      "id": "discovery-0-bob-john",
+      "split": "discovery",
+      "template": 0,
+      "io": "Bob",
+      "subject": "John",
+      "clean": "When Bob and John went to the store, John gave a book to",
+      "corrupt": "When Bob and John went to the store, Bob gave a book to"
+    },
+    {
+      "id": "discovery-0-mary-alice",
+      "split": "discovery",
+      "template": 0,
+      "io": "Mary",
+      "subject": "Alice",
+      "clean": "When Mary and Alice went to the store, Alice gave a book to",
+      "corrupt": "When Mary and Alice went to the store, Mary gave a book to"
+    },
+    {
+      "id": "discovery-0-bob-david",
+      "split": "discovery",
+      "template": 0,
+      "io": "Bob",
+      "subject": "David",
+      "clean": "When Bob and David went to the store, David gave a book to",
+      "corrupt": "When Bob and David went to the store, Bob gave a book to"
+    },
+    {
+      "id": "discovery-0-john-david",
+      "split": "discovery",
+      "template": 0,
+      "io": "John",
+      "subject": "David",
+      "clean": "When John and David went to the store, David gave a book to",
+      "corrupt": "When John and David went to the store, John gave a book to"
+    },
+    {
+      "id": "discovery-0-tom-mary",
+      "split": "discovery",
+      "template": 0,
+      "io": "Tom",
+      "subject": "Mary",
+      "clean": "When Tom and Mary went to the store, Mary gave a book to",
+      "corrupt": "When Tom and Mary went to the store, Tom gave a book to"
+    },
+    {
+      "id": "discovery-1-alice-james",
+      "split": "discovery",
+      "template": 1,
+      "io": "Alice",
+      "subject": "James",
+      "clean": "After James and Alice arrived at the park, James handed a drink to",
+      "corrupt": "After James and Alice arrived at the park, Alice handed a drink to"
+    },
+    {
+      "id": "discovery-1-john-bob",
+      "split": "discovery",
+      "template": 1,
+      "io": "John",
+      "subject": "Bob",
+      "clean": "After Bob and John arrived at the park, Bob handed a drink to",
+      "corrupt": "After Bob and John arrived at the park, John handed a drink to"
+    },
+    {
+      "id": "discovery-0-tom-james",
+      "split": "discovery",
+      "template": 0,
+      "io": "Tom",
+      "subject": "James",
+      "clean": "When Tom and James went to the store, James gave a book to",
+      "corrupt": "When Tom and James went to the store, Tom gave a book to"
+    },
+    {
+      "id": "discovery-1-bob-james",
+      "split": "discovery",
+      "template": 1,
+      "io": "Bob",
+      "subject": "James",
+      "clean": "After James and Bob arrived at the park, James handed a drink to",
+      "corrupt": "After James and Bob arrived at the park, Bob handed a drink to"
+    },
+    {
+      "id": "discovery-1-alice-david",
+      "split": "discovery",
+      "template": 1,
+      "io": "Alice",
+      "subject": "David",
+      "clean": "After David and Alice arrived at the park, David handed a drink to",
+      "corrupt": "After David and Alice arrived at the park, Alice handed a drink to"
+    },
+    {
+      "id": "evaluation-1-anna-paul",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Anna",
+      "subject": "Paul",
+      "clean": "After Paul and Anna arrived at the park, Paul handed a drink to",
+      "corrupt": "After Paul and Anna arrived at the park, Anna handed a drink to"
+    },
+    {
+      "id": "evaluation-1-george-mark",
+      "split": "evaluation",
+      "template": 1,
+      "io": "George",
+      "subject": "Mark",
+      "clean": "After Mark and George arrived at the park, Mark handed a drink to",
+      "corrupt": "After Mark and George arrived at the park, George handed a drink to"
+    },
+    {
+      "id": "evaluation-0-laura-anna",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Laura",
+      "subject": "Anna",
+      "clean": "When Laura and Anna went to the store, Anna gave a book to",
+      "corrupt": "When Laura and Anna went to the store, Laura gave a book to"
+    },
+    {
+      "id": "evaluation-0-george-laura",
+      "split": "evaluation",
+      "template": 0,
+      "io": "George",
+      "subject": "Laura",
+      "clean": "When George and Laura went to the store, Laura gave a book to",
+      "corrupt": "When George and Laura went to the store, George gave a book to"
+    },
+    {
+      "id": "evaluation-1-robert-michael",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Robert",
+      "subject": "Michael",
+      "clean": "After Michael and Robert arrived at the park, Michael handed a drink to",
+      "corrupt": "After Michael and Robert arrived at the park, Robert handed a drink to"
+    },
+    {
+      "id": "evaluation-0-susan-emma",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Susan",
+      "subject": "Emma",
+      "clean": "When Susan and Emma went to the store, Emma gave a book to",
+      "corrupt": "When Susan and Emma went to the store, Susan gave a book to"
+    },
+    {
+      "id": "evaluation-1-paul-mark",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Paul",
+      "subject": "Mark",
+      "clean": "After Mark and Paul arrived at the park, Mark handed a drink to",
+      "corrupt": "After Mark and Paul arrived at the park, Paul handed a drink to"
+    },
+    {
+      "id": "evaluation-0-peter-mark",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Peter",
+      "subject": "Mark",
+      "clean": "When Peter and Mark went to the store, Mark gave a book to",
+      "corrupt": "When Peter and Mark went to the store, Peter gave a book to"
+    },
+    {
+      "id": "evaluation-1-lisa-george",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Lisa",
+      "subject": "George",
+      "clean": "After George and Lisa arrived at the park, George handed a drink to",
+      "corrupt": "After George and Lisa arrived at the park, Lisa handed a drink to"
+    },
+    {
+      "id": "evaluation-0-daniel-lisa",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Daniel",
+      "subject": "Lisa",
+      "clean": "When Daniel and Lisa went to the store, Lisa gave a book to",
+      "corrupt": "When Daniel and Lisa went to the store, Daniel gave a book to"
+    },
+    {
+      "id": "evaluation-1-susan-daniel",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Susan",
+      "subject": "Daniel",
+      "clean": "After Daniel and Susan arrived at the park, Daniel handed a drink to",
+      "corrupt": "After Daniel and Susan arrived at the park, Susan handed a drink to"
+    },
+    {
+      "id": "evaluation-1-robert-susan",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Robert",
+      "subject": "Susan",
+      "clean": "After Susan and Robert arrived at the park, Susan handed a drink to",
+      "corrupt": "After Susan and Robert arrived at the park, Robert handed a drink to"
+    },
+    {
+      "id": "evaluation-0-lisa-emma",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Lisa",
+      "subject": "Emma",
+      "clean": "When Lisa and Emma went to the store, Emma gave a book to",
+      "corrupt": "When Lisa and Emma went to the store, Lisa gave a book to"
+    },
+    {
+      "id": "evaluation-0-susan-robert",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Susan",
+      "subject": "Robert",
+      "clean": "When Susan and Robert went to the store, Robert gave a book to",
+      "corrupt": "When Susan and Robert went to the store, Susan gave a book to"
+    },
+    {
+      "id": "evaluation-0-mark-daniel",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Mark",
+      "subject": "Daniel",
+      "clean": "When Mark and Daniel went to the store, Daniel gave a book to",
+      "corrupt": "When Mark and Daniel went to the store, Mark gave a book to"
+    },
+    {
+      "id": "evaluation-0-daniel-robert",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Daniel",
+      "subject": "Robert",
+      "clean": "When Daniel and Robert went to the store, Robert gave a book to",
+      "corrupt": "When Daniel and Robert went to the store, Daniel gave a book to"
+    },
+    {
+      "id": "evaluation-0-emma-mark",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Emma",
+      "subject": "Mark",
+      "clean": "When Emma and Mark went to the store, Mark gave a book to",
+      "corrupt": "When Emma and Mark went to the store, Emma gave a book to"
+    },
+    {
+      "id": "evaluation-0-george-susan",
+      "split": "evaluation",
+      "template": 0,
+      "io": "George",
+      "subject": "Susan",
+      "clean": "When George and Susan went to the store, Susan gave a book to",
+      "corrupt": "When George and Susan went to the store, George gave a book to"
+    },
+    {
+      "id": "evaluation-1-anna-laura",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Anna",
+      "subject": "Laura",
+      "clean": "After Laura and Anna arrived at the park, Laura handed a drink to",
+      "corrupt": "After Laura and Anna arrived at the park, Anna handed a drink to"
+    },
+    {
+      "id": "evaluation-1-lisa-paul",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Lisa",
+      "subject": "Paul",
+      "clean": "After Paul and Lisa arrived at the park, Paul handed a drink to",
+      "corrupt": "After Paul and Lisa arrived at the park, Lisa handed a drink to"
+    },
+    {
+      "id": "evaluation-1-paul-robert",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Paul",
+      "subject": "Robert",
+      "clean": "After Robert and Paul arrived at the park, Robert handed a drink to",
+      "corrupt": "After Robert and Paul arrived at the park, Paul handed a drink to"
+    },
+    {
+      "id": "evaluation-0-anna-daniel",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Anna",
+      "subject": "Daniel",
+      "clean": "When Anna and Daniel went to the store, Daniel gave a book to",
+      "corrupt": "When Anna and Daniel went to the store, Anna gave a book to"
+    },
+    {
+      "id": "evaluation-0-laura-george",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Laura",
+      "subject": "George",
+      "clean": "When Laura and George went to the store, George gave a book to",
+      "corrupt": "When Laura and George went to the store, Laura gave a book to"
+    },
+    {
+      "id": "evaluation-1-emma-peter",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Emma",
+      "subject": "Peter",
+      "clean": "After Peter and Emma arrived at the park, Peter handed a drink to",
+      "corrupt": "After Peter and Emma arrived at the park, Emma handed a drink to"
+    },
+    {
+      "id": "evaluation-0-michael-laura",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Michael",
+      "subject": "Laura",
+      "clean": "When Michael and Laura went to the store, Laura gave a book to",
+      "corrupt": "When Michael and Laura went to the store, Michael gave a book to"
+    },
+    {
+      "id": "evaluation-0-anna-peter",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Anna",
+      "subject": "Peter",
+      "clean": "When Anna and Peter went to the store, Peter gave a book to",
+      "corrupt": "When Anna and Peter went to the store, Anna gave a book to"
+    },
+    {
+      "id": "evaluation-0-michael-susan",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Michael",
+      "subject": "Susan",
+      "clean": "When Michael and Susan went to the store, Susan gave a book to",
+      "corrupt": "When Michael and Susan went to the store, Michael gave a book to"
+    },
+    {
+      "id": "evaluation-0-peter-paul",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Peter",
+      "subject": "Paul",
+      "clean": "When Peter and Paul went to the store, Paul gave a book to",
+      "corrupt": "When Peter and Paul went to the store, Peter gave a book to"
+    },
+    {
+      "id": "evaluation-1-lisa-mark",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Lisa",
+      "subject": "Mark",
+      "clean": "After Mark and Lisa arrived at the park, Mark handed a drink to",
+      "corrupt": "After Mark and Lisa arrived at the park, Lisa handed a drink to"
+    },
+    {
+      "id": "evaluation-1-george-robert",
+      "split": "evaluation",
+      "template": 1,
+      "io": "George",
+      "subject": "Robert",
+      "clean": "After Robert and George arrived at the park, Robert handed a drink to",
+      "corrupt": "After Robert and George arrived at the park, George handed a drink to"
+    },
+    {
+      "id": "evaluation-0-lisa-susan",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Lisa",
+      "subject": "Susan",
+      "clean": "When Lisa and Susan went to the store, Susan gave a book to",
+      "corrupt": "When Lisa and Susan went to the store, Lisa gave a book to"
+    },
+    {
+      "id": "evaluation-0-peter-susan",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Peter",
+      "subject": "Susan",
+      "clean": "When Peter and Susan went to the store, Susan gave a book to",
+      "corrupt": "When Peter and Susan went to the store, Peter gave a book to"
+    },
+    {
+      "id": "evaluation-1-peter-laura",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Peter",
+      "subject": "Laura",
+      "clean": "After Laura and Peter arrived at the park, Laura handed a drink to",
+      "corrupt": "After Laura and Peter arrived at the park, Peter handed a drink to"
+    },
+    {
+      "id": "evaluation-1-susan-paul",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Susan",
+      "subject": "Paul",
+      "clean": "After Paul and Susan arrived at the park, Paul handed a drink to",
+      "corrupt": "After Paul and Susan arrived at the park, Susan handed a drink to"
+    },
+    {
+      "id": "evaluation-1-robert-mark",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Robert",
+      "subject": "Mark",
+      "clean": "After Mark and Robert arrived at the park, Mark handed a drink to",
+      "corrupt": "After Mark and Robert arrived at the park, Robert handed a drink to"
+    },
+    {
+      "id": "evaluation-0-emma-daniel",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Emma",
+      "subject": "Daniel",
+      "clean": "When Emma and Daniel went to the store, Daniel gave a book to",
+      "corrupt": "When Emma and Daniel went to the store, Emma gave a book to"
+    },
+    {
+      "id": "evaluation-0-anna-lisa",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Anna",
+      "subject": "Lisa",
+      "clean": "When Anna and Lisa went to the store, Lisa gave a book to",
+      "corrupt": "When Anna and Lisa went to the store, Anna gave a book to"
+    },
+    {
+      "id": "evaluation-1-anna-susan",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Anna",
+      "subject": "Susan",
+      "clean": "After Susan and Anna arrived at the park, Susan handed a drink to",
+      "corrupt": "After Susan and Anna arrived at the park, Anna handed a drink to"
+    },
+    {
+      "id": "evaluation-0-susan-lisa",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Susan",
+      "subject": "Lisa",
+      "clean": "When Susan and Lisa went to the store, Lisa gave a book to",
+      "corrupt": "When Susan and Lisa went to the store, Susan gave a book to"
+    },
+    {
+      "id": "evaluation-1-mark-laura",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Mark",
+      "subject": "Laura",
+      "clean": "After Laura and Mark arrived at the park, Laura handed a drink to",
+      "corrupt": "After Laura and Mark arrived at the park, Mark handed a drink to"
+    },
+    {
+      "id": "evaluation-1-daniel-mark",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Daniel",
+      "subject": "Mark",
+      "clean": "After Mark and Daniel arrived at the park, Mark handed a drink to",
+      "corrupt": "After Mark and Daniel arrived at the park, Daniel handed a drink to"
+    },
+    {
+      "id": "evaluation-1-daniel-lisa",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Daniel",
+      "subject": "Lisa",
+      "clean": "After Lisa and Daniel arrived at the park, Lisa handed a drink to",
+      "corrupt": "After Lisa and Daniel arrived at the park, Daniel handed a drink to"
+    },
+    {
+      "id": "evaluation-1-robert-emma",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Robert",
+      "subject": "Emma",
+      "clean": "After Emma and Robert arrived at the park, Emma handed a drink to",
+      "corrupt": "After Emma and Robert arrived at the park, Robert handed a drink to"
+    },
+    {
+      "id": "evaluation-1-robert-daniel",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Robert",
+      "subject": "Daniel",
+      "clean": "After Daniel and Robert arrived at the park, Daniel handed a drink to",
+      "corrupt": "After Daniel and Robert arrived at the park, Robert handed a drink to"
+    },
+    {
+      "id": "evaluation-0-susan-laura",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Susan",
+      "subject": "Laura",
+      "clean": "When Susan and Laura went to the store, Laura gave a book to",
+      "corrupt": "When Susan and Laura went to the store, Susan gave a book to"
+    },
+    {
+      "id": "evaluation-1-emma-michael",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Emma",
+      "subject": "Michael",
+      "clean": "After Michael and Emma arrived at the park, Michael handed a drink to",
+      "corrupt": "After Michael and Emma arrived at the park, Emma handed a drink to"
+    },
+    {
+      "id": "evaluation-0-peter-george",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Peter",
+      "subject": "George",
+      "clean": "When Peter and George went to the store, George gave a book to",
+      "corrupt": "When Peter and George went to the store, Peter gave a book to"
+    },
+    {
+      "id": "evaluation-0-lisa-daniel",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Lisa",
+      "subject": "Daniel",
+      "clean": "When Lisa and Daniel went to the store, Daniel gave a book to",
+      "corrupt": "When Lisa and Daniel went to the store, Lisa gave a book to"
+    },
+    {
+      "id": "evaluation-0-laura-lisa",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Laura",
+      "subject": "Lisa",
+      "clean": "When Laura and Lisa went to the store, Lisa gave a book to",
+      "corrupt": "When Laura and Lisa went to the store, Laura gave a book to"
+    },
+    {
+      "id": "evaluation-0-robert-mark",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Robert",
+      "subject": "Mark",
+      "clean": "When Robert and Mark went to the store, Mark gave a book to",
+      "corrupt": "When Robert and Mark went to the store, Robert gave a book to"
+    },
+    {
+      "id": "evaluation-0-daniel-anna",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Daniel",
+      "subject": "Anna",
+      "clean": "When Daniel and Anna went to the store, Anna gave a book to",
+      "corrupt": "When Daniel and Anna went to the store, Daniel gave a book to"
+    },
+    {
+      "id": "evaluation-1-paul-george",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Paul",
+      "subject": "George",
+      "clean": "After George and Paul arrived at the park, George handed a drink to",
+      "corrupt": "After George and Paul arrived at the park, Paul handed a drink to"
+    },
+    {
+      "id": "evaluation-0-lisa-mark",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Lisa",
+      "subject": "Mark",
+      "clean": "When Lisa and Mark went to the store, Mark gave a book to",
+      "corrupt": "When Lisa and Mark went to the store, Lisa gave a book to"
+    },
+    {
+      "id": "evaluation-1-daniel-michael",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Daniel",
+      "subject": "Michael",
+      "clean": "After Michael and Daniel arrived at the park, Michael handed a drink to",
+      "corrupt": "After Michael and Daniel arrived at the park, Daniel handed a drink to"
+    },
+    {
+      "id": "evaluation-0-anna-susan",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Anna",
+      "subject": "Susan",
+      "clean": "When Anna and Susan went to the store, Susan gave a book to",
+      "corrupt": "When Anna and Susan went to the store, Anna gave a book to"
+    },
+    {
+      "id": "evaluation-1-daniel-susan",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Daniel",
+      "subject": "Susan",
+      "clean": "After Susan and Daniel arrived at the park, Susan handed a drink to",
+      "corrupt": "After Susan and Daniel arrived at the park, Daniel handed a drink to"
+    },
+    {
+      "id": "evaluation-1-mark-george",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Mark",
+      "subject": "George",
+      "clean": "After George and Mark arrived at the park, George handed a drink to",
+      "corrupt": "After George and Mark arrived at the park, Mark handed a drink to"
+    },
+    {
+      "id": "evaluation-0-mark-laura",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Mark",
+      "subject": "Laura",
+      "clean": "When Mark and Laura went to the store, Laura gave a book to",
+      "corrupt": "When Mark and Laura went to the store, Mark gave a book to"
+    },
+    {
+      "id": "evaluation-0-peter-lisa",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Peter",
+      "subject": "Lisa",
+      "clean": "When Peter and Lisa went to the store, Lisa gave a book to",
+      "corrupt": "When Peter and Lisa went to the store, Peter gave a book to"
+    },
+    {
+      "id": "evaluation-0-george-robert",
+      "split": "evaluation",
+      "template": 0,
+      "io": "George",
+      "subject": "Robert",
+      "clean": "When George and Robert went to the store, Robert gave a book to",
+      "corrupt": "When George and Robert went to the store, George gave a book to"
+    },
+    {
+      "id": "evaluation-0-laura-susan",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Laura",
+      "subject": "Susan",
+      "clean": "When Laura and Susan went to the store, Susan gave a book to",
+      "corrupt": "When Laura and Susan went to the store, Laura gave a book to"
+    },
+    {
+      "id": "evaluation-0-paul-peter",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Paul",
+      "subject": "Peter",
+      "clean": "When Paul and Peter went to the store, Peter gave a book to",
+      "corrupt": "When Paul and Peter went to the store, Paul gave a book to"
+    },
+    {
+      "id": "evaluation-0-anna-emma",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Anna",
+      "subject": "Emma",
+      "clean": "When Anna and Emma went to the store, Emma gave a book to",
+      "corrupt": "When Anna and Emma went to the store, Anna gave a book to"
+    },
+    {
+      "id": "evaluation-1-george-daniel",
+      "split": "evaluation",
+      "template": 1,
+      "io": "George",
+      "subject": "Daniel",
+      "clean": "After Daniel and George arrived at the park, Daniel handed a drink to",
+      "corrupt": "After Daniel and George arrived at the park, George handed a drink to"
+    },
+    {
+      "id": "evaluation-1-peter-paul",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Peter",
+      "subject": "Paul",
+      "clean": "After Paul and Peter arrived at the park, Paul handed a drink to",
+      "corrupt": "After Paul and Peter arrived at the park, Peter handed a drink to"
+    },
+    {
+      "id": "evaluation-1-paul-lisa",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Paul",
+      "subject": "Lisa",
+      "clean": "After Lisa and Paul arrived at the park, Lisa handed a drink to",
+      "corrupt": "After Lisa and Paul arrived at the park, Paul handed a drink to"
+    },
+    {
+      "id": "evaluation-0-mark-susan",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Mark",
+      "subject": "Susan",
+      "clean": "When Mark and Susan went to the store, Susan gave a book to",
+      "corrupt": "When Mark and Susan went to the store, Mark gave a book to"
+    },
+    {
+      "id": "evaluation-1-anna-mark",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Anna",
+      "subject": "Mark",
+      "clean": "After Mark and Anna arrived at the park, Mark handed a drink to",
+      "corrupt": "After Mark and Anna arrived at the park, Anna handed a drink to"
+    },
+    {
+      "id": "evaluation-0-michael-anna",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Michael",
+      "subject": "Anna",
+      "clean": "When Michael and Anna went to the store, Anna gave a book to",
+      "corrupt": "When Michael and Anna went to the store, Michael gave a book to"
+    },
+    {
+      "id": "evaluation-1-michael-emma",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Michael",
+      "subject": "Emma",
+      "clean": "After Emma and Michael arrived at the park, Emma handed a drink to",
+      "corrupt": "After Emma and Michael arrived at the park, Michael handed a drink to"
+    },
+    {
+      "id": "evaluation-0-michael-mark",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Michael",
+      "subject": "Mark",
+      "clean": "When Michael and Mark went to the store, Mark gave a book to",
+      "corrupt": "When Michael and Mark went to the store, Michael gave a book to"
+    },
+    {
+      "id": "evaluation-0-lisa-anna",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Lisa",
+      "subject": "Anna",
+      "clean": "When Lisa and Anna went to the store, Anna gave a book to",
+      "corrupt": "When Lisa and Anna went to the store, Lisa gave a book to"
+    },
+    {
+      "id": "evaluation-1-robert-lisa",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Robert",
+      "subject": "Lisa",
+      "clean": "After Lisa and Robert arrived at the park, Lisa handed a drink to",
+      "corrupt": "After Lisa and Robert arrived at the park, Robert handed a drink to"
+    },
+    {
+      "id": "evaluation-1-michael-laura",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Michael",
+      "subject": "Laura",
+      "clean": "After Laura and Michael arrived at the park, Laura handed a drink to",
+      "corrupt": "After Laura and Michael arrived at the park, Michael handed a drink to"
+    },
+    {
+      "id": "evaluation-1-emma-paul",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Emma",
+      "subject": "Paul",
+      "clean": "After Paul and Emma arrived at the park, Paul handed a drink to",
+      "corrupt": "After Paul and Emma arrived at the park, Emma handed a drink to"
+    },
+    {
+      "id": "evaluation-0-susan-george",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Susan",
+      "subject": "George",
+      "clean": "When Susan and George went to the store, George gave a book to",
+      "corrupt": "When Susan and George went to the store, Susan gave a book to"
+    },
+    {
+      "id": "evaluation-1-george-emma",
+      "split": "evaluation",
+      "template": 1,
+      "io": "George",
+      "subject": "Emma",
+      "clean": "After Emma and George arrived at the park, Emma handed a drink to",
+      "corrupt": "After Emma and George arrived at the park, George handed a drink to"
+    },
+    {
+      "id": "evaluation-1-lisa-daniel",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Lisa",
+      "subject": "Daniel",
+      "clean": "After Daniel and Lisa arrived at the park, Daniel handed a drink to",
+      "corrupt": "After Daniel and Lisa arrived at the park, Lisa handed a drink to"
+    },
+    {
+      "id": "evaluation-1-anna-daniel",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Anna",
+      "subject": "Daniel",
+      "clean": "After Daniel and Anna arrived at the park, Daniel handed a drink to",
+      "corrupt": "After Daniel and Anna arrived at the park, Anna handed a drink to"
+    },
+    {
+      "id": "evaluation-1-peter-robert",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Peter",
+      "subject": "Robert",
+      "clean": "After Robert and Peter arrived at the park, Robert handed a drink to",
+      "corrupt": "After Robert and Peter arrived at the park, Peter handed a drink to"
+    },
+    {
+      "id": "evaluation-1-michael-paul",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Michael",
+      "subject": "Paul",
+      "clean": "After Paul and Michael arrived at the park, Paul handed a drink to",
+      "corrupt": "After Paul and Michael arrived at the park, Michael handed a drink to"
+    },
+    {
+      "id": "evaluation-0-michael-emma",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Michael",
+      "subject": "Emma",
+      "clean": "When Michael and Emma went to the store, Emma gave a book to",
+      "corrupt": "When Michael and Emma went to the store, Michael gave a book to"
+    },
+    {
+      "id": "evaluation-1-anna-robert",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Anna",
+      "subject": "Robert",
+      "clean": "After Robert and Anna arrived at the park, Robert handed a drink to",
+      "corrupt": "After Robert and Anna arrived at the park, Anna handed a drink to"
+    },
+    {
+      "id": "evaluation-0-george-mark",
+      "split": "evaluation",
+      "template": 0,
+      "io": "George",
+      "subject": "Mark",
+      "clean": "When George and Mark went to the store, Mark gave a book to",
+      "corrupt": "When George and Mark went to the store, George gave a book to"
+    },
+    {
+      "id": "evaluation-0-peter-robert",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Peter",
+      "subject": "Robert",
+      "clean": "When Peter and Robert went to the store, Robert gave a book to",
+      "corrupt": "When Peter and Robert went to the store, Peter gave a book to"
+    },
+    {
+      "id": "evaluation-1-lisa-anna",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Lisa",
+      "subject": "Anna",
+      "clean": "After Anna and Lisa arrived at the park, Anna handed a drink to",
+      "corrupt": "After Anna and Lisa arrived at the park, Lisa handed a drink to"
+    },
+    {
+      "id": "evaluation-0-laura-mark",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Laura",
+      "subject": "Mark",
+      "clean": "When Laura and Mark went to the store, Mark gave a book to",
+      "corrupt": "When Laura and Mark went to the store, Laura gave a book to"
+    },
+    {
+      "id": "evaluation-0-mark-george",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Mark",
+      "subject": "George",
+      "clean": "When Mark and George went to the store, George gave a book to",
+      "corrupt": "When Mark and George went to the store, Mark gave a book to"
+    },
+    {
+      "id": "evaluation-0-paul-lisa",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Paul",
+      "subject": "Lisa",
+      "clean": "When Paul and Lisa went to the store, Lisa gave a book to",
+      "corrupt": "When Paul and Lisa went to the store, Paul gave a book to"
+    },
+    {
+      "id": "evaluation-1-emma-susan",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Emma",
+      "subject": "Susan",
+      "clean": "After Susan and Emma arrived at the park, Susan handed a drink to",
+      "corrupt": "After Susan and Emma arrived at the park, Emma handed a drink to"
+    },
+    {
+      "id": "evaluation-0-emma-george",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Emma",
+      "subject": "George",
+      "clean": "When Emma and George went to the store, George gave a book to",
+      "corrupt": "When Emma and George went to the store, Emma gave a book to"
+    },
+    {
+      "id": "evaluation-0-laura-paul",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Laura",
+      "subject": "Paul",
+      "clean": "When Laura and Paul went to the store, Paul gave a book to",
+      "corrupt": "When Laura and Paul went to the store, Laura gave a book to"
+    },
+    {
+      "id": "evaluation-1-susan-peter",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Susan",
+      "subject": "Peter",
+      "clean": "After Peter and Susan arrived at the park, Peter handed a drink to",
+      "corrupt": "After Peter and Susan arrived at the park, Susan handed a drink to"
+    },
+    {
+      "id": "evaluation-0-mark-robert",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Mark",
+      "subject": "Robert",
+      "clean": "When Mark and Robert went to the store, Robert gave a book to",
+      "corrupt": "When Mark and Robert went to the store, Mark gave a book to"
+    },
+    {
+      "id": "evaluation-1-paul-anna",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Paul",
+      "subject": "Anna",
+      "clean": "After Anna and Paul arrived at the park, Anna handed a drink to",
+      "corrupt": "After Anna and Paul arrived at the park, Paul handed a drink to"
+    },
+    {
+      "id": "evaluation-1-robert-george",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Robert",
+      "subject": "George",
+      "clean": "After George and Robert arrived at the park, George handed a drink to",
+      "corrupt": "After George and Robert arrived at the park, Robert handed a drink to"
+    },
+    {
+      "id": "evaluation-1-laura-mark",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Laura",
+      "subject": "Mark",
+      "clean": "After Mark and Laura arrived at the park, Mark handed a drink to",
+      "corrupt": "After Mark and Laura arrived at the park, Laura handed a drink to"
+    },
+    {
+      "id": "evaluation-1-daniel-peter",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Daniel",
+      "subject": "Peter",
+      "clean": "After Peter and Daniel arrived at the park, Peter handed a drink to",
+      "corrupt": "After Peter and Daniel arrived at the park, Daniel handed a drink to"
+    },
+    {
+      "id": "evaluation-1-emma-laura",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Emma",
+      "subject": "Laura",
+      "clean": "After Laura and Emma arrived at the park, Laura handed a drink to",
+      "corrupt": "After Laura and Emma arrived at the park, Emma handed a drink to"
+    },
+    {
+      "id": "evaluation-0-george-anna",
+      "split": "evaluation",
+      "template": 0,
+      "io": "George",
+      "subject": "Anna",
+      "clean": "When George and Anna went to the store, Anna gave a book to",
+      "corrupt": "When George and Anna went to the store, George gave a book to"
+    },
+    {
+      "id": "evaluation-0-robert-laura",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Robert",
+      "subject": "Laura",
+      "clean": "When Robert and Laura went to the store, Laura gave a book to",
+      "corrupt": "When Robert and Laura went to the store, Robert gave a book to"
+    },
+    {
+      "id": "evaluation-0-robert-emma",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Robert",
+      "subject": "Emma",
+      "clean": "When Robert and Emma went to the store, Emma gave a book to",
+      "corrupt": "When Robert and Emma went to the store, Robert gave a book to"
+    },
+    {
+      "id": "evaluation-1-susan-emma",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Susan",
+      "subject": "Emma",
+      "clean": "After Emma and Susan arrived at the park, Emma handed a drink to",
+      "corrupt": "After Emma and Susan arrived at the park, Susan handed a drink to"
+    },
+    {
+      "id": "evaluation-0-peter-laura",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Peter",
+      "subject": "Laura",
+      "clean": "When Peter and Laura went to the store, Laura gave a book to",
+      "corrupt": "When Peter and Laura went to the store, Peter gave a book to"
+    },
+    {
+      "id": "evaluation-0-peter-anna",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Peter",
+      "subject": "Anna",
+      "clean": "When Peter and Anna went to the store, Anna gave a book to",
+      "corrupt": "When Peter and Anna went to the store, Peter gave a book to"
+    },
+    {
+      "id": "evaluation-1-susan-robert",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Susan",
+      "subject": "Robert",
+      "clean": "After Robert and Susan arrived at the park, Robert handed a drink to",
+      "corrupt": "After Robert and Susan arrived at the park, Susan handed a drink to"
+    },
+    {
+      "id": "evaluation-0-george-daniel",
+      "split": "evaluation",
+      "template": 0,
+      "io": "George",
+      "subject": "Daniel",
+      "clean": "When George and Daniel went to the store, Daniel gave a book to",
+      "corrupt": "When George and Daniel went to the store, George gave a book to"
+    },
+    {
+      "id": "evaluation-1-mark-michael",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Mark",
+      "subject": "Michael",
+      "clean": "After Michael and Mark arrived at the park, Michael handed a drink to",
+      "corrupt": "After Michael and Mark arrived at the park, Mark handed a drink to"
+    },
+    {
+      "id": "evaluation-0-peter-daniel",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Peter",
+      "subject": "Daniel",
+      "clean": "When Peter and Daniel went to the store, Daniel gave a book to",
+      "corrupt": "When Peter and Daniel went to the store, Peter gave a book to"
+    },
+    {
+      "id": "evaluation-1-anna-peter",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Anna",
+      "subject": "Peter",
+      "clean": "After Peter and Anna arrived at the park, Peter handed a drink to",
+      "corrupt": "After Peter and Anna arrived at the park, Anna handed a drink to"
+    },
+    {
+      "id": "evaluation-1-michael-susan",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Michael",
+      "subject": "Susan",
+      "clean": "After Susan and Michael arrived at the park, Susan handed a drink to",
+      "corrupt": "After Susan and Michael arrived at the park, Michael handed a drink to"
+    },
+    {
+      "id": "evaluation-1-lisa-emma",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Lisa",
+      "subject": "Emma",
+      "clean": "After Emma and Lisa arrived at the park, Emma handed a drink to",
+      "corrupt": "After Emma and Lisa arrived at the park, Lisa handed a drink to"
+    },
+    {
+      "id": "evaluation-1-emma-robert",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Emma",
+      "subject": "Robert",
+      "clean": "After Robert and Emma arrived at the park, Robert handed a drink to",
+      "corrupt": "After Robert and Emma arrived at the park, Emma handed a drink to"
+    },
+    {
+      "id": "evaluation-1-laura-susan",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Laura",
+      "subject": "Susan",
+      "clean": "After Susan and Laura arrived at the park, Susan handed a drink to",
+      "corrupt": "After Susan and Laura arrived at the park, Laura handed a drink to"
+    },
+    {
+      "id": "evaluation-1-paul-michael",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Paul",
+      "subject": "Michael",
+      "clean": "After Michael and Paul arrived at the park, Michael handed a drink to",
+      "corrupt": "After Michael and Paul arrived at the park, Paul handed a drink to"
+    },
+    {
+      "id": "evaluation-1-michael-daniel",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Michael",
+      "subject": "Daniel",
+      "clean": "After Daniel and Michael arrived at the park, Daniel handed a drink to",
+      "corrupt": "After Daniel and Michael arrived at the park, Michael handed a drink to"
+    },
+    {
+      "id": "evaluation-0-mark-peter",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Mark",
+      "subject": "Peter",
+      "clean": "When Mark and Peter went to the store, Peter gave a book to",
+      "corrupt": "When Mark and Peter went to the store, Mark gave a book to"
+    },
+    {
+      "id": "evaluation-1-robert-anna",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Robert",
+      "subject": "Anna",
+      "clean": "After Anna and Robert arrived at the park, Anna handed a drink to",
+      "corrupt": "After Anna and Robert arrived at the park, Robert handed a drink to"
+    },
+    {
+      "id": "evaluation-1-peter-michael",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Peter",
+      "subject": "Michael",
+      "clean": "After Michael and Peter arrived at the park, Michael handed a drink to",
+      "corrupt": "After Michael and Peter arrived at the park, Peter handed a drink to"
+    },
+    {
+      "id": "evaluation-0-michael-george",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Michael",
+      "subject": "George",
+      "clean": "When Michael and George went to the store, George gave a book to",
+      "corrupt": "When Michael and George went to the store, Michael gave a book to"
+    },
+    {
+      "id": "evaluation-1-laura-paul",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Laura",
+      "subject": "Paul",
+      "clean": "After Paul and Laura arrived at the park, Paul handed a drink to",
+      "corrupt": "After Paul and Laura arrived at the park, Laura handed a drink to"
+    },
+    {
+      "id": "evaluation-0-robert-lisa",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Robert",
+      "subject": "Lisa",
+      "clean": "When Robert and Lisa went to the store, Lisa gave a book to",
+      "corrupt": "When Robert and Lisa went to the store, Robert gave a book to"
+    },
+    {
+      "id": "evaluation-0-robert-george",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Robert",
+      "subject": "George",
+      "clean": "When Robert and George went to the store, George gave a book to",
+      "corrupt": "When Robert and George went to the store, Robert gave a book to"
+    },
+    {
+      "id": "evaluation-0-paul-daniel",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Paul",
+      "subject": "Daniel",
+      "clean": "When Paul and Daniel went to the store, Daniel gave a book to",
+      "corrupt": "When Paul and Daniel went to the store, Paul gave a book to"
+    },
+    {
+      "id": "evaluation-1-paul-daniel",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Paul",
+      "subject": "Daniel",
+      "clean": "After Daniel and Paul arrived at the park, Daniel handed a drink to",
+      "corrupt": "After Daniel and Paul arrived at the park, Paul handed a drink to"
+    },
+    {
+      "id": "evaluation-0-anna-laura",
+      "split": "evaluation",
+      "template": 0,
+      "io": "Anna",
+      "subject": "Laura",
+      "clean": "When Anna and Laura went to the store, Laura gave a book to",
+      "corrupt": "When Anna and Laura went to the store, Anna gave a book to"
+    },
+    {
+      "id": "evaluation-0-george-lisa",
+      "split": "evaluation",
+      "template": 0,
+      "io": "George",
+      "subject": "Lisa",
+      "clean": "When George and Lisa went to the store, Lisa gave a book to",
+      "corrupt": "When George and Lisa went to the store, George gave a book to"
+    },
+    {
+      "id": "evaluation-1-emma-lisa",
+      "split": "evaluation",
+      "template": 1,
+      "io": "Emma",
+      "subject": "Lisa",
+      "clean": "After Lisa and Emma arrived at the park, Lisa handed a drink to",
+      "corrupt": "After Lisa and Emma arrived at the park, Emma handed a drink to"
+    }
+  ]
+}
