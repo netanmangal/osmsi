@@ -1,37 +1,59 @@
-# Artifact pipeline
+# Pipelines
 
-`stage_results.py` validates completed card/manifest pairs and stages a local
-bundle for review. It uses the same schemas and cross-artifact checks as the SDK.
-It does not run evaluations, publish files to a service, or update the website.
+Install the SDK and harness first. These tools operate on local files; publication
+is an explicit step, and none of them deploy the live website.
 
-Install the [Python SDK](../sdk/python/README.md), then try the synthetic fixture:
-
-```bash
-python pipelines/stage_results.py sdk/python/tests/fixtures/sample-run \
-  --destination out/sample-bundle --allow-samples
-```
-
-For real run output, omit `--allow-samples`:
+## Discover candidates
 
 ```bash
-python pipelines/stage_results.py runs/completed \
-  --destination out/review-bundle
+python pipelines/discover_models.py --limit 20 --output out/candidates.json
 ```
 
-The source needs `cards/<run_id>.json` and `manifests/<run_id>.json` for every run.
-The pipeline validates all pairs, orders runs by ID, and builds a fresh
-`index.json`. It serializes only validated artifact fields; environment files,
-provider response logs, and unrelated source files are not copied.
+This reads the public Hugging Face registry and records model revisions and
+license tags for review. It makes no inference calls. Review licensing, model
+scope, and provider availability before evaluating a candidate. The discovery
+workflow runs weekly and keeps its output as a GitHub Actions artifact.
 
-The destination must be new. Invalid input leaves no partial bundle, and a rerun
-cannot overwrite a previous bundle. Successful staging is a format and consistency
-check, not approval of a score or proof that an evaluation was performed. Review
-provenance and methodology before committing real results under `data/`.
+## Evaluate and stage
+
+```bash
+osmsi run --provider demo --output runs/demo --limit 2
+python pipelines/stage_results.py runs/demo/bundle \
+  --destination out/review-bundle --allow-samples
+```
+
+For real runs, omit `--allow-samples`. The source needs a card and manifest for
+every run. Staging validates all pairs before writing a new destination and
+builds a deterministic index. Existing bundles are never overwritten. Raw provider
+responses, environment files, and unrelated files are not copied.
+
+Staging verifies format and consistency, not scientific validity or whether a
+claimed evaluation happened. Review scope, methodology, and retained evidence
+before committing real results under `data/`.
+
+## Export reviewed results to the site
+
+```bash
+python pipelines/prepare_web.py data/pilots/2026-11-16 --replace
+npm run build
+```
+
+You can pass multiple bundles; duplicate run IDs fail. The default destination is
+`web/public/results/`. Replacement requires `--replace`, validates the existing
+directory, and refuses unrelated files. Invalid inputs leave previous results
+intact. Sample exports require an additional explicit flag.
+
+`web/public/results/` is a generated, committed snapshot so the site can be built
+with Node alone. Keep it in sync with the reviewed source bundles in the same PR.
+
+## Hosted automation
+
+The manual `benchmark.yml` workflow runs the four pilot suites with two probes
+each: at most eight attempts and 600 requested output tokens per response. Set
+the repository's `SUPERLINKED_API_KEY` Actions secret before using it. No secret
+was copied from the private workspace automatically. Its output is a bundle for
+review; it does not update `data/`, the website, or model rankings automatically.
 
 ```bash
 python -m unittest discover -s pipelines -p 'test_*.py'
 ```
-
-Model discovery, budgeted harness execution, scheduling, and remote publication
-are still unimplemented. They belong here as orchestration jobs; model adapters
-belong in `harness/` and scoring belongs in `suites/`.

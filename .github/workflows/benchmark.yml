@@ -1,0 +1,46 @@
+name: Run a bounded pilot evaluation
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: Superlinked model ID
+        required: true
+        type: string
+      revision:
+        description: Pinned revision (optional when the provider reports one)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paid-pilot-evaluation
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install ./sdk/python ./harness
+      - name: Evaluate at most eight requests
+        env:
+          SUPERLINKED_API_KEY: ${{ secrets.SUPERLINKED_API_KEY }}
+          EVAL_MODEL: ${{ inputs.model }}
+          EVAL_REVISION: ${{ inputs.revision }}
+        run: |
+          args=(--provider superlinked --model "$EVAL_MODEL" --output runs/pilot --limit 2 --max-requests 8 --max-tokens 600)
+          if [ -n "$EVAL_REVISION" ]; then args+=(--revision "$EVAL_REVISION"); fi
+          osmsi run "${args[@]}"
+      # Raw response journals are deliberately excluded.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pilot-bundle-for-review
+          path: runs/pilot/bundle
+          retention-days: 14
