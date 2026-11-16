@@ -1,6 +1,7 @@
 name: provider checks (offline)
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: ["internal-tests/**", ".github/workflows/internal-tests.yml"]

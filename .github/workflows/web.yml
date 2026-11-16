@@ -1,6 +1,7 @@
 name: web
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: ["web/**", "sdk/python/src/osmsi/_schemas/**", "package.json", ".nvmrc", ".github/workflows/web.yml"]

@@ -1,6 +1,7 @@
 name: Python SDK and artifact pipeline
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: ["sdk/python/**", "harness/**", "pipelines/**", "data/**", ".github/workflows/python.yml"]
