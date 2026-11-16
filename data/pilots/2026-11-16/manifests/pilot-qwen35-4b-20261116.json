@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "run_id": "pilot-qwen35-4b-20261116",
+  "sample": false,
+  "model": {
+    "id": "Qwen/Qwen3.5-4B",
+    "revision": "e03d6e952d036a3b797384cb87b6dc73caff2ac001d8ccb3a564b7abecfe2fd2"
+  },
+  "harness": {
+    "version": "0.1.0",
+    "revision": "sha256:329cc33675ca4743068433e0eb9f0b973c3782fb823dab14d38b7efd4472d146"
+  },
+  "started_at": "2026-11-16T08:58:14.670028Z",
+  "completed_at": "2026-11-16T08:58:17.241254Z",
+  "seed": 41,
+  "parameters": {
+    "temperature": 0,
+    "max_tokens": 600,
+    "request_budget": 2,
+    "requests_attempted": 2,
+    "credit_budget": 2000,
+    "credits_observed": 12.0,
+    "attempts_with_unknown_charges": 0,
+    "provider_origin": "https://api.superlinked.com",
+    "input_tokens_observed": 156,
+    "output_tokens_observed": 38,
+    "execution_identities": [
+      "74a27ca4037d476884761b125b2138a12964f708f510afff36b463dfef56551a"
+    ],
+    "observations": [
+      {
+        "suite_id": "factual-calibration",
+        "probe_id": "factual-calibration-01",
+        "score": 1.0,
+        "response_sha256": "81b94b3075db3440c2885707f51467de02da78741125cf9af42833a39d75a3ff",
+        "latency_seconds": 1.367439,
+        "finish_reason": "stop"
+      },
+      {
+        "suite_id": "factual-calibration",
+        "probe_id": "factual-calibration-02",
+        "score": 1.0,
+        "response_sha256": "4513137cdda56adcfcaeb8f452a8b53fa11a8e18a36953aa82ed70fc97423a39",
+        "latency_seconds": 1.201624,
+        "finish_reason": "stop"
+      }
+    ],
+    "journal_sha256": "38e02246bda1bb828b3e5c3550d6e62573739493da911b6a460eb16d6b1c45e4"
+  },
+  "suites": [
+    {
+      "id": "factual-calibration",
+      "dimension": "uc",
+      "version": "0.1.0",
+      "dataset_revision": "sha256:a120e888de0d95442bc305ffdf6b23ac91f9c31a48b077cf6a19980ece5a6668",
+      "scoring_method": "100 * mean(1 - Brier loss)",
+      "interval_method": "seeded percentile bootstrap, 2000 resamples",
+      "parameters": {
+        "maturity": "pilot",
+        "description": "Confidence versus correctness on a small, fixed factual probe set.",
+        "limitations": "Twelve easy questions and self-reported confidence. A high score does not establish calibration on difficult or deployment-specific questions. Invalid JSON receives the worst per-probe loss.",
+        "license": "Apache-2.0",
+        "probe_ids": [
+          "factual-calibration-01",
+          "factual-calibration-02"
+        ],
+        "n_probes": 2,
+        "scorer": "calibration"
+      }
+    }
+  ]
+}

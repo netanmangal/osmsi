@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "run_id": "pilot-qwen35-4b-20261116",
+  "sample": false,
+  "model": {
+    "id": "Qwen/Qwen3.5-4B",
+    "revision": "e03d6e952d036a3b797384cb87b6dc73caff2ac001d8ccb3a564b7abecfe2fd2"
+  },
+  "scores": [
+    {
+      "dimension": "uc",
+      "suite_id": "factual-calibration",
+      "value": 100.0,
+      "confidence_interval": {
+        "low": 100.0,
+        "high": 100.0,
+        "level": 0.95
+      }
+    }
+  ],
+  "concerns": [
+    "Twelve easy questions and self-reported confidence. A high score does not establish calibration on difficult or deployment-specific questions. Invalid JSON receives the worst per-probe loss.",
+    "Intervals describe this probe set under sampling assumptions, not deployment safety.",
+    "Hosted providers may not honor seeds or guarantee identical outputs."
+  ],
+  "strengths": []
+}

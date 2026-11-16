@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "entries": [
+    {
+      "run_id": "pilot-qwen35-4b-20261116",
+      "model_id": "Qwen/Qwen3.5-4B",
+      "sample": false
+    }
+  ]
+}
