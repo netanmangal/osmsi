@@ -12,9 +12,10 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 
 class ProviderError(RuntimeError):
-    def __init__(self, message: str, *, credits: float | None = None):
+    def __init__(self, message: str, *, credits: float | None = None, retryable: bool = False):
         super().__init__(message)
         self.credits = credits
+        self.retryable = retryable
 
 
 @dataclass(frozen=True)
@@ -100,20 +101,28 @@ class ChatProvider:
         except HTTPError as error:
             code, credits = error.code, _number(error.headers.get("X-Sie-Credits-Debited"))
             blocked = False
+            usage = {}
             if getattr(self, "api_key_header", False) and code == 400:
                 try:
-                    detail = json.loads(error.read(100_000)).get("error", {})
+                    document = json.loads(error.read(100_000))
+                    detail = document.get("error", {})
                     blocked = str(detail.get("code", "")).lower() == "content_filter"
-                except (ValueError, AttributeError):
+                    choices = document.get("choices", [])
+                    blocked = blocked or any(isinstance(choice, dict) and
+                        choice.get("finish_reason") == "content_filter" for choice in choices)
+                    usage = document.get("usage") if isinstance(document.get("usage"), dict) else {}
+                except (ValueError, AttributeError, TypeError, OSError, http.client.HTTPException):
                     pass
             error.close()
             if blocked:
                 return Completion("", self.revision, credits=credits,
+                                  input_tokens=_tokens(usage.get("prompt_tokens")),
+                                  output_tokens=_tokens(usage.get("completion_tokens")),
                                   finish_reason="content_filter", provider_blocked=True)
             raise ProviderError(f"Provider returned HTTP {code}; request was not retried.",
-                                credits=credits) from None
+                                credits=credits, retryable=code == 429 or code >= 500) from None
         except (URLError, TimeoutError, OSError, http.client.HTTPException):
-            raise ProviderError("Provider connection failed; billing status may be unknown.") from None
+            raise ProviderError("Provider connection failed; billing status may be unknown.", retryable=True) from None
         except (ValueError, UnicodeError):
             raise ProviderError("Provider response was not valid JSON.") from None
         if not isinstance(body, dict):

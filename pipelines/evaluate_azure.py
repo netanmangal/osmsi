@@ -119,7 +119,7 @@ def main():
                     'output_tokens':run.manifest.parameters['output_tokens_observed']}
             except ProviderError as error:
                 print(json.dumps({'run_id':run_id,'attempt':attempt+1,'error':str(error)}),flush=True)
-                if attempt==args.retries:
+                if not error.retryable or attempt==args.retries:
                     return {'run_id':run_id,'status':'failed','error':str(error)}
                 time.sleep(30)
             except (ArtifactError,OSError) as error:

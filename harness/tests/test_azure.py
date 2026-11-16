@@ -55,6 +55,17 @@ class AzureTests(unittest.TestCase):
             with self.assertRaises(ProviderError):
                 AzureProvider('test',endpoint=endpoint,deployment='test',model_version='1')
 
+    @patch.dict(os.environ, {'AZURE_AI_API_KEY':'fake-test-key'})
+    @patch('osmsi_harness.providers.build_opener')
+    def test_completion_shaped_http_400_filter_response(self,opener):
+        body={'choices':[{'finish_reason':'content_filter','message':{'content':''}}],
+              'usage':{'prompt_tokens':115,'total_tokens':115}}
+        opener.return_value.open.side_effect=HTTPError('https://example',400,'bad',{},
+            io.BytesIO(json.dumps(body).encode()))
+        result=self.provider().complete([],seed=41,max_tokens=600)
+        self.assertTrue(result.provider_blocked)
+        self.assertEqual(result.input_tokens,115)
+
     def test_filtered_probe_is_not_scored_as_model_refusal(self):
         suites=[load_suite('policy-boundaries')]
         provider=demo_provider(suites)
@@ -81,3 +92,19 @@ class AzureTests(unittest.TestCase):
             output=Path(temp)/'run'
             with self.assertRaises(ArtifactError): evaluate(provider,suites,output,limit=2)
             self.assertFalse((output/'bundle').exists())
+
+    def test_fully_filtered_dimension_stays_unmeasured(self):
+        suites=[load_suite('policy-boundaries'),load_suite('factual-calibration')]
+        provider=demo_provider(suites);original=provider.complete
+        count=0
+        def complete(*args,**kwargs):
+            nonlocal count
+            count+=1
+            result=original(*args,**kwargs)
+            return replace(result,content='',provider_blocked=True) if count<=2 else result
+        with tempfile.TemporaryDirectory() as temp,patch.object(provider,'complete',side_effect=complete):
+            bundle=evaluate(provider,suites,Path(temp)/'run',limit=2)
+            run=Index(bundle,allow_samples=True).runs[0]
+            self.assertEqual([score.dimension for score in run.card.scores],['uc'])
+            self.assertEqual(run.manifest.parameters['unmeasured_suites'][0]['dimension'],'jb')
+            self.assertEqual(run.manifest.parameters['provider_blocked_requests'],2)

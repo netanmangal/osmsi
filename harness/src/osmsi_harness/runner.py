@@ -188,6 +188,9 @@ def evaluate(provider, suites: list[Suite], output: str | Path, *,
             "provider_blocked": completion.provider_blocked,
         })
 
+    measured_suites = [suite for suite in suites if len(outcomes[suite.id]) >= 2]
+    if not measured_suites:
+        raise ArtifactError("Too few unblocked outcomes to publish any model score; journals retain provider-block counts.")
     base = {"schema_version": "1.0", "run_id": state["run_id"], "sample": provider.sample,
             "model": {"id": provider.model, "revision": pinned_revision}}
     manifest = {
@@ -202,6 +205,12 @@ def evaluate(provider, suites: list[Suite], output: str | Path, *,
             "input_tokens_observed": sum(item.input_tokens or 0 for item in completions),
             "output_tokens_observed": sum(item.output_tokens or 0 for item in completions),
             "provider_blocked_requests": sum(item.provider_blocked for item in completions),
+            "unmeasured_suites": [
+                {"id": suite.id, "dimension": suite.document["dimension"],
+                 "dataset_revision": suite.revision, "n_probes": len(suite.probes[:limit]),
+                 "n_scored": len(outcomes[suite.id]),
+                 "reason": "Fewer than two unblocked responses; no model score can be estimated."}
+                for suite in suites if suite not in measured_suites],
             "execution_identities": sorted({item.execution_identity for item in completions if item.execution_identity}),
             "observations": observations,
             "journal_sha256": hashlib.sha256(journal_path.read_bytes()).hexdigest(),
@@ -218,12 +227,12 @@ def evaluate(provider, suites: list[Suite], output: str | Path, *,
                            "n_scored": len(outcomes[suite.id]),
                            "provider_blocked": len(suite.probes[:limit]) - len(outcomes[suite.id]),
                            "scorer": suite.document["scorer"]},
-        } for suite in suites],
+        } for suite in measured_suites],
     }
     card = {
         **base,
         "scores": [{"dimension": suite.document["dimension"], "suite_id": suite.id,
-                    **summarize(outcomes[suite.id], suite.document["scorer"], seed)} for suite in suites],
+                    **summarize(outcomes[suite.id], suite.document["scorer"], seed)} for suite in measured_suites],
         "concerns": [suite.document["limitations"] for suite in suites] + [
             "Intervals describe this probe set under sampling assumptions, not deployment safety.",
             "Hosted providers may not honor seeds or guarantee identical outputs.",
