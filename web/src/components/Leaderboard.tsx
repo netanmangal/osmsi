@@ -118,7 +118,7 @@ export default function Leaderboard() {
           </table>
         </div> : results.status === "ready" && query && <p className="mt-8 text-ink-dim">No models match this search.</p>}
         <p className="text-ink-mute mt-8 max-w-[70ch] font-mono text-xs leading-relaxed">
-          Each view uses a shared evaluation protocol. Scores apply to unblocked responses; provider filters may leave different scored subsets. These are research artifacts, not certifications. Review each card’s evidence before comparing results.
+          Each view uses a shared evaluation protocol. Scores apply to unblocked responses and include output-format failures; provider filters may leave different scored subsets. These are research artifacts, not certifications. Review each card’s evidence before comparing results.
         </p>
       </div>
     </section>
