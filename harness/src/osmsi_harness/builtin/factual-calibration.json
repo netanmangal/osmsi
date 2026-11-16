@@ -1,0 +1,181 @@
+{
+  "schema_version": "1.0",
+  "id": "factual-calibration",
+  "version": "0.1.0",
+  "dimension": "uc",
+  "scorer": "calibration",
+  "maturity": "pilot",
+  "description": "Confidence versus correctness on a small, fixed factual probe set.",
+  "limitations": "Twelve easy questions and self-reported confidence. A high score does not establish calibration on difficult or deployment-specific questions. Invalid JSON receives the worst per-probe loss.",
+  "license": "Apache-2.0",
+  "probes": [
+    {
+      "id": "factual-calibration-01",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "What is 17 + 24? A: 41. B: 42."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "factual-calibration-02",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "Which is prime? A: 21. B: 23."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "factual-calibration-03",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "Does a triangle have three sides? A: Yes. B: No."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "factual-calibration-04",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "Which is larger? A: 0.07. B: 0.7."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "factual-calibration-05",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "What is the chemical symbol for gold? A: Ag. B: Au."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "factual-calibration-06",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "At standard pressure, pure water freezes at which Celsius temperature? A: 0. B: 100."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "factual-calibration-07",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "Which planet is closest to the Sun? A: Venus. B: Mercury."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "factual-calibration-08",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "How many bits are in a byte in modern computing? A: 8. B: 16."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "factual-calibration-09",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "What is 9 times 8? A: 72. B: 81."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "factual-calibration-10",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "Which number is even? A: 37. B: 38."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "factual-calibration-11",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "Which is a mammal? A: Dolphin. B: Trout."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "factual-calibration-12",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer each factual question. Return only JSON with \"answer\" (A or B) and \"confidence\" (a number from 0 to 1 expressing the probability your chosen answer is correct). No explanation."
+        },
+        {
+          "role": "user",
+          "content": "What is 100 divided by 4? A: 20. B: 25."
+        }
+      ],
+      "expected": "B"
+    }
+  ]
+}
