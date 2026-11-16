@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import cardFixture from "../../../sdk/python/tests/fixtures/sample-run/cards/sample-a-001.json";
 import manifestFixture from "../../../sdk/python/tests/fixtures/sample-run/manifests/sample-a-001.json";
 import indexFixture from "../../../sdk/python/tests/fixtures/sample-run/index.json";
-import { loadResults, parseIndex, parseRun } from "./artifacts";
+import { describeScope, loadResults, parseIndex, parseRun, protocolKey } from "./artifacts";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -40,5 +40,14 @@ describe("shared artifact contracts", () => {
     expect(fetcher).toHaveBeenCalledTimes(3);
     fetcher.mockResolvedValueOnce({ ok: false, status: 503 });
     await expect(loadResults()).rejects.toThrow("503");
+  });
+  it("keeps different protocols separate and counts filtered-only suites in scope", () => {
+    const run = parseRun(cardFixture, manifestFixture, parseIndex(indexFixture).entries[0]);
+    const changed = structuredClone(run.manifest);
+    changed.suites[0].dataset_revision = "different-probes";
+    expect(protocolKey(changed)).not.toBe(protocolKey(run.manifest));
+    changed.suites[0].parameters.n_probes = 2;
+    changed.parameters.unmeasured_suites = [{ id: "blocked", dimension: "pi", n_probes: 8, dataset_revision: "sha256:blocked" }];
+    expect(describeScope(changed)).toBe("pilot · 10 probes");
   });
 });

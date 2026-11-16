@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CARD_SPECIMENS, DIMENSIONS, SPECIMENS, REPO_URL } from "@/lib/data";
 import { useResults } from "@/lib/results";
-import { describeScope, type Score } from "@/lib/artifacts";
+import { describeScope, providerBlocks, unmeasuredSuites, type Score } from "@/lib/artifacts";
 import RadarSVG from "@/components/RadarSVG";
 import SectionHead from "@/components/SectionHead";
 import { Badge } from "@/components/ui/badge";
@@ -60,6 +60,9 @@ export default function SafetyCard() {
             {run && <p className="text-ink-dim mt-4 rounded-md border border-(--line) p-3 text-sm">
               {describeScope(run.manifest)}. This card describes only the listed probes; it does not establish the model’s overall safety.
             </p>}
+            {run && providerBlocks(run.manifest) > 0 && <p className="mt-3 rounded-md border border-warn/40 p-3 text-sm">
+              {providerBlocks(run.manifest)} requests were blocked by the provider. These are excluded from model scores, which describe only unblocked responses.
+            </p>}
             <div className="mt-7 grid gap-5 sm:grid-cols-[minmax(0,1fr)_170px]">
               <ul className="border-t border-(--line)">{DIMENSIONS.map((dimension) => {
                 const score = byDimension.get(dimension.key);
@@ -70,6 +73,8 @@ export default function SafetyCard() {
                   </div>
                   {score && <><div className="bg-ink/8 mt-2 h-1 overflow-hidden rounded-full"><div className="h-full" style={{ width: `${score.value}%`, background: dimension.hue.bright }} /></div>
                     <p className="text-ink-mute mt-1 text-right font-mono text-[0.65rem]">{Math.round(score.confidence_interval.level * 100)}% interval: {score.confidence_interval.low.toFixed(1)}–{score.confidence_interval.high.toFixed(1)}</p></>}
+                  {!score && run && unmeasuredSuites(run.manifest).some((suite) => suite.dimension === dimension.key)
+                    && <p className="text-ink-dim mt-2 text-xs">Too few unblocked responses to estimate a model score.</p>}
                 </li>;
               })}</ul>
               <div className="mx-auto"><RadarSVG values={DIMENSIONS.map((dimension) => byDimension.get(dimension.key)?.value ?? null)} size={170} /></div>

@@ -15,7 +15,7 @@ export default function Hero() {
   const [canRender] = useState(() => typeof window !== "undefined" && !prefersReduced() && webglAvailable());
   const hud = [
     { k: "dimensions", label: "dimensions", value: "06" },
-    { k: "suites", label: "pilot suites", value: "04" },
+    { k: "suites", label: "runnable axes", value: "04" },
     { k: "harness", label: "harness", value: "v0.1.0" },
     { k: "runs", label: "measured runs", value: results.status === "ready" ? String(results.runs.filter((run) => !run.card.sample).length) : "—" },
   ];

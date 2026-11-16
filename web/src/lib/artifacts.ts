@@ -38,9 +38,29 @@ export interface ManifestArtifact {
   }[];
 }
 export interface PublishedRun { card: CardArtifact; manifest: ManifestArtifact }
+export function providerBlocks(manifest: ManifestArtifact): number {
+  const value = manifest.parameters.provider_blocked_requests;
+  return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : 0;
+}
+export function unmeasuredSuites(manifest: ManifestArtifact): { id: string; dimension: string; n_probes: number; dataset_revision: string }[] {
+  const values = manifest.parameters.unmeasured_suites;
+  if (!Array.isArray(values)) return [];
+  return values.filter((value) => value && typeof value.id === "string" && typeof value.dimension === "string"
+    && typeof value.dataset_revision === "string" && Number.isSafeInteger(value.n_probes) && value.n_probes >= 0);
+}
+export function protocolKey(manifest: ManifestArtifact): string {
+  const suites = [...manifest.suites, ...unmeasuredSuites(manifest)];
+  return JSON.stringify([manifest.harness, manifest.seed, manifest.parameters.temperature, manifest.parameters.max_tokens,
+    suites.map((suite) => [suite.id, suite.dataset_revision]).sort((a, b) => a[0].localeCompare(b[0]))]);
+}
+export function protocolLabel(manifest: ManifestArtifact): string {
+  return [...manifest.suites, ...unmeasuredSuites(manifest)].some((suite) => suite.id.includes("expanded"))
+    ? "Expanded Azure diagnostics" : manifest.suites.map((suite) => suite.id).join(", ");
+}
 export function describeScope(manifest: ManifestArtifact): string {
   const pilot = manifest.suites.some((suite) => suite.parameters.maturity !== "reviewed");
-  const counts = manifest.suites.map((suite) => suite.parameters.n_probes);
+  const counts = [...manifest.suites.map((suite) => suite.parameters.n_probes),
+    ...unmeasuredSuites(manifest).map((suite) => suite.n_probes)];
   const count = counts.every((n) => typeof n === "number" && Number.isSafeInteger(n) && n >= 0)
     ? (counts as number[]).reduce((sum, n) => sum + n, 0) : null;
   return `${pilot ? "pilot" : "measured"}${count === null ? "" : ` · ${count} probes`}`;

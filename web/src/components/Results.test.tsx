@@ -56,4 +56,12 @@ describe("result presentation", () => {
     render(<ResultsContext.Provider value={state}><Hero /></ResultsContext.Provider>);
     expect(screen.getByLabelText("Static six-dimension instrument")).toBeInTheDocument();
   });
+  it("discloses provider blocks separately from model scores", () => {
+    const filtered = { ...run, manifest: { ...run.manifest, parameters: {
+      ...run.manifest.parameters, provider_blocked_requests: 12,
+    } } };
+    render(<ResultsContext.Provider value={{ ...state, runs: [filtered] }}><SafetyCard /></ResultsContext.Provider>);
+    expect(screen.getByText(/12 requests were blocked by the provider/)).toBeInTheDocument();
+    expect(screen.getAllByText("not measured")).toHaveLength(5);
+  });
 });

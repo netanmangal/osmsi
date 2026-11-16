@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { DIMENSIONS, SPECIMENS, type DimKey } from "@/lib/data";
 import { useResults } from "@/lib/results";
-import { describeScope } from "@/lib/artifacts";
+import { describeScope, protocolKey, protocolLabel, providerBlocks } from "@/lib/artifacts";
 import { scrollToHash } from "@/lib/anim";
 import SectionHead from "@/components/SectionHead";
 import BandScallop from "@/components/deco/BandScallop";
@@ -15,11 +15,25 @@ export default function Leaderboard() {
   const results = useResults();
   const [preview, setPreview] = useState(false);
   const [query, setQuery] = useState("");
+  const [chosenProtocol, setChosenProtocol] = useState("");
+  const protocols = useMemo(() => {
+    const groups = new Map<string, { key: string; label: string; count: number }>();
+    results.runs.filter((run) => preview || !run.card.sample).forEach(({ manifest }) => {
+      const key = protocolKey(manifest);
+      const group = groups.get(key);
+      if (group) group.count++;
+      else groups.set(key, { key, label: protocolLabel(manifest), count: 1 });
+    });
+    return [...groups.values()].sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+  }, [results.runs, preview]);
+  const activeProtocol = protocols.some((protocol) => protocol.key === chosenProtocol)
+    ? chosenProtocol : protocols[0]?.key ?? "";
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "name", dir: 1 });
   const rows = useMemo(() => {
-    const published: Row[] = results.runs.filter((run) => preview || !run.card.sample).map(({ card, manifest }) => ({
+    const published: Row[] = results.runs.filter((run) => (preview || !run.card.sample)
+      && protocolKey(run.manifest) === activeProtocol).map(({ card, manifest }) => ({
       id: card.run_id, name: card.model.id, sample: card.sample, published: true,
-      scope: describeScope(manifest),
+      scope: `${describeScope(manifest)}${providerBlocks(manifest) ? ` · ${providerBlocks(manifest)} provider blocks` : ""}`,
       scores: Object.fromEntries(card.scores.map((score) => [score.dimension, score.value])),
     }));
     const samples: Row[] = preview && !results.runs.some((run) => run.card.sample) ? SPECIMENS.map((specimen) => ({
@@ -34,7 +48,7 @@ export default function Leaderboard() {
       if (second === undefined) return -1;
       return (first - second) * sort.dir || a.name.localeCompare(b.name);
     });
-  }, [results.runs, preview, query, sort]);
+  }, [results.runs, preview, query, sort, activeProtocol]);
   const changeSort = (key: SortKey) => setSort((current) => ({ key,
     dir: current.key === key ? (current.dir === 1 ? -1 : 1) : key === "name" ? 1 : -1 }));
   const ariaSort = (key: SortKey) => sort.key === key ? (sort.dir === 1 ? "ascending" : "descending") : undefined;
@@ -47,9 +61,16 @@ export default function Leaderboard() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHead clause="05 · the index" title="The index, sorted your way."
             lead="Compare the measured dimensions. Read the run behind each number. Missing measurements stay missing; there is no overall safety rank." />
-          <Badge variant="stamp">{results.runs.filter((run) => !run.card.sample).length} measured runs</Badge>
+          <Badge variant="stamp">{results.runs.filter((run) => !run.card.sample && protocolKey(run.manifest) === activeProtocol).length} measured runs</Badge>
         </div>
         <div className="mt-10 flex flex-wrap items-end gap-5">
+          {protocols.length > 0 && <label className="mono-label flex max-w-full flex-col gap-2">
+            Evaluation protocol
+            <select value={activeProtocol} onChange={(event) => setChosenProtocol(event.target.value)}
+              className="text-ink bg-paper max-w-full rounded-md border border-(--line-strong) px-3 py-2 font-sans text-sm normal-case tracking-normal">
+              {protocols.map((protocol) => <option key={protocol.key} value={protocol.key}>{protocol.label} · {protocol.count} runs</option>)}
+            </select>
+          </label>}
           <label className="mono-label flex flex-col gap-2">
             Find a model
             <input value={query} onChange={(event) => setQuery(event.target.value)} type="search"
@@ -97,7 +118,7 @@ export default function Leaderboard() {
           </table>
         </div> : results.status === "ready" && query && <p className="mt-8 text-ink-dim">No models match this search.</p>}
         <p className="text-ink-mute mt-8 max-w-[70ch] font-mono text-xs leading-relaxed">
-          Scores are research artifacts, not certifications. Pilot suites test narrow behaviors. Review each card’s suite definitions and limits before comparing results.
+          Each view uses a shared evaluation protocol. Scores apply to unblocked responses; provider filters may leave different scored subsets. These are research artifacts, not certifications. Review each card’s evidence before comparing results.
         </p>
       </div>
     </section>
