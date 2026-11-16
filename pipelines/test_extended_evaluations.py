@@ -40,6 +40,7 @@ class DeploymentTests(unittest.TestCase):
         compile(python, "<deployment>", "exec")
         self.assertIn("config.write_text(original)", python)
         self.assertIn("for attempt in range(20)", python)
+        self.assertIn("live_evidence==evidence", python)
 
     def test_mutable_revisions_and_injected_inputs_are_rejected(self):
         for revision, root, host, user in [

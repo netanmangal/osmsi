@@ -1,40 +1,56 @@
 # Build and deployment
 
-The site is static. It requires no server-side provider key, database, or Python
-runtime after build. From the repository root with Node.js 22+:
+The site is static: no provider key, database, or Python runtime is needed to
+serve it. With Node.js 22+, run `npm run setup`, `npm test`, and `npm run build`.
+Deploy the complete `web/dist/` at the domain root, including `/results/` and
+`/evidence/`. The GitHub Actions web workflow tests and builds an artifact;
+it does not deploy automatically.
+
+## Current Azure host
+
+The live domain is served by Nginx on an existing Azure VM. The public deployment
+pipeline builds a pinned, pushed public-repository commit as an unprivileged
+user. It installs immutable releases under `/var/www/osmsi/releases/` and swaps
+`/var/www/osmsi/current` atomically. Nginx's site config points at that symlink.
+The private source checkout is no longer the live document root.
+
+After local checks and CI pass, use authenticated Azure CLI and private host
+values supplied through your shell:
 
 ```bash
-npm run setup
-npm test
-npm run build
-npm run preview
+python pipelines/deploy_azure_site.py \
+  --subscription "$AZURE_SUBSCRIPTION_ID" --resource-group "$OSMSI_RESOURCE_GROUP" \
+  --vm "$OSMSI_VM" --revision "$(git rev-parse HEAD)" \
+  --expected-root /var/www/osmsi/current --record out/deployment-receipt.json
 ```
 
-Deploy the complete `web/dist/` directory at the domain root. It contains the
-HTML, versioned assets, fonts, and `/results/` JSON artifacts. Keep the results
-directory with the build; copying only JavaScript will break the index.
+The revision must be a full commit SHA available from the public repository.
+The pipeline refuses a mismatched Nginx root or an existing release directory.
+It preserves prior hashed assets for already-open tabs, checks `nginx -t`, then
+verifies HTTPS release metadata and result indexes. Failed health checks restore
+the original Nginx config and release link. Deployment receipts contain the
+previous release and configuration backup; retain them privately.
 
-For an existing Nginx or other static host, publish to a new release directory,
-verify it, and switch the serving directory atomically. Retain the previous
-release for rollback. Do not put `.env`, `runs/`, or response journals on the host.
-The repository intentionally contains no production host credentials.
+For an operator-initiated rollback, use the receipt's `previous_release` path:
+create a temporary symlink beside `current`, atomically rename it over `current`,
+run `nginx -t`, and reload Nginx. If changing configuration too, restore the
+receipt's `nginx_backup` before checking and reloading. Verify `/release.json`
+afterward. Do not delete the previous release until the new one is established.
 
-The `web` GitHub Actions workflow tests and builds the site and uploads an
-`osmsi-static-site` artifact. It does not change the current production host.
-No hosting provider or deployment credential has been assumed.
-
-After deployment, check the landing page, `/results/index.json`, linked cards and
-manifests, mobile navigation, reduced-motion behavior, and a no-WebGL browser.
-The page must show load failures explicitly rather than substituting sample
-figures for unavailable real results.
-
-The SDK can check the deployed data independently:
+## Verify the live release
 
 ```bash
-osmsi fetch https://osmsi.disobedientgeometry.com/results --output out/deployed-check
-osmsi validate out/deployed-check
+osmsi fetch https://osmsi.disobedientgeometry.com/results --output out/deployed-results
+osmsi validate out/deployed-results
+osmsi fetch-evidence https://osmsi.disobedientgeometry.com/evidence --output out/deployed-studies
+osmsi evidence out/deployed-studies
 ```
 
-The Superlinked key is used only by evaluation workers. Enabling the optional
-manual benchmark workflow requires separately configuring an Actions secret;
-website deployment does not require that secret.
+Check the landing page, study selection, JSON downloads, mobile navigation,
+reduced motion, and a no-WebGL browser. Missing artifacts must return HTTP 404,
+not the SPA's HTML. The UI must show download failures rather than substitute
+samples. `/release.json` identifies the deployed source revision.
+
+Keep `.env`, Azure keys, response journals, and private account configuration
+out of releases. Evaluation workers alone need provider credentials. No secret
+is copied to Actions or the website by this deployment process.

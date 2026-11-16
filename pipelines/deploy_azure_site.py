@@ -50,9 +50,17 @@ for entry in index['entries']:
  for kind in ('cards','manifests'):
   path=dist/'results'/kind/(entry['run_id']+'.json')
   if json.loads(path.read_text())['run_id']!=entry['run_id']:raise RuntimeError('Invalid result identity.')
+evidence_path=dist/'evidence/evidence-index.json'
+evidence=json.loads(evidence_path.read_text()) if evidence_path.exists() else None
+if evidence:
+ for entry in evidence['reports']:
+  raw=(dist/'evidence/reports'/(entry['report_id']+'.json')).read_bytes()
+  report=json.loads(raw)
+  if hashlib.sha256(raw).hexdigest()!=entry['sha256']:raise RuntimeError('Evidence digest mismatch.')
+  if (report['report_id'],report['model']['id'],report['dimension'])!=(entry['report_id'],entry['model_id'],entry['dimension']):raise RuntimeError('Evidence identity mismatch.')
 release.parent.mkdir(parents=True,exist_ok=True)
 shutil.copytree(dist,release)
-(release/'release.json').write_text(json.dumps({{'revision':sha,'result_runs':len(index['entries'])}})+'\\n')
+(release/'release.json').write_text(json.dumps({{'revision':sha,'result_runs':len(index['entries']),'evidence_reports':len(evidence['reports']) if evidence else 0}})+'\\n')
 # Preserve immutable hashed assets requested by already-open browser tabs.
 previous_assets=pathlib.Path(c['expected_root'])/'assets'
 if previous_assets.is_dir():
@@ -76,7 +84,10 @@ try:
   try:
    with urllib.request.urlopen('https://'+host+'/release.json',timeout=10) as response:live=json.load(response)
    with urllib.request.urlopen('https://'+host+'/results/index.json',timeout=10) as response:live_index=json.load(response)
-   if live.get('revision')==sha and live_index==index:break
+   live_evidence=None
+   if evidence:
+    with urllib.request.urlopen('https://'+host+'/evidence/evidence-index.json',timeout=10) as response:live_evidence=json.load(response)
+   if live.get('revision')==sha and live_index==index and live_evidence==evidence:break
   except (OSError,ValueError):pass
   time.sleep(1)
  else:raise RuntimeError('Live release or result verification failed.')
