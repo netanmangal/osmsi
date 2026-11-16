@@ -11,7 +11,8 @@ from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
 
 DIMENSIONS = ("jb", "hc", "pi", "uc", "ag", "in")
-SCHEMA_NAMES = ("common", "run-manifest", "safety-card", "index", "suite-descriptor")
+SCHEMA_NAMES = ("common", "run-manifest", "safety-card", "index", "suite-descriptor",
+                "evidence-report", "evidence-index")
 
 
 class ArtifactError(ValueError):
@@ -78,6 +79,15 @@ def validate_artifact(kind: str, document: dict[str, Any]) -> None:
         if document["scorer"] == "calibration":
             if any(probe["expected"] not in ("A", "B") for probe in document["probes"]):
                 raise ArtifactError("Calibration probes require A/B answer keys.")
+    elif kind == "evidence-index":
+        _unique([entry["report_id"] for entry in document["reports"]], "evidence report IDs")
+    elif kind == "evidence-report":
+        _unique([metric["id"] for metric in document["metrics"]], "metric IDs")
+        for metric in document["metrics"]:
+            interval = metric.get("interval")
+            if interval and (metric["value"] is None or
+                             not interval["low"] <= metric["value"] <= interval["high"]):
+                raise ArtifactError("Evidence interval must contain a measured value.")
 
 
 def read_artifact(path: str | Path, kind: str) -> dict[str, Any]:

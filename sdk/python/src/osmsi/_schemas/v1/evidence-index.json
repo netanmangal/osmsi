@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://osmsi.disobedientgeometry.com/schemas/v1/evidence-index.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "reports"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "reports": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["report_id", "model_id", "dimension", "sha256"],
+        "properties": {
+          "report_id": {"$ref": "common.json#/$defs/run_id"},
+          "model_id": {"type": "string", "minLength": 1},
+          "dimension": {"enum": ["hc", "in"]},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    }
+  }
+}
