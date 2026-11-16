@@ -11,6 +11,7 @@ import Dimensions from "@/components/Dimensions";
 import Method from "@/components/Method";
 import SafetyCard from "@/components/SafetyCard";
 import Leaderboard from "@/components/Leaderboard";
+import Evidence from "@/components/Evidence";
 import Contribute from "@/components/Contribute";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
@@ -81,6 +82,7 @@ export default function App() {
         <Method />
         <SafetyCard />
         <Leaderboard />
+        <Evidence />
         <Statement note="the position">
           Open evals for open weights. Anything less is{" "}
           <em className="text-cobalt">trust by vibes.</em>

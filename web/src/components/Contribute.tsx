@@ -38,7 +38,7 @@ export default function Contribute() {
   return (
     <section id="contribute" className="scroll-mt-20 px-(--pad-x) py-(--section-gap)">
       <SectionHead
-        clause="06 · contribute"
+        clause="07 · contribute"
         title="Built to be forked."
         lead="The framework, the pipelines and the scoring specs ship under a permissive license. The index gets stronger every time someone disagrees with it precisely."
       />

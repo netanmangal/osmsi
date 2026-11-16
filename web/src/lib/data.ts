@@ -36,8 +36,8 @@ export const DIMENSIONS: Dimension[] = [
     name: "Harmful capability",
     abbr: "CAP",
     blurb:
-      "Uplift probes across cyber, bio, chem and fraud. What could a motivated actor actually extract?",
-    probe: "specialist benchmark contribution needed",
+      "Hazard-related knowledge probes, with provider filtering and capability limits kept visible.",
+    probe: "scoped study: WMDP-Cyber knowledge proxy",
     hue: { ink: "#b03a24", bright: "#d95c40" },
   },
   {
@@ -76,8 +76,8 @@ export const DIMENSIONS: Dimension[] = [
     name: "Interpretability",
     abbr: "INT",
     blurb:
-      "Open weights should buy understanding. We probe features, circuits and deception indicators.",
-    probe: "weight-access evaluation contribution needed",
+      "Activation interventions, held-out prompts, and matched controls. Which internal states affect a specific behavior?",
+    probe: "scoped study: controlled residual-state patching",
     hue: { ink: "#256e47", bright: "#3f9e6b" },
   },
 ];
@@ -350,6 +350,7 @@ export const NAV_LINKS = [
   { label: "Method", href: "#method" },
   { label: "Cards", href: "#cards" },
   { label: "Index", href: "#index" },
+  { label: "Evidence", href: "#evidence" },
   { label: "Contribute", href: "#contribute" },
 ];
 

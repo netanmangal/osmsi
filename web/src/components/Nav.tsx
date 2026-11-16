@@ -148,6 +148,8 @@ export default function Nav() {
       {open && (
         <div
           ref={panelRef}
+          role="navigation"
+          aria-label="Mobile"
           className="bg-paper fixed inset-0 top-16 z-(--z-nav) flex flex-col gap-1 overflow-y-auto border-t border-(--line) px-(--pad-x) py-10 lg:hidden"
         >
           {NAV_LINKS.map(({ label, href }, i) => (

@@ -47,6 +47,7 @@ export default function SafetyCard() {
                 "This preview demonstrates the interface. It is separate from published model evaluations and carries no measured claims."}
             </p>
             <a href={`${REPO_URL}/blob/main/docs/methodology.md`} className="mono-label mt-5 inline-block text-cobalt">Read the methodology ↗</a>
+            <a href="#evidence" className="mono-label mt-4 block text-cobalt">Capability and weight-access studies ↓</a>
           </div>
         </div>
         <div className="min-w-0 lg:pt-6">
