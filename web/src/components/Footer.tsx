@@ -16,7 +16,7 @@ export default function Footer() {
         <div>
           <p className="font-display text-[1.5rem] font-[600]">OSMSI</p>
           <p className="text-cream/62 mt-3 max-w-[38ch] text-[0.95rem] leading-[1.65]">
-            Open Source Model Safety Index. An open, continuously updated safety index for
+            Open Source Model Safety Index. An experimental evaluation framework for
             open-weight foundation models. A Disobedient Geometry project.
           </p>
         </div>

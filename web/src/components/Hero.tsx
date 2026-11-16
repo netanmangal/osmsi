@@ -24,6 +24,7 @@ export default function Hero() {
   useEffect(() => {
     if (prefersReduced() || !root.current) return;
     const el = root.current;
+    let enter: (() => void) | undefined;
     const ctx = gsap.context(() => {
       gsap.set("[data-hero-line] > span", { yPercent: 112 });
       gsap.set("[data-hero-fade]", { opacity: 0, y: 18 });
@@ -36,9 +37,13 @@ export default function Hero() {
           .to("[data-hero-fade]", { opacity: 1, y: 0, duration: 0.8, stagger: 0.09 }, 0.42)
           .to("[data-hero-stage]", { opacity: 1, scale: 1, duration: 1.3, ease: "power3.out" }, 0.3);
       };
+      enter = play;
       window.addEventListener("osmsi:enter", play, { once: true });
     }, el);
-    return () => ctx.revert();
+    return () => {
+      if (enter) window.removeEventListener("osmsi:enter", enter);
+      ctx.revert();
+    };
   }, []);
 
   return (

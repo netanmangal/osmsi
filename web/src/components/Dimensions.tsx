@@ -129,16 +129,16 @@ export default function Dimensions() {
         <SectionHead
           clause="02 · six dimensions"
           title="Six dimensions. One profile."
-          lead="A single score hides more than it shows, so OSMSI never prints one. Every model is charted on the full hexagon, each axis with its own suite, its own confidence interval and its own failure exhibits."
+          lead="A single score hides more than it shows, so OSMSI never prints one. Each measured axis has its own suite and confidence interval. Dimensions without evidence remain unmeasured."
         />
       </div>
 
-      <div ref={stage} className="relative mt-10 lg:h-[620vh]">
-        <div className="top-0 flex items-start px-(--pad-x) py-10 lg:sticky lg:h-svh lg:min-h-svh lg:items-center lg:py-0">
+      <div ref={stage} className="relative mt-10 motion-safe:lg:h-[620vh]">
+        <div className="top-0 flex items-start px-(--pad-x) py-10 motion-safe:lg:sticky motion-safe:lg:h-svh motion-safe:lg:min-h-svh lg:items-center motion-safe:lg:py-0">
           <div className="grid w-full items-start gap-8 sm:gap-14 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center">
             {/* the assembling instrument */}
             {/* small enough to leave the rows room to read under it */}
-            <div className="bg-paper sticky top-16 z-[2] w-full self-start pt-3 pb-4 lg:relative lg:top-auto lg:self-auto lg:bg-transparent lg:pt-0 lg:pb-0">
+            <div className="bg-paper motion-safe:sticky top-16 z-[2] w-full self-start pt-3 pb-4 lg:relative lg:top-auto lg:self-auto lg:bg-transparent lg:pt-0 lg:pb-0">
               <p className="mono-label mb-1 lg:absolute lg:-top-2 lg:left-0 lg:mb-0">
                 axis <span ref={counterRef} className="tnum text-cobalt">00</span>
                 <span className="tnum"> / 06</span>

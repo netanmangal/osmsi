@@ -61,7 +61,7 @@ export default function Marquee() {
   return (
     <section aria-label="Model families in scope" className="border-y border-(--line) py-7">
       <p className="mono-label mb-5 px-(--pad-x) text-[0.62rem]">
-        in scope · continuously indexed
+        model families · evaluation candidates
       </p>
       <Row
         items={MARQUEE_FAMILIES}
