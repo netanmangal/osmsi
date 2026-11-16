@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SectionHead from "@/components/SectionHead";
 import { loadEvidence, type EvidenceReport } from "@/lib/evidence";
 import { REPO_URL } from "@/lib/data";
+import { ScrollTrigger } from "@/lib/anim";
 
 function number(value: number | null) {
   return value === null ? "not identifiable" : value.toLocaleString("en-US", { maximumFractionDigits: 3 });
@@ -24,6 +25,10 @@ export default function Evidence() {
     return () => controller.abort();
   }, [retry]);
   const report = reports.find((r) => r.report_id === selected) ?? reports[0];
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => cancelAnimationFrame(frame);
+  }, [status, report?.report_id]);
   return (
     <section id="evidence" className="scroll-mt-20 px-(--pad-x) py-(--section-gap)">
       <SectionHead clause="06 · scoped studies" title="Capability and causal evidence."

@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import Evidence from "./Evidence";
 import { loadEvidence, type EvidenceReport } from "@/lib/evidence";
 vi.mock("@/lib/evidence", () => ({ loadEvidence: vi.fn() }));
+vi.mock("@/lib/anim", () => ({ ScrollTrigger: { refresh: vi.fn() } }));
 const report: EvidenceReport = {
   schema_version: "1.0", report_id: "test-study", dimension: "in", sample: false,
   model: { id: "test-model", revision: "abc" }, created_at: "2026-11-16T00:00:00Z",
