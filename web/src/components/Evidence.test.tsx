@@ -31,4 +31,12 @@ describe("evidence presentation", () => {
     expect(await screen.findByText("Narrow task only.")).toBeInTheDocument();
     expect(loadEvidence).toHaveBeenCalledTimes(2);
   });
+  it("flags a knowledge score dominated by malformed responses", async () => {
+    vi.mocked(loadEvidence).mockResolvedValue([{ ...report, dimension: "hc", metrics: [
+      { id: "knowledge_accuracy", label: "Accuracy", value: 15, n: 100, unit: "percent", direction: "higher_more_capable" },
+      { id: "malformed_responses", label: "Malformed", value: 70, unit: "responses", direction: "descriptive" },
+    ] }]);
+    render(<Evidence />);
+    expect(await screen.findByText(/strongly affected by formatting/)).toBeInTheDocument();
+  });
 });

@@ -25,6 +25,8 @@ export default function Evidence() {
     return () => controller.abort();
   }, [retry]);
   const report = reports.find((r) => r.report_id === selected) ?? reports[0];
+  const malformed = report?.metrics.find((m) => m.id === "malformed_responses")?.value ?? 0;
+  const scored = report?.metrics.find((m) => m.id === "knowledge_accuracy")?.n ?? 0;
   useEffect(() => {
     const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
     return () => cancelAnimationFrame(frame);
@@ -57,6 +59,10 @@ export default function Evidence() {
           <p className="mono-label break-all text-[0.65rem]">{report.report_id}</p>
           <h3 className="font-display mt-4 break-words text-2xl">{report.model.id}</h3>
           <p className="text-ink-dim mt-4 max-w-[85ch] text-sm leading-relaxed">{report.methodology.description}</p>
+          {scored > 0 && malformed > scored / 5 && <p className="text-flag mt-4 max-w-[85ch] text-sm leading-relaxed">
+            Many responses failed the required answer format. This strict accuracy is strongly affected by formatting;
+            read the separate format diagnostic in the study report before interpreting it as knowledge.
+          </p>}
           <dl className="mt-7 grid gap-4 md:grid-cols-2">
             {report.metrics.map((metric) => <div key={metric.id} className="rounded-lg border border-(--line) p-4">
               <dt className="text-ink-dim text-sm">{metric.label}</dt>

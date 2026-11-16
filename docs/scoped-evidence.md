@@ -61,6 +61,18 @@ settings must match. Capacity is operational metadata: record capacity changes
 separately. Neither tools nor generated code execute. Keep the dataset, request
 journals, Azure configuration, and keys outside public artifacts.
 
+The published campaign also has a separately labelled post-hoc format diagnostic:
+Phi-4 often returned the letter plus its option text. `analyze_wmdp_format.py`
+accepts only a letter followed by exactly the corresponding full option text
+(whitespace normalized), alongside the original strict parser. It rejects extra
+rationale and does not replace frozen metrics. Reproduce it with:
+
+```bash
+out/evidence-venv/bin/python pipelines/analyze_wmdp_format.py \
+  --bundle runs/capability/bundle --journals runs/capability \
+  --parquet out/wmdp-cyber.parquet --output out/format-diagnostic.json
+```
+
 ## Weight-access intervention
 
 Download each repository snapshot's `config.json`, `tokenizer.json`,
