@@ -26,6 +26,7 @@ class Completion:
     output_tokens: int | None = None
     credits: float | None = None
     finish_reason: str | None = None
+    provider_blocked: bool = False
 
 
 class NoRedirects(HTTPRedirectHandler):
@@ -52,6 +53,7 @@ class ChatProvider:
                  key_env: str = "SUPERLINKED_API_KEY", revision: str | None = None,
                  timeout: float = 60):
         self.model, self.revision, self.timeout = model, revision, timeout
+        self.request_model = model
         self.base_url = base_url.rstrip("/")
         try:
             parsed = urlsplit(self.base_url)
@@ -78,9 +80,12 @@ class ChatProvider:
                                else "/v1/chat/completions")
         headers = {"Content-Type": "application/json"}
         if self.key:
-            headers["Authorization"] = f"Bearer {self.key}"
+            if getattr(self, "api_key_header", False):
+                headers["api-key"] = self.key
+            else:
+                headers["Authorization"] = f"Bearer {self.key}"
         request = Request(url, data=json.dumps({
-            "model": self.model, "messages": messages, "temperature": 0,
+            "model": self.request_model, "messages": messages, "temperature": 0,
             "seed": seed, "max_tokens": max_tokens,
         }).encode(), headers=headers)
         try:
@@ -94,7 +99,17 @@ class ChatProvider:
                 body = json.loads(raw)
         except HTTPError as error:
             code, credits = error.code, _number(error.headers.get("X-Sie-Credits-Debited"))
+            blocked = False
+            if getattr(self, "api_key_header", False) and code == 400:
+                try:
+                    detail = json.loads(error.read(100_000)).get("error", {})
+                    blocked = str(detail.get("code", "")).lower() == "content_filter"
+                except (ValueError, AttributeError):
+                    pass
             error.close()
+            if blocked:
+                return Completion("", self.revision, credits=credits,
+                                  finish_reason="content_filter", provider_blocked=True)
             raise ProviderError(f"Provider returned HTTP {code}; request was not retried.",
                                 credits=credits) from None
         except (URLError, TimeoutError, OSError, http.client.HTTPException):
@@ -111,6 +126,11 @@ class ChatProvider:
         choice = choices[0] if isinstance(choices, list) and choices else None
         message = choice.get("message") if isinstance(choice, dict) else None
         content = message.get("content") if isinstance(message, dict) else None
+        if (getattr(self, "api_key_header", False) and isinstance(choice, dict)
+                and choice.get("finish_reason") == "content_filter"):
+            return Completion("", self.revision, input_tokens=_tokens(usage.get("prompt_tokens")),
+                              output_tokens=_tokens(usage.get("completion_tokens")),
+                              finish_reason="content_filter", provider_blocked=True)
         if not isinstance(content, str) or not content.strip():
             raise ProviderError("Provider returned no visible completion.", credits=credits)
         observed = headers.get("X-Sie-Model-Revision")
@@ -127,6 +147,39 @@ class ChatProvider:
             _tokens(usage.get("prompt_tokens")), _tokens(usage.get("completion_tokens")),
             credits, choice.get("finish_reason"),
         )
+
+
+class AzureProvider(ChatProvider):
+    """Azure's v1 endpoint, with explicit deployment/version provenance.
+
+    The version is a control-plane model version, not a weights commit. Callers
+    should verify the deployment before and after a campaign.
+    """
+
+    def __init__(self, model: str, *, endpoint: str, deployment: str,
+                 model_version: str, key_env: str = "AZURE_AI_API_KEY",
+                 timeout: float = 90):
+        origin = endpoint.rstrip("/")
+        try:
+            parsed = urlsplit(origin)
+        except ValueError:
+            raise ProviderError("Azure endpoint is malformed.") from None
+        if (parsed.scheme != "https" or parsed.path or not parsed.hostname
+                or not any(parsed.hostname.endswith(suffix) for suffix in (
+                    ".cognitiveservices.azure.com", ".services.ai.azure.com", ".openai.azure.com"))
+                or not deployment or not model_version):
+            raise ProviderError("Azure requires a public-cloud HTTPS account origin, deployment, and model version.")
+        super().__init__(model, base_url=origin, key_env=key_env,
+                         revision=f"azure-model-version:{model_version}", timeout=timeout)
+        self.base_url = origin + "/openai/v1"
+        self.public_origin = "azure-ai-v1 (account endpoint withheld)"
+        self.request_model = deployment
+        self.api_key_header = True
+        self.metadata = {
+            "backend": "azure-ai-v1", "deployment": deployment, "model_version": model_version,
+            "revision_kind": "Azure control-plane version; not a verified weights commit",
+            "content_filtering": "Provider-managed filters may affect observable behavior.",
+        }
 
 
 @dataclass

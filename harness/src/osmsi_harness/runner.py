@@ -73,6 +73,7 @@ def evaluate(provider, suites: list[Suite], output: str | Path, *,
         "model": provider.model, "sample": provider.sample,
         "configured_revision": provider.revision,
         "provider_origin": getattr(provider, "base_url", "demo"),
+        "provider_metadata": getattr(provider, "metadata", {}),
         "harness_revision": harness_revision(), "seed": seed, "max_tokens": max_tokens,
         "suites": [{"id": suite.id, "revision": suite.revision,
                     "probe_ids": [probe["id"] for probe in suite.probes[:limit]]} for suite in suites],
@@ -175,13 +176,16 @@ def evaluate(provider, suites: list[Suite], output: str | Path, *,
         pinned_revision = completion.revision
         # A resumed provider must also stay on the revision used by cached completions.
         provider.revision = pinned_revision
-        value = probe_score(suite.document["scorer"], completion.content, probe["expected"])
-        outcomes[suite.id].append(value)
+        value = None if completion.provider_blocked else probe_score(
+            suite.document["scorer"], completion.content, probe["expected"])
+        if value is not None:
+            outcomes[suite.id].append(value)
         completions.append(completion)
         observations.append({
             "suite_id": suite.id, "probe_id": probe["id"], "score": value,
             "response_sha256": hashlib.sha256(completion.content.encode()).hexdigest(),
             "latency_seconds": latency, "finish_reason": completion.finish_reason,
+            "provider_blocked": completion.provider_blocked,
         })
 
     base = {"schema_version": "1.0", "run_id": state["run_id"], "sample": provider.sample,
@@ -193,9 +197,11 @@ def evaluate(provider, suites: list[Suite], output: str | Path, *,
             "temperature": 0, "max_tokens": max_tokens, "request_budget": max_requests,
             "requests_attempted": attempts, "credit_budget": max_credits,
             "credits_observed": credits, "attempts_with_unknown_charges": unpriced,
-            "provider_origin": identity["provider_origin"],
+            "provider_origin": getattr(provider, "public_origin", identity["provider_origin"]),
+            "provider_metadata": identity["provider_metadata"],
             "input_tokens_observed": sum(item.input_tokens or 0 for item in completions),
             "output_tokens_observed": sum(item.output_tokens or 0 for item in completions),
+            "provider_blocked_requests": sum(item.provider_blocked for item in completions),
             "execution_identities": sorted({item.execution_identity for item in completions if item.execution_identity}),
             "observations": observations,
             "journal_sha256": hashlib.sha256(journal_path.read_bytes()).hexdigest(),
@@ -208,7 +214,10 @@ def evaluate(provider, suites: list[Suite], output: str | Path, *,
             "parameters": {"maturity": suite.document["maturity"], "description": suite.document["description"],
                            "limitations": suite.document["limitations"], "license": suite.document["license"],
                            "probe_ids": [probe["id"] for probe in suite.probes[:limit]],
-                           "n_probes": len(outcomes[suite.id]), "scorer": suite.document["scorer"]},
+                           "n_probes": len(suite.probes[:limit]),
+                           "n_scored": len(outcomes[suite.id]),
+                           "provider_blocked": len(suite.probes[:limit]) - len(outcomes[suite.id]),
+                           "scorer": suite.document["scorer"]},
         } for suite in suites],
     }
     card = {
@@ -218,6 +227,7 @@ def evaluate(provider, suites: list[Suite], output: str | Path, *,
         "concerns": [suite.document["limitations"] for suite in suites] + [
             "Intervals describe this probe set under sampling assumptions, not deployment safety.",
             "Hosted providers may not honor seeds or guarantee identical outputs.",
+            "Provider-filtered responses are counted separately and excluded from model scores; scores are conditional on unblocked requests.",
         ],
         "strengths": [],
     }

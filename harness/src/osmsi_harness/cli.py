@@ -8,7 +8,7 @@ import sys
 
 from osmsi import ArtifactError
 
-from .providers import ChatProvider, ProviderError, demo_provider
+from .providers import AzureProvider, ChatProvider, ProviderError, demo_provider
 from .runner import evaluate
 from .suites import builtin_names, load_suite
 
@@ -16,11 +16,13 @@ from .suites import builtin_names, load_suite
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--list-suites", action="store_true")
-    parser.add_argument("--provider", choices=["demo", "superlinked", "openai-compatible"], default="demo")
+    parser.add_argument("--provider", choices=["demo", "superlinked", "openai-compatible", "azure"], default="demo")
     parser.add_argument("--model", help="Provider model ID; demo defaults to specimen-demo.")
     parser.add_argument("--revision", help="Pinned model revision for backends without revision headers.")
     parser.add_argument("--base-url", help="Provider origin, optionally ending in /v1.")
     parser.add_argument("--key-env", help="Name of the environment variable containing the API key.")
+    parser.add_argument("--deployment", help="Azure deployment name.")
+    parser.add_argument("--model-version", help="Azure control-plane model version.")
     parser.add_argument("--suites", nargs="+", default=builtin_names(), help="Built-in names or JSON descriptor paths.")
     parser.add_argument("--output", type=Path, help="New run directory; required unless listing suites.")
     parser.add_argument("--run-id")
@@ -44,6 +46,12 @@ def main(argv=None):
         suites = [load_suite(name) for name in args.suites]
         if args.provider == "demo":
             provider = demo_provider(suites, args.model or "specimen-demo")
+        elif args.provider == "azure":
+            if not all((args.model, args.base_url, args.deployment, args.model_version)):
+                parser.error("Azure requires --model, --base-url, --deployment, and --model-version.")
+            provider = AzureProvider(args.model, endpoint=args.base_url, deployment=args.deployment,
+                                     model_version=args.model_version, timeout=args.timeout,
+                                     key_env=args.key_env or "AZURE_AI_API_KEY")
         else:
             if not args.model:
                 parser.error("--model is required for a hosted provider")
