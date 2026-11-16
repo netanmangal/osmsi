@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "reports": [
+    {
+      "report_id": "gpt2-causal-ioi-20261116",
+      "dimension": "in",
+      "model_id": "openai-community/gpt2",
+      "sha256": "0f00c0f3631674c65db4f79d745c94f180a4b1aa484cd96ccf9574284104047a"
+    },
+    {
+      "report_id": "gpt2-medium-causal-ioi-20261116",
+      "dimension": "in",
+      "model_id": "openai-community/gpt2-medium",
+      "sha256": "7163e76e390b0f8df71005713d5c4c275974250e81da8a67d61af79e211c8cee"
+    }
+  ]
+}

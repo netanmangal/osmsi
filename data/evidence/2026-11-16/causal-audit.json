@@ -1,0 +1,20 @@
+{
+  "audits": [
+    {
+      "report_id": "gpt2-causal-ioi-20261116",
+      "discovery_cases": 64,
+      "evaluation_cases": 128,
+      "metrics_and_intervals_recomputed": true,
+      "donor_assignment_verified": true,
+      "numerical_controls_passed": true
+    },
+    {
+      "report_id": "gpt2-medium-causal-ioi-20261116",
+      "discovery_cases": 64,
+      "evaluation_cases": 128,
+      "metrics_and_intervals_recomputed": true,
+      "donor_assignment_verified": true,
+      "numerical_controls_passed": true
+    }
+  ]
+}
