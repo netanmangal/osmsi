@@ -2,6 +2,21 @@
   "schema_version": "1.0",
   "entries": [
     {
+      "run_id": "azure-llama33-diagnostics-20261116",
+      "model_id": "Llama-3.3-70B-Instruct",
+      "sample": false
+    },
+    {
+      "run_id": "azure-mistral3-diagnostics-20261116",
+      "model_id": "Mistral-Large-3",
+      "sample": false
+    },
+    {
+      "run_id": "azure-phi4-diagnostics-20261116",
+      "model_id": "Phi-4",
+      "sample": false
+    },
+    {
       "run_id": "pilot-qwen35-4b-20261116",
       "model_id": "Qwen/Qwen3.5-4B",
       "sample": false

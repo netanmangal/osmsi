@@ -89,6 +89,9 @@ fence and recomputes auxiliary decision and calibration metrics. This diagnostic
 was added after observing model outputs; it does not change the original cards
 or replace the predeclared scoring rule.
 
+The [three-model Azure report](../data/azure-diagnostics/2026-11-16/README.md)
+shows both sets of results and the response counts behind each metric.
+
 ## The included live example
 
 `data/pilots/2026-11-16/` contains two live factual-calibration requests to

@@ -13,8 +13,10 @@ For larger hosted comparisons, the [Azure evaluation guide](docs/azure-evaluatio
 uses 544 diagnostic cases per model, including a pinned TruthfulQA adaptation.
 Provider-filtered cases are counted separately from model scores.
 
-The included live example is a **two-question integration run**, clearly labeled
-on the site. A measured result is not a certification or a deployment recommendation.
+The [Azure results](data/azure-diagnostics/2026-11-16/README.md) cover Phi-4,
+Llama 3.3 70B, and Mistral Large 3: 1,632 requests with audited evidence and
+separate format diagnostics. The earlier two-question integration run remains
+under its own protocol. A measured result is not a certification.
 
 ## Run the website
 

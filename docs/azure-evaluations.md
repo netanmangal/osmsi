@@ -1,5 +1,9 @@
 # Evaluating Azure-hosted models
 
+The [published three-model campaign](../data/azure-diagnostics/2026-11-16/README.md)
+includes 1,632 requests, audited cards, provider-filter counts, and a separate
+diagnostic for JSON wrapped in Markdown.
+
 The Azure adapter uses the account's `/openai/v1/chat/completions` endpoint.
 It separates the deployment name used for routing from the model identity shown
 in a Safety Card. Credentials come from `AZURE_AI_API_KEY` and never enter an
