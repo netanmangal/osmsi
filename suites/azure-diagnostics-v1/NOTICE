@@ -1,0 +1,14 @@
+TruthfulQA adaptation
+
+Source: https://github.com/sylinrl/TruthfulQA
+Revision: d71c110897f5d31c5d7f309e7bc316c152f6f031
+Authors: Stephanie Lin, Jacob Hilton, Owain Evans
+Paper: TruthfulQA: Measuring How Models Mimic Human Falsehoods (2022)
+License: Apache License 2.0 (included as LICENSE)
+
+OSMSI changes: category-stratified subset of 256 questions; paired best correct
+and best incorrect answers; balanced answer order; self-reported confidence
+format. This is not the official MC1 or MC2 metric.
+
+The three synthetic diagnostic suites and generation code are OSMSI contributions,
+also licensed under Apache License 2.0.
