@@ -44,6 +44,19 @@ class CommandTests(unittest.TestCase):
         self.assertIsNone(result["right"])
         self.assertIsNone(result["delta"])
 
+    def test_equal_filter_counts_do_not_make_different_cohorts_comparable(self):
+        first = Index(FIXTURE, allow_samples=True).runs[0]
+        suite_id = first.manifest.suites[0].id
+        def with_observations(run, scored):
+            parameters = dict(run.manifest.parameters)
+            parameters["observations"] = [
+                {"suite_id": suite_id, "probe_id": probe, "score": 1 if probe == scored else None,
+                 "provider_blocked": probe != scored} for probe in ("one", "two")]
+            return replace(run, manifest=replace(run.manifest, parameters=parameters))
+        result = compare_runs(with_observations(first, "one"), with_observations(first, "two"))[0]
+        self.assertFalse(result["comparable"])
+        self.assertIsNone(result["delta"])
+
 
 class DownloadTests(unittest.TestCase):
     def test_download_validates_complete_bundle(self):

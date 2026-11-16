@@ -3,6 +3,22 @@
 from .models import EvaluationRun
 
 
+def _scored_cohort(run, suite_id):
+    observations = run.manifest.parameters.get("observations")
+    if not isinstance(observations, list):
+        return None
+    selected = []
+    for observation in observations:
+        if not isinstance(observation, dict) or observation.get("suite_id") != suite_id:
+            continue
+        if observation.get("score") is not None and not observation.get("provider_blocked", False):
+            probe_id = observation.get("probe_id")
+            if not isinstance(probe_id, str):
+                return None
+            selected.append(probe_id)
+    return tuple(sorted(selected)) if len(selected) == len(set(selected)) else None
+
+
 def compare_runs(left: EvaluationRun, right: EvaluationRun) -> list[dict]:
     left_scores = {score.dimension: score for score in left.card.scores}
     right_scores = {score.dimension: score for score in right.card.scores}
@@ -27,6 +43,12 @@ def compare_runs(left: EvaluationRun, right: EvaluationRun) -> list[dict]:
                 b.id, b.version, b.dataset_revision, b.scoring_method, b.parameters
             ):
                 reason = "Suite definition, probe selection, or scoring configuration differs."
+            elif _scored_cohort(left, a.id) != _scored_cohort(right, b.id):
+                reason = "Provider filtering left different scored probe cohorts."
+            elif (a.parameters.get("provider_blocked") or b.parameters.get("provider_blocked")) and (
+                _scored_cohort(left, a.id) is None or _scored_cohort(right, b.id) is None
+            ):
+                reason = "The scored probe cohorts cannot be verified."
         comparisons.append({
             "dimension": dimension,
             "left": first.value if first else None,

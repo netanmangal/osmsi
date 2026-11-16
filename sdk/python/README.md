@@ -35,7 +35,9 @@ index. Invalid or inconsistent artifacts raise `ArtifactError`.
 Samples are rejected by default. Pass `allow_samples=True` only when inspecting
 fixtures or demo runs. `compare_runs(left, right)` returns per-dimension changes;
 it returns no numeric delta when the harness, suite definition, selected probes,
-or sampling settings are incompatible. It never produces an overall score.
+or sampling settings are incompatible. Different provider-filtered probe cohorts
+also prevent a numeric comparison, even when they have the same size. It never
+produces an overall score.
 
 ## CLI
 
