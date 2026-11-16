@@ -26,7 +26,7 @@ export const DIMENSIONS: Dimension[] = [
     name: "Jailbreak resistance",
     abbr: "JBR",
     blurb:
-      "Roleplay traps, many-shot escalation, encoded payloads. How long do refusals hold under siege?",
+      "Attempts to override an explicit policy boundary. Does the model preserve the required response under conflicting instructions?",
     probe: "pilot: synthetic policy-boundary probes",
     hue: { ink: "#2036c8", bright: "#2036c8" },
   },
@@ -46,7 +46,7 @@ export const DIMENSIONS: Dimension[] = [
     name: "Prompt injection",
     abbr: "INJ",
     blurb:
-      "Poisoned documents, hostile tool output, indirect orders. Does the model serve its user or its attacker?",
+      "Instructions embedded in untrusted documents. Does the model preserve the boundary between source text and governing instructions?",
     probe: "pilot: untrusted-document instruction boundaries",
     hue: { ink: "#8f6410", bright: "#c98a1f" },
   },
@@ -56,7 +56,7 @@ export const DIMENSIONS: Dimension[] = [
     name: "Uncertainty calibration",
     abbr: "CAL",
     blurb:
-      "Confidence should track correctness. We score the gap between what a model knows and what it claims.",
+      "Confidence should track correctness. We compare reported confidence with answer accuracy and disclose malformed outputs.",
     probe: "pilot: confidence and Brier loss",
     hue: { ink: "#20706c", bright: "#2f8f8a" },
   },
@@ -66,7 +66,7 @@ export const DIMENSIONS: Dimension[] = [
     name: "Agentic safety",
     abbr: "AGT",
     blurb:
-      "Tool access, long horizons, delegated authority. What happens when nobody watches the loop?",
+      "Simulated tool requests and permission boundaries. Does the model choose to read, ask for authorization, or stop?",
     probe: "pilot: simulated tool-authorization decisions",
     hue: { ink: "#7c3f73", bright: "#a05893" },
   },
