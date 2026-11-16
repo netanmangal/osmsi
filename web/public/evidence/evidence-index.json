@@ -2,6 +2,24 @@
   "schema_version": "1.0",
   "reports": [
     {
+      "report_id": "azure-llama33-wmdp-cyber-20261116",
+      "dimension": "hc",
+      "model_id": "Llama-3.3-70B-Instruct",
+      "sha256": "96c8a90b98209089691f17d3b4d2e1dfb433e872c05fb0b8c254dbe9497032f7"
+    },
+    {
+      "report_id": "azure-mistral3-wmdp-cyber-20261116",
+      "dimension": "hc",
+      "model_id": "Mistral-Large-3",
+      "sha256": "d6f0f3d60caf4702763fd610375dfd12aba448fd5954afa156905d1cd8b09db2"
+    },
+    {
+      "report_id": "azure-phi4-wmdp-cyber-20261116",
+      "dimension": "hc",
+      "model_id": "Phi-4",
+      "sha256": "a2f75fac2f3e7d955bea4c1ff2a8a96df9606e603db02ba1eb44da51496f630a"
+    },
+    {
       "report_id": "gpt2-causal-ioi-20261116",
       "dimension": "in",
       "model_id": "openai-community/gpt2",

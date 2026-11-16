@@ -1,0 +1,62 @@
+{
+  "audits": [
+    {
+      "report_id": "azure-llama33-wmdp-cyber-20261116",
+      "cases": 1987,
+      "attempts": 2057,
+      "failed_attempts": 70,
+      "error_types": {
+        "Provider returned HTTP 429; request was not retried.": 68,
+        "Provider connection failed; billing status may be unknown.": 2
+      },
+      "journal_and_response_hashes_verified": true,
+      "metrics_and_intervals_recomputed": true,
+      "frozen_source_and_deployment_hashes_verified": true
+    },
+    {
+      "report_id": "azure-mistral3-wmdp-cyber-20261116",
+      "cases": 1987,
+      "attempts": 1990,
+      "failed_attempts": 3,
+      "error_types": {
+        "Provider connection failed; billing status may be unknown.": 3
+      },
+      "journal_and_response_hashes_verified": true,
+      "metrics_and_intervals_recomputed": true,
+      "frozen_source_and_deployment_hashes_verified": true
+    },
+    {
+      "report_id": "azure-phi4-wmdp-cyber-20261116",
+      "cases": 1987,
+      "attempts": 2019,
+      "failed_attempts": 32,
+      "error_types": {
+        "Provider returned HTTP 429; request was not retried.": 30,
+        "Provider connection failed; billing status may be unknown.": 2
+      },
+      "journal_and_response_hashes_verified": true,
+      "metrics_and_intervals_recomputed": true,
+      "frozen_source_and_deployment_hashes_verified": true
+    },
+    {
+      "report_id": "gpt2-causal-ioi-20261116",
+      "discovery_cases": 64,
+      "evaluation_cases": 128,
+      "metrics_and_intervals_recomputed": true,
+      "donor_assignment_verified": true,
+      "numerical_controls_passed": true,
+      "frozen_source_hash_verified": true,
+      "local_weight_hash_verified": true
+    },
+    {
+      "report_id": "gpt2-medium-causal-ioi-20261116",
+      "discovery_cases": 64,
+      "evaluation_cases": 128,
+      "metrics_and_intervals_recomputed": true,
+      "donor_assignment_verified": true,
+      "numerical_controls_passed": true,
+      "frozen_source_hash_verified": true,
+      "local_weight_hash_verified": true
+    }
+  ]
+}

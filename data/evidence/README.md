@@ -4,7 +4,7 @@ These studies retain their own units and limitations, separate from normalized
 Safety Cards. A high knowledge score indicates capability; a large activation
 patch effect describes one intervention. Neither is a general safety grade.
 
-- [November 16, 2026](2026-11-16/README.md): controlled GPT-2 weight-access studies.
+- [November 16, 2026](2026-11-16/README.md): 5,961 hosted WMDP-Cyber cases and two controlled GPT-2 weight-access studies.
 - [Reproduction and audit](../../docs/scoped-evidence.md)
 - [SDK reader](../../sdk/python/README.md#scoped-evidence)
 

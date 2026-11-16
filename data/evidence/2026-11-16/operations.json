@@ -1,0 +1,26 @@
+{
+  "temporary_deployment_capacity_changes": [
+    {
+      "at": "2026-11-16T17:33:05.938745+00:00",
+      "model": "Phi-4",
+      "previous_capacity": 50,
+      "capacity": 200,
+      "model_and_filter_configuration_unchanged": true
+    },
+    {
+      "at": "2026-11-16T17:33:08.681803+00:00",
+      "model": "Llama-3.3-70B-Instruct",
+      "previous_capacity": 50,
+      "capacity": 200,
+      "model_and_filter_configuration_unchanged": true
+    }
+  ],
+  "explicit_campaign_resumptions": 1,
+  "request_attempt_budget": 6600,
+  "sampling_and_model_filter_settings_unchanged": true,
+  "cleanup": {
+    "preserved_existing_deployments": 9,
+    "original_model_sku_upgrade_and_filter_settings_unchanged": true,
+    "temporary_deployments_removed": 2
+  }
+}
