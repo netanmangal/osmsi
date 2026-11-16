@@ -17,6 +17,8 @@ and do not imply that those URLs are currently hosted.
 | `safety-card.json` | Run identity, per-dimension scores and intervals, concerns, strengths |
 | `index.json` | Run IDs and model IDs referring to cards and manifests in a bundle |
 | `suite-descriptor.json` | Versioned probe messages, answer keys, scorer, license, and limitations |
+| `evidence-report.json` | Scoped capability or causal metrics in native units, observations, references, and limits |
+| `evidence-index.json` | Report IDs, model IDs, dimensions, and SHA-256 report-byte digests |
 
 ## Bundle layout
 
@@ -57,3 +59,21 @@ not `data/`. No evaluation produced its numbers.
 The website imports these schemas directly and validates published bundles with
 Ajv before rendering them. Its old TypeScript specimens remain explicitly labeled
 format previews, separate from measurements.
+
+## Scoped evidence bundles
+
+```text
+bundle/
+  evidence-index.json
+  reports/<report_id>.json
+```
+
+`EvidenceIndex` verifies each report's digest and indexed identity. Metrics name
+their units and direction; values may be negative, unbounded, or null when not
+identifiable. Intervals must contain a finite point estimate. Duplicate metric
+or report IDs fail validation. An aggregate safety-score field is not accepted.
+
+These reports use `hc` or `in` as an organizing dimension, not a normalized
+Safety Card score. Higher knowledge accuracy means greater measured capability;
+a causal effect describes the tested intervention. Readers must preserve the
+method and limitations. Samples are rejected by default.

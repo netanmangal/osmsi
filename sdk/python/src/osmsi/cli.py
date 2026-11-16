@@ -9,6 +9,7 @@ from .client import Index
 from .compare import compare_runs
 from .remote import fetch_index
 from .evidence import EvidenceIndex
+from .remote_evidence import fetch_evidence
 from .validation import ArtifactError
 
 
@@ -41,9 +42,18 @@ def main(argv=None):
     evidence.add_argument("bundle")
     evidence.add_argument("--report-id")
     evidence.add_argument("--allow-samples", action="store_true")
+    evidence_fetch = commands.add_parser("fetch-evidence")
+    evidence_fetch.add_argument("url")
+    evidence_fetch.add_argument("--output", required=True)
+    evidence_fetch.add_argument("--allow-samples", action="store_true")
+    evidence_fetch.add_argument("--max-reports", type=int, default=100)
     args = parser.parse_args(argv)
     try:
-        if args.command == "evidence":
+        if args.command == "fetch-evidence":
+            index = fetch_evidence(args.url, args.output, allow_samples=args.allow_samples,
+                                   max_reports=args.max_reports)
+            result = {"bundle": args.output, "reports": len(index.reports)}
+        elif args.command == "evidence":
             index = EvidenceIndex(args.bundle, allow_samples=args.allow_samples)
             result = index.get(args.report_id) if args.report_id else index.reports
         elif args.command == "fetch":

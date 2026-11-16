@@ -6,6 +6,7 @@ import tempfile
 
 from osmsi import ArtifactError
 from prepare_web import prepare_web
+from prepare_evidence import prepare_evidence
 
 
 def verify_publication(data: Path, website: Path) -> int:
@@ -24,6 +25,18 @@ def verify_publication(data: Path, website: Path) -> int:
         }
         if expected_files != actual_files:
             raise ArtifactError("Website results differ from published bundles; rerun prepare_web.py.")
+        evidence_bundles = sorted(path.parent for path in data.rglob("evidence-index.json"))
+        if evidence_bundles:
+            evidence = prepare_evidence(evidence_bundles, Path(scratch) / "evidence")
+            expected_evidence = {p.relative_to(evidence): p.read_bytes()
+                                 for p in evidence.rglob("*") if p.is_file()}
+            website_evidence = website.parent / "evidence"
+            actual_evidence = {p.relative_to(website_evidence): p.read_bytes()
+                               for p in website_evidence.rglob("*") if p.is_file()}
+            if expected_evidence != actual_evidence:
+                raise ArtifactError("Website evidence differs from published bundles; rerun prepare_evidence.py.")
+        elif any((website.parent / "evidence").rglob("*")):
+            raise ArtifactError("Website evidence has no reviewed source bundle.")
     return len(bundles)
 
 
