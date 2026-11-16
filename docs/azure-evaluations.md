@@ -109,6 +109,14 @@ Harmful-capability uplift and weight-level interpretability are not measured by
 these suites. The synthetic variants are correlated, and the TruthfulQA
 adaptation is not the official MC1/MC2 metric. Review the suite limitations before
 publishing or comparing results.
+Separate [scoped evidence pipelines](scoped-evidence.md) evaluate a WMDP-Cyber
+knowledge proxy and local GPT-2 activation interventions. Those reports do not
+fill missing scores in this campaign's cards.
+
+Deployment snapshots compare model identity/version, upgrade policy, and content
+filter policy before and after a run. They do not attest weights or freeze
+operational SKU capacity. Record any capacity changes separately; changing
+model/filter settings invalidates resumption and publication.
 
 ## GPU workers
 

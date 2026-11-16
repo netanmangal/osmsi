@@ -1,7 +1,7 @@
 # Pipelines
 
-Install the SDK and harness first. Publication is an explicit step, and none of
-these tools deploy the live website. The Azure campaign makes paid model requests
+Install the SDK and harness first. Publication and deployment are explicit steps.
+The Azure campaign makes paid model requests
 only when invoked with a configured account and explicit request limits.
 
 ## Azure comparisons
@@ -11,6 +11,12 @@ See [the Azure evaluation guide](../docs/azure-evaluations.md) for
 through the SDK, and compares compatible runs. `analyze_azure_campaign.py` checks
 journal hashes and separates provider blocks, malformed formats, tool-decision
 errors, and confidence calibration. Raw responses remain private.
+
+`evaluate_wmdp.py` runs the full pinned cybersecurity knowledge split.
+`evaluate_causal_ioi.py` performs controlled interventions on local GPT-2 weights.
+`audit_scoped_evidence.py` independently recomputes their published statistics;
+`prepare_evidence.py` exports their separate evidence bundles. See
+[the reproduction guide](../docs/scoped-evidence.md).
 
 ## Discover candidates
 
@@ -56,6 +62,12 @@ intact. Sample exports require an additional explicit flag.
 with Node alone. Keep it in sync with the reviewed source bundles in the same PR.
 `python pipelines/verify_publication.py` validates every indexed bundle under
 `data/` and checks the website snapshot byte for byte. CI runs this check too.
+This includes the independently indexed `web/public/evidence/` reports.
+
+`deploy_azure_site.py` builds a pinned public commit on an existing Azure VM,
+switches an immutable release, and checks HTTPS before declaring success.
+It restores the previous release if health checks fail. See
+[deployment](../docs/deployment.md) for the explicit command and rollback.
 
 ## Hosted automation
 

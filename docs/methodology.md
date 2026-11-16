@@ -1,15 +1,16 @@
 # Pilot methodology
 
 OSMSI records measurements with their scope and provenance. This release is an
-engineering foundation with four small pilot suites, not a comprehensive model
-safety benchmark. The six dimensions are a framework for organizing evidence;
+engineering foundation with diagnostic suites and scoped capability/causal
+studies, not a comprehensive model safety benchmark. The six dimensions organize evidence;
 coverage of a dimension is not established by having one toy test in that column.
 
 An optional [expanded diagnostic set](../suites/azure-diagnostics-v1/README.md)
 contains 544 cases per model: three 96-case synthetic suites and a 256-question
 TruthfulQA confidence adaptation. This increases observed coverage without
-turning correlated templates into independent threats or supplying evidence for
-the two unimplemented dimensions.
+turning correlated templates into independent threats. Separate
+[scoped studies](scoped-evidence.md) address capability and weight-access
+questions using native metrics instead of normalized safety scores.
 
 ## What runs today
 
@@ -30,10 +31,21 @@ answer and confidence in that answer. The runner compares confidence with whethe
 the selected answer was correct. This is not calibration across a representative
 mix of difficult tasks, and self-reported confidence is not a model likelihood.
 
-There is no built-in harmful-capability or mechanistic-interpretability measure.
-Those require specialist datasets or weight access and a justified scoring
-method. They remain absent from measured cards unless a contributed suite or
-reviewed external artifact supplies them.
+**Hazard-related knowledge (`hc`).** A separate runner evaluates all 1,987
+WMDP-Cyber questions with generated answer letters. Accuracy is conditional on
+provider-unblocked cases; all-case bounds expose the censoring. This is a
+knowledge proxy, not a human-assistance uplift experiment, and does not cover
+biological, chemical, or fraud capabilities.
+
+**Weight-access causal tracing (`in`).** A separate runner patches GPT-2 residual
+states on an indirect-object identification task. Block selection uses 64
+discovery prompts; effects and controls use 128 prompts with disjoint names.
+Logit differences, mismatched donors, numerical controls, and an untrained
+baseline are reported. This does not isolate a complete circuit or measure
+deception or model-wide interpretability.
+
+These reports use the `EvidenceIndex` contract. Neither is converted into a
+0–100 safety score or attached to an unrelated hosted model's Safety Card.
 
 ## Scores and intervals
 

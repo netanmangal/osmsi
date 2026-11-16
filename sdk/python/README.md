@@ -49,9 +49,32 @@ osmsi compare PATH_TO_BUNDLE LEFT_RUN_ID RIGHT_RUN_ID
 osmsi run --provider demo --output runs/demo --limit 2
 ```
 
-The live domain may serve an older release until deployment; local bundles use
-the same format. `osmsi run --help` lists provider and budget options. Results are
+`osmsi run --help` lists provider and budget options. Results are
 JSON, suitable for scripts. Reading and validating bundles requires no credentials.
+
+## Scoped evidence
+
+Capability and causal studies retain their own units, uncertainty, and limits.
+They do not become aggregate Safety Card scores:
+
+```python
+from osmsi import EvidenceIndex, fetch_evidence
+
+studies = EvidenceIndex("data/evidence/2026-11-16")
+for report in studies.reports:
+    print(report["model"]["id"], report["metrics"], report["limitations"])
+# downloaded = fetch_evidence(
+#     "https://osmsi.disobedientgeometry.com/evidence", "out/studies")
+```
+
+```bash
+osmsi evidence data/evidence/2026-11-16
+osmsi fetch-evidence https://osmsi.disobedientgeometry.com/evidence --output out/studies
+```
+
+The index binds each report to its SHA-256 byte digest and model identity.
+Downloads validate in a temporary directory before publishing the destination.
+Samples are rejected by default, and metric values may be negative or null.
 
 ## Validation and packaging
 

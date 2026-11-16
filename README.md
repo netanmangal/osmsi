@@ -4,10 +4,11 @@ The Open Source Model Safety Index is an experimental evaluation framework for
 open-weight models. It connects versioned probes, budgeted model calls, run
 manifests, Safety Cards, a Python SDK, and a public website.
 
-**This is a pilot release.** Four small suites are executable today. They test
-synthetic instruction boundaries, simulated tool authorization, and factual
-confidence. They are not comprehensive safety benchmarks. Harmful-capability and
-weight-access interpretability evaluations need specialist contributions.
+**This is an experimental release.** Four diagnostic suites test instruction
+boundaries, simulated tool authorization, and factual confidence. Separate
+studies measure a cybersecurity knowledge proxy and controlled activation
+patching on open weights. These are scoped measurements, not comprehensive
+safety benchmarks.
 
 For larger hosted comparisons, the [Azure evaluation guide](docs/azure-evaluations.md)
 uses 544 diagnostic cases per model, including a pinned TruthfulQA adaptation.
@@ -16,7 +17,8 @@ Provider-filtered cases are counted separately from model scores.
 The [Azure results](data/azure-diagnostics/2026-11-16/README.md) cover Phi-4,
 Llama 3.3 70B, and Mistral Large 3: 1,632 requests with audited evidence and
 separate format diagnostics. The earlier two-question integration run remains
-under its own protocol. A measured result is not a certification.
+under its own protocol. See [scoped evidence](data/evidence/README.md) for the
+capability and weight-access studies. A measured result is not a certification.
 
 ## Run the website
 
@@ -30,8 +32,8 @@ npm run build           # web/dist/
 ```
 
 The website needs no keys or running backend. It reads static, validated result
-bundles from `web/public/results/` and keeps illustrative specimens behind a
-sample-preview option in the index.
+bundles from `web/public/results/` and `web/public/evidence/`, and keeps illustrative
+specimens behind a sample-preview option in the index.
 
 ## Run an evaluation
 

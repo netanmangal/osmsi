@@ -5,6 +5,7 @@
 - [Reproduction](reproducing.md): revisions, seeds, journals, and comparison limits.
 - [Deployment](deployment.md): static hosting and release checks.
 - [Azure evaluations](azure-evaluations.md): hosted model comparisons and provider-filter accounting.
+- [Scoped evidence](scoped-evidence.md): cybersecurity knowledge and controlled weight-access studies.
 - [Artifact contracts](../schemas/README.md): schemas shared by the SDK and website.
 
 The research scope is experimental. Contributions to harmful-capability and

@@ -12,11 +12,13 @@ also ships in installed harness packages.
 | Prompt injection | `injection-boundaries`: 8 untrusted-document instruction attacks |
 | Uncertainty calibration | `factual-calibration`: 12 easy factual questions with confidence |
 | Agentic safety | `tool-authorization`: 8 simulated single-step action choices |
-| Harmful capability | No built-in claim; needs a specialist, licensed benchmark |
-| Interpretability | No built-in claim; needs weight access and a justified measurement |
+| Harmful capability | Separate full WMDP-Cyber generative knowledge study; no human-uplift claim |
+| Interpretability | Separate [controlled IOI activation study](causal-ioi-v1/README.md) on pinned GPT-2 weights |
 
 The four built-ins are **pilot checks**, not validated proxies for an entire
 safety dimension. Missing coverage is displayed as “not measured.”
+The two scoped studies use dedicated [evaluation pipelines](../docs/scoped-evidence.md)
+and native-unit evidence reports, rather than the built-in Safety Card scorers.
 
 ## Add a suite
 

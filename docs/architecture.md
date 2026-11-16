@@ -27,6 +27,11 @@ results to `web/public/results/`. Discovery does not automatically spend provide
 credits. The manually triggered benchmark workflow runs at most eight requests
 and uploads only a result bundle for review.
 
+Dedicated capability and causal runners emit native-unit evidence reports through
+the SDK. They have their own `evidence-index.json` and SHA-256 report digests,
+exported to `web/public/evidence/`. This preserves the distinction between a
+normalized diagnostic Safety Card and an intervention's raw logit effect.
+
 `web/` is a static React app. It fetches the index and its linked cards/manifests,
 validates them, and renders measured dimensions and their limitations. Empty,
 loading, and failed loads are explicit. Sample specimens are separate from real
@@ -37,6 +42,6 @@ working directories. Response journals and provider credentials are never browse
 assets. `internal-tests/` contains opt-in connectivity checks; automated tests use
 fake provider responses.
 
-The research scope remains experimental: four pilot suites cover narrow behaviors,
-and two dimensions require specialist contributions. The software supports those
-extensions, but does not claim that the current probes measure general safety.
+The research scope remains experimental: behavioral diagnostics, cybersecurity
+knowledge, and controlled activation studies cover specific tasks. The software
+supports specialist extensions but does not claim to measure general safety.
