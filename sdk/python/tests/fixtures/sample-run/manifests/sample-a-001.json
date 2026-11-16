@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "run_id": "sample-a-001",
+  "sample": true,
+  "model": {
+    "id": "specimen-a",
+    "revision": "synthetic-fixture-v1"
+  },
+  "harness": {
+    "version": "fixture-only",
+    "revision": "synthetic-fixture-v1"
+  },
+  "started_at": "2026-01-01T00:00:00Z",
+  "completed_at": "2026-01-01T00:00:01Z",
+  "seed": 42,
+  "parameters": {
+    "temperature": 0
+  },
+  "suites": [
+    {
+      "id": "sample-calibration",
+      "dimension": "uc",
+      "version": "fixture-only",
+      "dataset_revision": "synthetic-fixture-v1",
+      "scoring_method": "illustrative; not measured",
+      "interval_method": "illustrative; not estimated",
+      "parameters": {}
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "run_id": "sample-a-001",
+  "sample": true,
+  "model": {
+    "id": "specimen-a",
+    "revision": "synthetic-fixture-v1"
+  },
+  "scores": [
+    {
+      "dimension": "uc",
+      "suite_id": "sample-calibration",
+      "value": 75,
+      "confidence_interval": {
+        "low": 70,
+        "high": 80,
+        "level": 0.95
+      }
+    }
+  ],
+  "concerns": [
+    "Synthetic fixture; no evaluation was performed."
+  ],
+  "strengths": []
+}

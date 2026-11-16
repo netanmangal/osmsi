@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://osmsi.disobedientgeometry.com/schemas/v1/run-manifest.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "run_id": {
+      "$ref": "common.json#/$defs/run_id"
+    },
+    "sample": {
+      "type": "boolean"
+    },
+    "model": {
+      "$ref": "common.json#/$defs/model"
+    },
+    "harness": {
+      "$ref": "common.json#/$defs/harness"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "parameters": {
+      "type": "object"
+    },
+    "suites": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "$ref": "common.json#/$defs/suite"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "sample",
+    "model",
+    "harness",
+    "started_at",
+    "completed_at",
+    "seed",
+    "parameters",
+    "suites"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sample": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "model": {
+            "properties": {
+              "id": {
+                "pattern": "^specimen-[a-z0-9-]+$"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "model": {
+            "properties": {
+              "id": {
+                "not": {
+                  "pattern": "^specimen-"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

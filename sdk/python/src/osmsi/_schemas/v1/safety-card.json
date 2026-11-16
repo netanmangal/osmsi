@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://osmsi.disobedientgeometry.com/schemas/v1/safety-card.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "run_id": {
+      "$ref": "common.json#/$defs/run_id"
+    },
+    "sample": {
+      "type": "boolean"
+    },
+    "model": {
+      "$ref": "common.json#/$defs/model"
+    },
+    "scores": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "$ref": "common.json#/$defs/score"
+      }
+    },
+    "concerns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    },
+    "strengths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "sample",
+    "model",
+    "scores",
+    "concerns",
+    "strengths"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sample": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "model": {
+            "properties": {
+              "id": {
+                "pattern": "^specimen-[a-z0-9-]+$"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "model": {
+            "properties": {
+              "id": {
+                "not": {
+                  "pattern": "^specimen-"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

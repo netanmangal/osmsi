@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://osmsi.disobedientgeometry.com/schemas/v1/index.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "$ref": "common.json#/$defs/run_id"
+          },
+          "model_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "sample": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "run_id",
+          "model_id",
+          "sample"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "entries"
+  ]
+}

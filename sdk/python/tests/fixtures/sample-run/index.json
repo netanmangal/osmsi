@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "entries": [
+    {
+      "run_id": "sample-a-001",
+      "model_id": "specimen-a",
+      "sample": true
+    }
+  ]
+}

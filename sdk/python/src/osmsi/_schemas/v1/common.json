@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://osmsi.disobedientgeometry.com/schemas/v1/common.json",
+  "$defs": {
+    "run_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"
+    },
+    "dimension": {
+      "enum": [
+        "jb",
+        "hc",
+        "pi",
+        "uc",
+        "ag",
+        "in"
+      ]
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "revision"
+      ]
+    },
+    "harness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "version",
+        "revision"
+      ]
+    },
+    "score": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dimension": {
+          "$ref": "common.json#/$defs/dimension"
+        },
+        "suite_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "confidence_interval": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "low": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "high": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "level": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "exclusiveMaximum": 1
+            }
+          },
+          "required": [
+            "low",
+            "high",
+            "level"
+          ]
+        }
+      },
+      "required": [
+        "dimension",
+        "suite_id",
+        "value",
+        "confidence_interval"
+      ]
+    },
+    "suite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "dimension": {
+          "$ref": "common.json#/$defs/dimension"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "dataset_revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "scoring_method": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "interval_method": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "parameters": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "dimension",
+        "version",
+        "dataset_revision",
+        "scoring_method",
+        "interval_method",
+        "parameters"
+      ]
+    }
+  }
+}
