@@ -41,6 +41,14 @@ export interface PublishedRun { card: CardArtifact; manifest: ManifestArtifact }
 export function isClosedReference(modelId: string): boolean {
   return ["gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4o", "grok-4-1-fast-non-reasoning"].includes(modelId);
 }
+export function reanalysisInfo(manifest: ManifestArtifact): { source_run_id: string; retained_completed_cases: number } | null {
+  const metadata = manifest.parameters.provider_metadata;
+  if (!metadata || typeof metadata !== "object" || !("journal_reanalysis" in metadata)) return null;
+  const value = metadata.journal_reanalysis;
+  if (!value || typeof value !== "object" || !("source_run_id" in value) || !("retained_completed_cases" in value)) return null;
+  return typeof value.source_run_id === "string" && typeof value.retained_completed_cases === "number"
+    ? { source_run_id: value.source_run_id, retained_completed_cases: value.retained_completed_cases } : null;
+}
 export function providerBlocks(manifest: ManifestArtifact): number {
   const value = manifest.parameters.provider_blocked_requests;
   return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : 0;
@@ -58,7 +66,8 @@ export function protocolKey(manifest: ManifestArtifact): string {
 }
 export function protocolLabel(manifest: ManifestArtifact): string {
   return [...manifest.suites, ...unmeasuredSuites(manifest)].some((suite) => suite.id.includes("expanded"))
-    ? "Expanded cloud diagnostics" : manifest.suites.map((suite) => suite.id).join(", ");
+    ? reanalysisInfo(manifest) ? "544-case cloud comparison" : "Expanded cloud diagnostics"
+    : manifest.suites.map((suite) => suite.id).join(", ");
 }
 export function describeScope(manifest: ManifestArtifact): string {
   const pilot = manifest.suites.some((suite) => suite.parameters.maturity !== "reviewed");

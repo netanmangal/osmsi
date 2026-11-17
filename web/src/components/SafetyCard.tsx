@@ -1,13 +1,14 @@
 import { DIMENSIONS, REPO_URL } from "@/lib/data";
 import { useResults } from "@/lib/results";
-import { describeScope, isClosedReference, providerBlocks, unmeasuredSuites, type Score } from "@/lib/artifacts";
+import { describeScope, isClosedReference, providerBlocks, reanalysisInfo, unmeasuredSuites, type Score } from "@/lib/artifacts";
 import RadarSVG from "@/components/RadarSVG";
 import SectionHead from "@/components/SectionHead";
 import { Badge } from "@/components/ui/badge";
 
 export default function SafetyCard() {
   const results = useResults();
-  const runs = results.runs.filter((entry) => !entry.card.sample);
+  const runs = results.runs.filter((entry) => !entry.card.sample)
+    .sort((a, b) => b.manifest.completed_at.localeCompare(a.manifest.completed_at));
   const run = runs.find((entry) => entry.card.run_id === results.selectedRun) ?? runs[0];
   if (!run) return <section id="cards" className="scroll-mt-20 px-(--pad-x) py-(--section-gap)">
     <SectionHead clause="04 · safety cards" title="A number, with its evidence."
@@ -23,6 +24,7 @@ export default function SafetyCard() {
   const concerns = run.card.concerns;
   const strengths = run.card.strengths ?? [];
   const title = run.card.model.id;
+  const reanalysis = reanalysisInfo(run.manifest);
 
   return (
     <section id="cards" className="scroll-mt-20 px-(--pad-x) py-(--section-gap)">
@@ -90,6 +92,10 @@ export default function SafetyCard() {
                 <p className="text-ink-dim">{suite.scoring_method}; {suite.interval_method}</p>
               </li>)}</ul>
               <p className="text-ink-mute mt-4 break-all font-mono text-xs">Harness {run.manifest.harness.version} · seed {run.manifest.seed} · completed {run.manifest.completed_at}</p>
+              {reanalysis && <p className="text-ink-dim mt-3 break-words text-sm">
+                {reanalysis.retained_completed_cases} responses retained from {reanalysis.source_run_id}.
+                {" "}This analysis is not an independent rerun; source hashes are in the manifest.
+              </p>}
             </details>}
             {<div className="mt-6 flex flex-wrap gap-4">
               <a href={`/results/cards/${run.card.run_id}.json`} download className="mono-label text-cobalt">Download card ↗</a>
