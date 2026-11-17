@@ -55,7 +55,7 @@ export function protocolKey(manifest: ManifestArtifact): string {
 }
 export function protocolLabel(manifest: ManifestArtifact): string {
   return [...manifest.suites, ...unmeasuredSuites(manifest)].some((suite) => suite.id.includes("expanded"))
-    ? "Expanded Azure diagnostics" : manifest.suites.map((suite) => suite.id).join(", ");
+    ? "Expanded cloud diagnostics" : manifest.suites.map((suite) => suite.id).join(", ");
 }
 export function describeScope(manifest: ManifestArtifact): string {
   const pilot = manifest.suites.some((suite) => suite.parameters.maturity !== "reviewed");
@@ -116,6 +116,9 @@ export async function loadResults(signal?: AbortSignal): Promise<PublishedRun[]>
     return response.json() as Promise<unknown>;
   };
   const index = parseIndex(await read("index.json"));
+  if (index.entries.some((entry) => entry.sample)) {
+    throw new Error("Sample artifacts cannot be displayed on the production website.");
+  }
   // Load in modest batches so larger static indexes do not fan out unbounded requests.
   const runs: PublishedRun[] = [];
   for (let offset = 0; offset < index.entries.length; offset += 8) {

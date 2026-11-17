@@ -31,15 +31,22 @@ describe("shared artifact contracts", () => {
     expect(() => parseIndex({ ...indexFixture, schema_version: "2.0" })).toThrow();
   });
   it("loads linked artifacts and surfaces failed requests", async () => {
+    const index = structuredClone(indexFixture);
+    index.entries[0].sample = false;
+    index.entries[0].model_id = "measured-model";
     const fetcher = vi.fn()
-      .mockResolvedValueOnce({ ok: true, json: async () => indexFixture })
-      .mockResolvedValueOnce({ ok: true, json: async () => cardFixture })
-      .mockResolvedValueOnce({ ok: true, json: async () => manifestFixture });
+      .mockResolvedValueOnce({ ok: true, json: async () => index })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ ...cardFixture, sample: false, model: { ...cardFixture.model, id: "measured-model" } }) })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ ...manifestFixture, sample: false, model: { ...manifestFixture.model, id: "measured-model" } }) });
     vi.stubGlobal("fetch", fetcher);
     expect(await loadResults()).toHaveLength(1);
     expect(fetcher).toHaveBeenCalledTimes(3);
     fetcher.mockResolvedValueOnce({ ok: false, status: 503 });
     await expect(loadResults()).rejects.toThrow("503");
+  });
+  it("rejects sample indexes in the production loader", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => indexFixture }));
+    await expect(loadResults()).rejects.toThrow(/Sample artifacts/);
   });
   it("keeps different protocols separate and counts filtered-only suites in scope", () => {
     const run = parseRun(cardFixture, manifestFixture, parseIndex(indexFixture).entries[0]);

@@ -32,8 +32,8 @@ npm run build           # web/dist/
 ```
 
 The website needs no keys or running backend. It reads static, validated result
-bundles from `web/public/results/` and `web/public/evidence/`, and keeps illustrative
-specimens behind a sample-preview option in the index.
+bundles from `web/public/results/` and `web/public/evidence/`. Production displays
+measured results only. The index shows ten rows at a time; scroll for the rest.
 
 ## Run an evaluation
 

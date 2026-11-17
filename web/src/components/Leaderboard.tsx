@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { DIMENSIONS, SPECIMENS, type DimKey } from "@/lib/data";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { DIMENSIONS, type DimKey } from "@/lib/data";
 import { useResults } from "@/lib/results";
 import { describeScope, protocolKey, protocolLabel, providerBlocks } from "@/lib/artifacts";
 import { scrollToHash } from "@/lib/anim";
@@ -9,46 +9,44 @@ import RevisionCloud from "@/components/deco/RevisionCloud";
 import { Badge } from "@/components/ui/badge";
 
 type SortKey = DimKey | "name";
-type Row = { id: string; name: string; sample: boolean; published: boolean; scope: string; scores: Partial<Record<DimKey, number>> };
+type Row = { id: string; name: string; scope: string; scores: Partial<Record<DimKey, number>> };
 
 export default function Leaderboard() {
   const results = useResults();
-  const [preview, setPreview] = useState(false);
+  const tableRegion = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const [chosenProtocol, setChosenProtocol] = useState("");
   const protocols = useMemo(() => {
     const groups = new Map<string, { key: string; label: string; count: number }>();
-    results.runs.filter((run) => preview || !run.card.sample).forEach(({ manifest }) => {
+    results.runs.filter((run) => !run.card.sample).forEach(({ manifest }) => {
       const key = protocolKey(manifest);
       const group = groups.get(key);
       if (group) group.count++;
       else groups.set(key, { key, label: protocolLabel(manifest), count: 1 });
     });
     return [...groups.values()].sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
-  }, [results.runs, preview]);
+  }, [results.runs]);
   const activeProtocol = protocols.some((protocol) => protocol.key === chosenProtocol)
     ? chosenProtocol : protocols[0]?.key ?? "";
-  const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "name", dir: 1 });
+  const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "uc", dir: -1 });
   const rows = useMemo(() => {
-    const published: Row[] = results.runs.filter((run) => (preview || !run.card.sample)
+    const published: Row[] = results.runs.filter((run) => !run.card.sample
       && protocolKey(run.manifest) === activeProtocol).map(({ card, manifest }) => ({
-      id: card.run_id, name: card.model.id, sample: card.sample, published: true,
+      id: card.run_id, name: card.model.id,
       scope: `${describeScope(manifest)}${providerBlocks(manifest) ? ` · ${providerBlocks(manifest)} provider blocks` : ""}`,
       scores: Object.fromEntries(card.scores.map((score) => [score.dimension, score.value])),
     }));
-    const samples: Row[] = preview && !results.runs.some((run) => run.card.sample) ? SPECIMENS.map((specimen) => ({
-      id: specimen.id, name: specimen.name, sample: true, published: false,
-      scope: "format preview",
-      scores: Object.fromEntries(DIMENSIONS.map((dimension) => [dimension.key, specimen.scores[dimension.key].v])),
-    })) : [];
-    return [...published, ...samples].filter((row) => row.name.toLowerCase().includes(query.toLowerCase())).sort((a, b) => {
+    return published.filter((row) => row.name.toLowerCase().includes(query.toLowerCase())).sort((a, b) => {
       if (sort.key === "name") return a.name.localeCompare(b.name) * sort.dir;
       const first = a.scores[sort.key], second = b.scores[sort.key];
       if (first === undefined) return second === undefined ? a.name.localeCompare(b.name) : 1;
       if (second === undefined) return -1;
       return (first - second) * sort.dir || a.name.localeCompare(b.name);
     });
-  }, [results.runs, preview, query, sort, activeProtocol]);
+  }, [results.runs, query, sort, activeProtocol]);
+  useEffect(() => {
+    if (tableRegion.current) tableRegion.current.scrollTop = 0;
+  }, [query, sort, activeProtocol]);
   const changeSort = (key: SortKey) => setSort((current) => ({ key,
     dir: current.key === key ? (current.dir === 1 ? -1 : 1) : key === "name" ? 1 : -1 }));
   const ariaSort = (key: SortKey) => sort.key === key ? (sort.dir === 1 ? "ascending" : "descending") : undefined;
@@ -76,10 +74,6 @@ export default function Leaderboard() {
             <input value={query} onChange={(event) => setQuery(event.target.value)} type="search"
               placeholder="Model name" className="text-ink bg-paper w-64 max-w-full rounded-md border border-(--line-strong) px-3 py-2 font-sans text-sm normal-case tracking-normal" />
           </label>
-          <label className="text-ink-dim flex cursor-pointer items-center gap-2 py-2 text-sm">
-            <input type="checkbox" checked={preview} onChange={(event) => setPreview(event.target.checked)} />
-            Include sample specimens
-          </label>
           <a href="/results/index.json" download className="mono-label py-2 text-cobalt">Download index JSON ↗</a>
         </div>
         {results.status === "loading" && <p role="status" className="mt-6 text-ink-dim">Loading published results…</p>}
@@ -88,12 +82,20 @@ export default function Leaderboard() {
           <button type="button" onClick={results.retry} className="mt-2 cursor-pointer text-cobalt underline">Try again</button>
         </div>}
         {results.status === "ready" && !results.runs.some((run) => !run.card.sample) && <p className="mt-6 max-w-2xl text-ink-dim">
-          No reviewed model evaluations are published yet. You can inspect the format using sample specimens, or run the open pilot suites on your own backend.
+          No reviewed model evaluations are published yet.
         </p>}
-        {rows.length > 0 ? <div className="bg-blueprint-2 mt-8 overflow-x-auto rounded-xl border border-(--line) px-5 py-2 sm:px-7">
+        {rows.length > 0 && <p id="index-scroll-help" className="text-ink-dim mt-6 text-sm">
+          {rows.length > 10 ? `Top 10 of ${rows.length} matching runs are visible; scroll the table for the rest. ` : `${rows.length} matching runs. `}
+          Ordered by {sort.key === "name" ? "model name" : DIMENSIONS.find((d) => d.key === sort.key)?.name.toLowerCase()}
+          {sort.key === "name" ? "." : sort.dir === -1 ? ", highest first." : ", lowest first."}
+          {" "}This is a dimension-specific ordering, not an overall safety rank.
+        </p>}
+        {rows.length > 0 ? <div ref={tableRegion} role="region" aria-label="Model evaluation index"
+          aria-describedby="index-scroll-help" tabIndex={0}
+          className="bg-blueprint-2 mt-5 max-h-[53rem] overflow-auto rounded-xl border border-(--line) px-5 focus-visible:outline-2 focus-visible:outline-cobalt sm:px-7">
           <table className="w-full min-w-[880px] border-collapse">
-            <caption className="sr-only">Model safety measurements by dimension. Sample rows are illustrative.</caption>
-            <thead><tr className="border-b border-(--line-strong)">
+            <caption className="sr-only">Published model measurements by dimension, sorted by the selected column.</caption>
+            <thead className="bg-blueprint-2 sticky top-0 z-10"><tr className="h-12 border-b border-(--line-strong)">
               <th scope="col" aria-sort={ariaSort("name")} className="py-3 text-left">
                 <button onClick={() => changeSort("name")} className="mono-label cursor-pointer">Model {sort.key === "name" ? (sort.dir === 1 ? "↑" : "↓") : "↕"}</button>
               </th>
@@ -105,15 +107,15 @@ export default function Leaderboard() {
               </th>)}
               <th scope="col" className="mono-label py-3 pl-3 text-right">Evidence</th>
             </tr></thead>
-            <tbody>{rows.map((row) => <tr key={row.id} className="border-b border-(--line)">
-              <td className="py-4 pr-4"><span className="font-display block text-lg">{row.name}</span>
-                <span className="mono-label text-[0.6rem]">{row.sample ? "SAMPLE · illustrative" : row.scope}</span></td>
+            <tbody>{rows.map((row) => <tr key={row.id} className="h-20 border-b border-(--line)">
+              <td className="py-4 pr-4"><span title={row.name} className="font-display block max-w-80 truncate text-lg">{row.name}</span>
+                <span className="mono-label whitespace-nowrap text-[0.6rem]">{row.scope}</span></td>
               {DIMENSIONS.map((dimension) => <td key={dimension.key} className="tnum px-3 py-4 text-right font-mono text-sm">
                 {row.scores[dimension.key] === undefined ? <span className="text-ink-mute text-xs">not measured</span> : row.scores[dimension.key]!.toFixed(1)}
               </td>)}
-              <td className="py-4 pl-3 text-right">{row.published ? <button type="button" className="mono-label cursor-pointer text-cobalt underline" onClick={() => {
+              <td className="py-4 pl-3 text-right"><button type="button" className="mono-label cursor-pointer whitespace-nowrap text-cobalt underline" onClick={() => {
                 results.selectRun(row.id); scrollToHash("#cards");
-              }}>Inspect run ↗</button> : <span className="mono-label text-ink-mute">format only</span>}</td>
+              }}>Inspect run ↗</button></td>
             </tr>)}</tbody>
           </table>
         </div> : results.status === "ready" && query && <p className="mt-8 text-ink-dim">No models match this search.</p>}

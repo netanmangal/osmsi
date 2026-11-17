@@ -17,22 +17,36 @@ vi.mock("@/lib/preload", () => ({
 vi.mock("@/components/deco/BandScallop", () => ({ default: () => null }));
 vi.mock("@/components/deco/RevisionCloud", () => ({ default: () => null }));
 
-const run = parseRun(cardFixture, manifestFixture, {
+const sampleRun = parseRun(cardFixture, manifestFixture, {
   run_id: "sample-a-001", model_id: "specimen-a", sample: true,
 });
+const measuredModel = { ...sampleRun.card.model, id: "measured-model" };
+const run = { card: { ...sampleRun.card, sample: false, model: measuredModel },
+  manifest: { ...sampleRun.manifest, sample: false, model: measuredModel } };
 const state: ResultsState = { status: "ready", runs: [], selectRun: vi.fn(), retry: vi.fn() };
 
 describe("result presentation", () => {
-  it("keeps sample rows behind an explicit preview choice", () => {
-    render(<ResultsContext.Provider value={state}><Leaderboard /></ResultsContext.Provider>);
+  it("never offers sample specimens on production pages", () => {
+    render(<ResultsContext.Provider value={{ ...state, runs: [sampleRun] }}><Leaderboard /><SafetyCard /></ResultsContext.Provider>);
     expect(screen.getByText(/No reviewed model evaluations/)).toBeInTheDocument();
     expect(screen.queryByRole("table")).not.toBeInTheDocument();
-    fireEvent.click(screen.getByLabelText("Include sample specimens"));
-    expect(screen.getByRole("table")).toBeInTheDocument();
-    expect(screen.getByText("Specimen A")).toBeInTheDocument();
-    fireEvent.change(screen.getByRole("searchbox"), { target: { value: "Specimen F" } });
-    expect(screen.getByText("Specimen F")).toBeInTheDocument();
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
     expect(screen.queryByText("Specimen A")).not.toBeInTheDocument();
+    expect(screen.getByText(/No measured cards/)).toBeInTheDocument();
+  });
+  it("keeps every measured row searchable in a keyboard-scrollable index", () => {
+    const runs = Array.from({ length: 25 }, (_, i) => ({ ...run, card: { ...run.card,
+      run_id: `measured-${i}`, model: { ...run.card.model, id: `Model ${String(i).padStart(2, "0")}` },
+      scores: run.card.scores.map((score) => ({ ...score, value: i })),
+    } }));
+    render(<ResultsContext.Provider value={{ ...state, runs }}><Leaderboard /></ResultsContext.Provider>);
+    expect(screen.getByText(/Top 10 of 25/)).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Model evaluation index" })).toHaveAttribute("tabindex", "0");
+    expect(screen.getAllByRole("row")).toHaveLength(26);
+    expect(screen.getAllByRole("row")[1]).toHaveTextContent("Model 24");
+    fireEvent.change(screen.getByRole("searchbox"), { target: { value: "Model 00" } });
+    expect(screen.getAllByRole("row")).toHaveLength(2);
+    expect(screen.getByText("Model 00")).toBeInTheDocument();
   });
   it("renders explicit missing measurements and downloadable provenance", () => {
     render(<ResultsContext.Provider value={{ ...state, runs: [run] }}><SafetyCard /></ResultsContext.Provider>);
