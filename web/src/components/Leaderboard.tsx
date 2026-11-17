@@ -111,7 +111,7 @@ export default function Leaderboard() {
         {rows.length > 0 ? <div ref={tableRegion} role="region" aria-label="Model evaluation index"
           aria-describedby="index-scroll-help" tabIndex={0} data-lenis-prevent
           style={{ maxHeight: tableHeight }}
-          className="bg-blueprint-2 mt-5 max-h-[53rem] overflow-auto rounded-xl border border-(--line) px-5 focus-visible:outline-2 focus-visible:outline-cobalt sm:px-7">
+          className="bg-blueprint-2 relative z-10 mt-5 max-h-[53rem] scroll-mt-20 overflow-auto rounded-xl border border-(--line) px-5 focus-visible:outline-2 focus-visible:outline-cobalt sm:px-7">
           <table className="w-full min-w-[880px] border-collapse">
             <caption className="sr-only">Published model measurements by dimension, sorted by the selected column.</caption>
             <thead className="bg-blueprint-2 sticky top-0 z-10"><tr className="h-12 border-b border-(--line-strong)">

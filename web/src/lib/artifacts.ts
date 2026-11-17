@@ -39,7 +39,8 @@ export interface ManifestArtifact {
 }
 export interface PublishedRun { card: CardArtifact; manifest: ManifestArtifact }
 export function isClosedReference(modelId: string): boolean {
-  return ["gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4o", "grok-4-1-fast-non-reasoning"].includes(modelId);
+  return ["gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4o", "grok-4-1-fast-non-reasoning",
+    "mistral-medium-2505"].includes(modelId);
 }
 export function reanalysisInfo(manifest: ManifestArtifact): { source_run_id: string; retained_completed_cases: number } | null {
   const metadata = manifest.parameters.provider_metadata;
