@@ -33,11 +33,15 @@ export default function Leaderboard() {
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "uc", dir: -1 });
   const rows = useMemo(() => {
     const published: Row[] = results.runs.filter((run) => !run.card.sample
-      && protocolKey(run.manifest) === activeProtocol).map(({ card, manifest }) => ({
-      id: card.run_id, name: card.model.id,
-      scope: `${isClosedReference(card.model.id) ? "closed reference · " : ""}${describeScope(manifest)}${supplementFor({ card, manifest }, results.runs) ? " + 192 supplement" : ""}${providerBlocks(manifest) ? ` · ${providerBlocks(manifest)} provider blocks` : ""}`,
-      scores: Object.fromEntries(displayedScores({ card, manifest }, results.runs).map((score) => [score.dimension, score.value])),
-    }));
+      && protocolKey(run.manifest) === activeProtocol).map(({ card, manifest }) => {
+      const supplement = supplementFor({ card, manifest }, results.runs);
+      const blocked = providerBlocks(manifest) + (supplement ? providerBlocks(supplement.manifest) : 0);
+      return {
+        id: card.run_id, name: card.model.id,
+        scope: `${isClosedReference(card.model.id) ? "closed reference · " : ""}${describeScope(manifest)}${supplement ? " + 192 supplement" : ""}${blocked ? ` · ${blocked} provider blocks` : ""}`,
+        scores: Object.fromEntries(displayedScores({ card, manifest }, results.runs).map((score) => [score.dimension, score.value])),
+      };
+    });
     return published.filter((row) => row.name.toLowerCase().includes(query.toLowerCase())).sort((a, b) => {
       if (sort.key === "name") return a.name.localeCompare(b.name) * sort.dir;
       const first = a.scores[sort.key], second = b.scores[sort.key];

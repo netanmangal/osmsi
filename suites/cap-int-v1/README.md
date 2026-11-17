@@ -30,8 +30,12 @@ Uniform random guessing gives an arithmetic 25% reference, not a measured
 baseline. Wilson 95% intervals describe the observed cases; shared synthetic
 templates, benchmark contamination, and provider selection limit inference.
 
-The protocol is fixed before calls: temperature 0, seed 41, maximum 2,048 output
-tokens, four in-flight requests per model, at least two seconds between starts.
+The inference protocol is fixed before calls: temperature 0, seed 41, maximum
+2,048 output tokens. Execution began with four in-flight requests per model
+and at least two seconds between starts. Remaining Azure runs were stopped
+and resumed with eight workers; uncertain starts count against the same budget.
+Rate-limited Superlinked resumptions use a six-second minimum interval.
+Execution receipts preserve these scheduling changes; completed answers are retained.
 The larger output budget allows room for reasoning; reaching it still counts
 as an observed failure if no exact answer is returned. Maximum 224 attempts
 per model includes retries; 28 models have a maximum 6,272 attempts.
