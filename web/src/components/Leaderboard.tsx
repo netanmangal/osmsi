@@ -17,9 +17,14 @@ export default function Leaderboard() {
   const [tableHeight, setTableHeight] = useState<number>();
   const [query, setQuery] = useState("");
   const [chosenProtocol, setChosenProtocol] = useState("");
+  const indexedRuns = useMemo(() => results.runs.filter((run) => {
+    if (run.card.sample) return false;
+    const scores = displayedScores(run, results.runs);
+    return scores.length === 0 || scores.some((score) => score.value !== 0);
+  }), [results.runs]);
   const protocols = useMemo(() => {
     const groups = new Map<string, { key: string; label: string; count: number; supplement: boolean }>();
-    results.runs.filter((run) => !run.card.sample).forEach(({ manifest }) => {
+    indexedRuns.forEach(({ manifest }) => {
       const key = protocolKey(manifest);
       const group = groups.get(key);
       if (group) group.count++;
@@ -27,13 +32,13 @@ export default function Leaderboard() {
     });
     return [...groups.values()].sort((a, b) => b.count - a.count
       || Number(a.supplement) - Number(b.supplement) || a.label.localeCompare(b.label));
-  }, [results.runs]);
+  }, [indexedRuns]);
   const activeProtocol = protocols.some((protocol) => protocol.key === chosenProtocol)
     ? chosenProtocol : protocols[0]?.key ?? "";
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "uc", dir: -1 });
   const rows = useMemo(() => {
-    const published: Row[] = results.runs.filter((run) => !run.card.sample
-      && protocolKey(run.manifest) === activeProtocol).map(({ card, manifest }) => {
+    const published: Row[] = indexedRuns.filter((run) =>
+      protocolKey(run.manifest) === activeProtocol).map(({ card, manifest }) => {
       const supplement = supplementFor({ card, manifest }, results.runs);
       const blocked = providerBlocks(manifest) + (supplement ? providerBlocks(supplement.manifest) : 0);
       return {
@@ -49,7 +54,7 @@ export default function Leaderboard() {
       if (second === undefined) return -1;
       return (first - second) * sort.dir || a.name.localeCompare(b.name);
     });
-  }, [results.runs, query, sort, activeProtocol]);
+  }, [indexedRuns, results.runs, query, sort, activeProtocol]);
   useEffect(() => {
     if (tableRegion.current) tableRegion.current.scrollTop = 0;
   }, [query, sort, activeProtocol]);
@@ -82,7 +87,7 @@ export default function Leaderboard() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHead clause="05 · the index" title="The index, sorted your way."
             lead="Compare the measured dimensions. Read the run behind each number. Missing measurements stay missing; there is no overall safety rank." />
-          <Badge variant="stamp">{results.runs.filter((run) => !run.card.sample && protocolKey(run.manifest) === activeProtocol).length} measured runs</Badge>
+          <Badge variant="stamp">{indexedRuns.filter((run) => protocolKey(run.manifest) === activeProtocol).length} measured runs</Badge>
         </div>
         <div className="mt-10 flex flex-wrap items-end gap-5">
           {protocols.length > 0 && <label className="mono-label flex max-w-full flex-col gap-2">
@@ -150,7 +155,7 @@ export default function Leaderboard() {
           </table>
         </div> : results.status === "ready" && query && <p className="mt-8 text-ink-dim">No models match this search.</p>}
         <p className="text-ink-mute mt-8 max-w-[70ch] font-mono text-xs leading-relaxed">
-          Each view uses a shared evaluation protocol. Scores apply to unblocked responses and include output-format failures; provider filters may leave different scored subsets. These are research artifacts, not certifications. Review each card’s evidence before comparing results.
+          Runs with zero in every measured dimension are omitted from this index; their cards and downloadable records remain available. Each view uses a shared evaluation protocol. Scores apply to unblocked responses and include output-format failures; provider filters may leave different scored subsets. These are research artifacts, not certifications. Review each card’s evidence before comparing results.
         </p>
       </div>
     </section>

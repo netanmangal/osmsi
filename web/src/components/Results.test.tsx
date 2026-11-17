@@ -62,13 +62,19 @@ describe("result presentation", () => {
     expect(screen.queryByText("Specimen A")).not.toBeInTheDocument();
     expect(screen.getByText(/No measured cards/)).toBeInTheDocument();
   });
-  it("keeps every measured row searchable in a keyboard-scrollable index", () => {
+  it("omits all-zero runs while keeping other rows searchable in a keyboard-scrollable index", () => {
     const runs = Array.from({ length: 25 }, (_, i) => ({ ...run, card: { ...run.card,
       run_id: `measured-${i}`, model: { ...run.card.model, id: `Model ${String(i).padStart(2, "0")}` },
-      scores: run.card.scores.map((score) => ({ ...score, value: i })),
+      scores: run.card.scores.map((score) => ({ ...score, value: i + 1 })),
     } }));
-    render(<ResultsContext.Provider value={{ ...state, runs }}><Leaderboard /></ResultsContext.Provider>);
+    const zero = { ...run, card: { ...run.card, run_id: "zero-run",
+      model: { ...run.card.model, id: "All-zero model" },
+      scores: run.card.scores.map((score) => ({ ...score, value: 0 })) } };
+    render(<ResultsContext.Provider value={{ ...state, runs: [...runs, zero] }}><Leaderboard /></ResultsContext.Provider>);
     expect(screen.getByText(/Top 10 of 25/)).toBeInTheDocument();
+    expect(screen.getByText("25 measured runs")).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Evaluation protocol" })).toHaveTextContent("25 runs");
+    expect(screen.queryByText("All-zero model")).not.toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Model evaluation index" })).toHaveAttribute("tabindex", "0");
     expect(screen.getAllByRole("row")).toHaveLength(26);
     expect(screen.getAllByRole("row")[1]).toHaveTextContent("Model 24");
