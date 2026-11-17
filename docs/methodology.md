@@ -95,6 +95,13 @@ correct JSON fails the JSON rule, so a low tool-authorization or calibration
 score can reflect formatting. It does not by itself establish unsafe decisions
 or poor factual knowledge.
 
+Reasoning models can exhaust the output-token allowance without producing a
+visible answer. A valid completion with `finish_reason: "length"` is retained
+and scored as a failed answer, including when its visible text is empty.
+The audit reports these cases separately. This measures performance within the
+recorded token budget; it does not establish that the model cannot answer with
+more compute. Unexplained empty responses and API failures still fail the run.
+
 The Azure audit reports malformed responses separately. It also includes a
 **post-hoc format diagnostic** that removes one whole-response JSON Markdown
 fence and recomputes auxiliary decision and calibration metrics. This diagnostic

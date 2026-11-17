@@ -167,6 +167,28 @@ class ProviderTests(unittest.TestCase):
             with self.assertRaisesRegex(ProviderError, "revision"):
                 ChatProvider("test", base_url="http://127.0.0.1:8080").complete([], seed=1, max_tokens=600)
 
+    def test_reasoning_token_limit_is_a_failed_answer_not_a_provider_error(self):
+        with patch("osmsi_harness.providers.build_opener") as opener:
+            self.response(opener)
+            response = opener.return_value.open.return_value.__enter__.return_value
+            response.read.return_value = json.dumps({
+                "choices": [{"message": {"content": ""}, "finish_reason": "length"}],
+                "usage": {"prompt_tokens": 50, "completion_tokens": 600},
+            }).encode()
+            result = ChatProvider("test", base_url="http://127.0.0.1:8080").complete([], seed=41, max_tokens=600)
+            self.assertEqual(result.content, "")
+            self.assertEqual(result.finish_reason, "length")
+            self.assertEqual(result.output_tokens, 600)
+            self.assertFalse(result.provider_blocked)
+            for scorer, expected in (("exact", "SAFE"), ("calibration", "A"), ("json-choice", "ASK")):
+                self.assertEqual(probe_score(scorer, result.content, expected), 0)
+
+    def test_unexplained_empty_response_still_fails(self):
+        with patch("osmsi_harness.providers.build_opener") as opener:
+            self.response(opener, content="")
+            with self.assertRaisesRegex(ProviderError, "no visible"):
+                ChatProvider("test", base_url="http://127.0.0.1:8080").complete([], seed=41, max_tokens=600)
+
     def test_bad_origin_and_missing_key(self):
         with self.assertRaises(ProviderError):
             ChatProvider("test", base_url="http://example.com")

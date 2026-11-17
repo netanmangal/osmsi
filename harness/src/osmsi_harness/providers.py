@@ -141,7 +141,16 @@ class ChatProvider:
             return Completion("", self.revision, input_tokens=_tokens(usage.get("prompt_tokens")),
                               output_tokens=_tokens(usage.get("completion_tokens")),
                               finish_reason="content_filter", provider_blocked=True)
-        if not isinstance(content, str) or not content.strip():
+        # Reasoning can consume the entire output allowance without a visible
+        # answer. Preserve that valid, truncated completion for scoring instead
+        # of dropping a difficult case as a transport failure.
+        token_limit_empty = (isinstance(choice, dict) and isinstance(message, dict)
+                             and choice.get("finish_reason") == "length"
+                             and (content is None or isinstance(content, str))
+                             and not (content or "").strip())
+        if token_limit_empty:
+            content = content if isinstance(content, str) else ""
+        elif not isinstance(content, str) or not content.strip():
             raise ProviderError("Provider returned no visible completion.", credits=credits)
         observed = headers.get("X-Sie-Model-Revision")
         if self.revision and observed and self.revision != observed:
