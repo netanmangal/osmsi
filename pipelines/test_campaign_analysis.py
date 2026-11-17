@@ -1,4 +1,6 @@
 import json
+import hashlib
+from dataclasses import replace
 from pathlib import Path
 import tempfile
 import unittest
@@ -12,6 +14,30 @@ from analyze_azure_campaign import analyze, authorization_metrics, calibration_m
 
 
 class CalibrationAuditTests(unittest.TestCase):
+    def test_out_of_order_journal_uses_canonical_probe_order_for_intervals(self):
+        suites=[load_suite('factual-calibration')]
+        provider=demo_provider(suites)
+        original=provider.complete
+        count=0
+        def mixed(*args,**kwargs):
+            nonlocal count
+            completion=original(*args,**kwargs);count+=1
+            return replace(completion,content='invalid') if count%3 else completion
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            with patch.object(provider,'complete',side_effect=mixed):
+                bundle=evaluate(provider,suites,root/'mixed',run_id='mixed',max_requests=100)
+            journal=root/'mixed/journal.jsonl'
+            events=[json.loads(line) for line in journal.read_text().splitlines()]
+            pairs=[events[i:i+2] for i in range(0,len(events),2)]
+            reordered=pairs[1::2]+pairs[::2]
+            journal.write_text(''.join(json.dumps(event)+'\n' for pair in reordered for event in pair))
+            path=bundle/'manifests/mixed.json';manifest=json.loads(path.read_text())
+            manifest['parameters']['journal_sha256']=hashlib.sha256(journal.read_bytes()).hexdigest()
+            path.write_text(json.dumps(manifest))
+            with patch('analyze_azure_campaign.Index',side_effect=lambda p:Index(p,allow_samples=True)):
+                self.assertEqual(analyze(bundle,root,suites)['total_cases'],len(suites[0].probes))
+
     def test_accuracy_and_confidence_are_reported_separately_from_format(self):
         rows=[{'expected':'A','content':'{"answer":"A","confidence":0.9}'},
               {'expected':'A','content':'{"answer":"B","confidence":0.8}'},

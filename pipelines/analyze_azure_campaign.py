@@ -67,6 +67,21 @@ def analyze(bundle,journals,suites):
         raw=journal.read_bytes()
         if hashlib.sha256(raw).hexdigest()!=run.manifest.parameters['journal_sha256']:
             raise ArtifactError(f'Journal digest mismatch for {run.card.run_id}.')
+        reanalysis=run.manifest.parameters.get('provider_metadata',{}).get('journal_reanalysis')
+        if reanalysis:
+            digest=hashlib.sha256()
+            source_events=[]
+            for line in raw.splitlines(keepends=True):
+                digest.update(line)
+                source_events.append(json.loads(line))
+                if digest.hexdigest()==reanalysis['source_journal_sha256']:
+                    break
+            else:
+                raise ArtifactError('Retained journal prefix differs from the reanalysis source.')
+            source_latest={event['key']:event for event in source_events}
+            if (sum(e['type']=='start' for e in source_events)!=reanalysis['prior_attempts']
+                    or sum(e['type']=='complete' for e in source_latest.values())!=reanalysis['retained_completed_cases']):
+                raise ArtifactError('Reanalysis counts differ from retained source evidence.')
         latest={}
         for line in raw.decode('utf-8').splitlines():
             event=json.loads(line)
@@ -84,7 +99,10 @@ def analyze(bundle,journals,suites):
             raise ArtifactError('Manifest observations differ from the selected probe set.')
         by_suite={name:[] for name in definitions}
         recomputed={name:[] for name in definitions}
-        for key,event in latest.items():
+        # Bootstrap sampling is seeded over the suite's canonical probe order,
+        # not over request completion order (which can differ after resumption).
+        for key in lookup:
+            event=latest[key]
             suite,probe=lookup[key]
             completion=event['completion']
             blocked=completion.get('provider_blocked',False)
@@ -109,7 +127,8 @@ def analyze(bundle,journals,suites):
             unblocked=[row for row in records if not row['blocked']]
             item={'suite':name,'dimension':definitions[name].document['dimension'],'cases':len(records),
                   'provider_blocked':len(records)-len(unblocked),'unblocked':len(unblocked),
-                  'truncated_unblocked':sum(row['finish_reason']=='length' for row in unblocked)}
+                  'truncated_unblocked':sum(row['finish_reason']=='length' for row in unblocked),
+                  'empty_token_limit_unblocked':sum(row['finish_reason']=='length' and not row['content'].strip() for row in unblocked)}
             scorer=definitions[name].document['scorer']
             if scorer=='calibration': item['calibration']=calibration_metrics(unblocked)
             elif scorer=='json-choice':
@@ -131,7 +150,8 @@ def analyze(bundle,journals,suites):
             'requests_attempted':run.manifest.parameters['requests_attempted'],
             'observed_input_tokens':run.manifest.parameters['input_tokens_observed'],
             'observed_output_tokens':run.manifest.parameters['output_tokens_observed'],
-            'attempt_wall_seconds_including_pacing':{'median':median(latencies),'p95':latencies[min(len(latencies)-1,int(len(latencies)*.95))]},
+            'attempt_wall_seconds':{'median':median(latencies),'p95':latencies[min(len(latencies)-1,int(len(latencies)*.95))]},
+            'journal_reanalysis':reanalysis,
             'suites':suites_report})
     return {'models':results,'analysis_source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'comparisons':[{'left':left.card.run_id,'right':right.card.run_id,'dimensions':compare_runs(left,right)}
@@ -145,7 +165,8 @@ def analyze(bundle,journals,suites):
             'Variants share templates; intervals do not establish performance on independent threats.',
             'This is an adaptation of TruthfulQA, not its official metric.',
             'Harmful-capability uplift and weight-level interpretability remain unmeasured.',
-            'Attempt timing includes client pacing and is not an inference-server latency benchmark.',
+            'Empty answers at the output-token limit are failed answers, not provider blocks.',
+            'Attempt timing mixes sequential pacing and concurrent execution; it is not a server-latency benchmark.',
             'Token counts are provider-reported observations, not a complete Azure bill.']}
 
 
