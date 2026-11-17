@@ -15,6 +15,11 @@ covers **28 distinct models at 544 cases each**, using Azure Foundry and
 Superlinked. Closed-model references are labelled, provider blocks are separate
 from model scores, and the index shows ten rows at a time with the rest scrollable.
 
+The [CAP / INT supplement](data/cap-int/2026-11-17/README.md) adds **192 new
+cloud cases per model**: cybersecurity knowledge accuracy and a controlled
+rationale-check proxy. All 28 models have numbers in those columns. CAP is not
+a safety grade, and the INT proxy does not measure internal mechanisms.
+
 Three earlier Azure runs were rescored from retained responses; they are not
 independent reruns. The two-question integration pilot remains under its own
 protocol. See [scoped evidence](data/evidence/README.md) for the capability and
