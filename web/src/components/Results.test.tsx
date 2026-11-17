@@ -26,6 +26,14 @@ const run = { card: { ...sampleRun.card, sample: false, model: measuredModel },
 const state: ResultsState = { status: "ready", runs: [], selectRun: vi.fn(), retry: vi.fn() };
 
 describe("result presentation", () => {
+  it("defaults to DeepSeek-V4-Pro and honors an explicitly selected run", () => {
+    const deepseek = { ...run, card: { ...run.card, run_id: "deepseek-default",
+      model: { ...run.card.model, id: "DeepSeek-V4-Pro" } } };
+    const { rerender } = render(<ResultsContext.Provider value={{ ...state, runs: [run, deepseek] }}><SafetyCard /></ResultsContext.Provider>);
+    expect(screen.getByRole("combobox", { name: "Inspect a run" })).toHaveValue("deepseek-default");
+    rerender(<ResultsContext.Provider value={{ ...state, runs: [run, deepseek], selectedRun: run.card.run_id }}><SafetyCard /></ResultsContext.Provider>);
+    expect(screen.getByRole("combobox", { name: "Inspect a run" })).toHaveValue(run.card.run_id);
+  });
   it("never offers sample specimens on production pages", () => {
     render(<ResultsContext.Provider value={{ ...state, runs: [sampleRun] }}><Leaderboard /><SafetyCard /></ResultsContext.Provider>);
     expect(screen.getByText(/No reviewed model evaluations/)).toBeInTheDocument();

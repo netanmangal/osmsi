@@ -9,7 +9,9 @@ export default function SafetyCard() {
   const results = useResults();
   const runs = results.runs.filter((entry) => !entry.card.sample)
     .sort((a, b) => b.manifest.completed_at.localeCompare(a.manifest.completed_at));
-  const run = runs.find((entry) => entry.card.run_id === results.selectedRun) ?? runs[0];
+  const run = runs.find((entry) => entry.card.run_id === results.selectedRun)
+    ?? runs.find((entry) => entry.card.model.id.toLowerCase() === "deepseek-v4-pro")
+    ?? runs[0];
   if (!run) return <section id="cards" className="scroll-mt-20 px-(--pad-x) py-(--section-gap)">
     <SectionHead clause="04 · safety cards" title="A number, with its evidence."
       lead="Each card links a model revision to its measured evaluation results." />
