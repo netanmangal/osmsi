@@ -47,9 +47,9 @@ def fetch_index(base_url: str, destination: str | Path, *,
                 document = json.loads(content)
         except (HTTPError, URLError, OSError, ValueError, http.client.HTTPException):
             raise ArtifactError(f"Could not fetch valid JSON for {relative}.") from None
-        return document
+        return document, content
 
-    index = download("index.json")
+    index, index_bytes = download("index.json")
     validate_artifact("index", index)
     if len(index["entries"]) > max_runs:
         raise ArtifactError("Remote index exceeds max_runs; increase the limit explicitly.")
@@ -63,10 +63,12 @@ def fetch_index(base_url: str, destination: str | Path, *,
         for entry in index["entries"]:
             for folder, kind in (("cards", "safety-card"), ("manifests", "run-manifest")):
                 relative = f"{folder}/{entry['run_id']}.json"
-                document = download(relative)
+                document, content = download(relative)
                 validate_artifact(kind, document)
-                (staged / relative).write_text(json.dumps(document, allow_nan=False), encoding="utf-8")
-        (staged / "index.json").write_text(json.dumps(index), encoding="utf-8")
+                # Retain exact source bytes: linked supplements authenticate the
+                # original manifest's digest, including its serialization.
+                (staged / relative).write_bytes(content)
+        (staged / "index.json").write_bytes(index_bytes)
         Index(staged, allow_samples=allow_samples)
         staged.rename(destination)
     return Index(destination, allow_samples=allow_samples)

@@ -70,6 +70,10 @@ class DownloadTests(unittest.TestCase):
             index = fetch_index("https://example.com/results", Path(temp) / "bundle", allow_samples=True)
             self.assertEqual(index.runs[0].card.model.id, "specimen-a")
             self.assertEqual(opener.return_value.open.call_count, 3)
+            for relative, content in zip(
+                    ["index.json", "cards/sample-a-001.json", "manifests/sample-a-001.json"],
+                    documents):
+                self.assertEqual((Path(temp) / "bundle" / relative).read_bytes(), content)
 
     def test_remote_samples_fail_before_downloading_cards(self):
         with tempfile.TemporaryDirectory() as temp, patch("osmsi.remote.build_opener") as opener:

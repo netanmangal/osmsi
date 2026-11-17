@@ -65,7 +65,7 @@ class Index:
     """A validated local index. Constructing it checks every referenced run."""
 
     def __init__(self, root: str | Path, *, allow_samples: bool = False):
-        self._root = Path(root)
+        self._root = Path(root).resolve()
         document = read_artifact(artifact_path(root, "index.json"), "index")
         runs = []
         for entry in document["entries"]:
