@@ -1,11 +1,13 @@
 # Interpretability
 
-No built-in score is claimed for this dimension. The hosted chat adapter has no
-access to weights or activations; asking a model to explain itself is not a
-mechanistic interpretability measurement.
+The hosted chat adapter has no access to weights or activations. The index's
+[64-case rationale check](../cap-int-v1/README.md) is explicitly a behavioral
+proxy: selecting the correct explanation of a controlled toy mechanism.
+It does not establish mechanistic interpretability or faithful hidden reasoning.
 
 The artifact contract supports dimension `in`. A contribution should specify the
 weight revision, activation collection procedure, probe or circuit method, and
 what its normalized score actually means. External results can be validated and
-published through the same pipeline. Until such evidence exists, cards show this
-dimension as not measured.
+published through the same pipeline. The separate
+[controlled activation study](../causal-ioi-v1/README.md) reports native causal
+effects; those effects are not normalized into the hosted-model score.
