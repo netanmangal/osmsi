@@ -1,7 +1,7 @@
 # OSMSI
 
 The Open Source Model Safety Index is an experimental evaluation framework for
-open-weight models. It connects versioned probes, budgeted model calls, run
+open-weight models, with labelled closed-model references. It connects versioned probes, budgeted model calls, run
 manifests, Safety Cards, a Python SDK, and a public website.
 
 **This is an experimental release.** Four diagnostic suites test instruction
@@ -10,15 +10,16 @@ studies measure a cybersecurity knowledge proxy and controlled activation
 patching on open weights. These are scoped measurements, not comprehensive
 safety benchmarks.
 
-For larger hosted comparisons, the [Azure evaluation guide](docs/azure-evaluations.md)
-uses 544 diagnostic cases per model, including a pinned TruthfulQA adaptation.
-Provider-filtered cases are counted separately from model scores.
+The current [cloud comparison](data/cloud-diagnostics/2026-11-17/README.md)
+covers **28 distinct models at 544 cases each**, using Azure Foundry and
+Superlinked. Closed-model references are labelled, provider blocks are separate
+from model scores, and the index shows ten rows at a time with the rest scrollable.
 
-The [Azure results](data/azure-diagnostics/2026-11-16/README.md) cover Phi-4,
-Llama 3.3 70B, and Mistral Large 3: 1,632 requests with audited evidence and
-separate format diagnostics. The earlier two-question integration run remains
-under its own protocol. See [scoped evidence](data/evidence/README.md) for the
-capability and weight-access studies. A measured result is not a certification.
+Three earlier Azure runs were rescored from retained responses; they are not
+independent reruns. The two-question integration pilot remains under its own
+protocol. See [scoped evidence](data/evidence/README.md) for the capability and
+weight-access studies, or the [cloud guide](docs/cloud-evaluations.md) to run a
+campaign. A measured result is not a certification.
 
 ## Run the website
 

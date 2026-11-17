@@ -17,6 +17,146 @@
       "sample": false
     },
     {
+      "run_id": "cloud-cohere-command-a-20261117",
+      "model_id": "cohere-command-a",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-deepseek-v3-2-20261117",
+      "model_id": "DeepSeek-V3.2",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-deepseek-v3-2-speciale-20261117",
+      "model_id": "DeepSeek-V3.2-Speciale",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-deepseek-v4-1-flash-1017-20261117",
+      "model_id": "DeepSeek-V4.1-Flash-1017",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-deepseek-v4-flash-20261117",
+      "model_id": "DeepSeek-V4-Flash",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-deepseek-v4-pro-20261117",
+      "model_id": "DeepSeek-V4-Pro",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-glm53-flash-20261117",
+      "model_id": "zai-org/GLM-5.3-Flash:relay",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-gpt-4-1-20261117",
+      "model_id": "gpt-4.1",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-gpt-4-1-mini-20261117",
+      "model_id": "gpt-4.1-mini",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-gpt-4-1-nano-20261117",
+      "model_id": "gpt-4.1-nano",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-gpt-4o-20261117",
+      "model_id": "gpt-4o",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-gpt-oss-120b-20261117",
+      "model_id": "gpt-oss-120b",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-grok-4-1-fast-non-reasoning-20261117",
+      "model_id": "grok-4-1-fast-non-reasoning",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-kimi-k2-6-20261117",
+      "model_id": "Kimi-K2.6",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-kimi-k2-7-code-20261117",
+      "model_id": "Kimi-K2.7-Code",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-kimi-k25-20261117",
+      "model_id": "Kimi-K2.5",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-kimi-k3-1-pro-20261117",
+      "model_id": "Kimi-K3.1-Pro",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-llama-4-maverick-17b-128e-instruct-fp8-20261117",
+      "model_id": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-mistral-medium-2505-20261117",
+      "model_id": "mistral-medium-2505",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-mistral-medium-3-5-20261117",
+      "model_id": "mistral-medium-3-5",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-phi-4-mini-reasoning-20261117",
+      "model_id": "Phi-4-mini-reasoning",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-phi-4-multimodal-instruct-20261117",
+      "model_id": "Phi-4-multimodal-instruct",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-phi-4-reasoning-20261117",
+      "model_id": "Phi-4-reasoning",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-qwen35-4b-20261117",
+      "model_id": "Qwen/Qwen3.5-4B",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-qwen38-27b-20261117",
+      "model_id": "Qwen/Qwen3.8-27B-FP8",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-reanalysis-azure-llama33-diagnostics-20261116",
+      "model_id": "Llama-3.3-70B-Instruct",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-reanalysis-azure-mistral3-diagnostics-20261116",
+      "model_id": "Mistral-Large-3",
+      "sample": false
+    },
+    {
+      "run_id": "cloud-reanalysis-azure-phi4-diagnostics-20261116",
+      "model_id": "Phi-4",
+      "sample": false
+    },
+    {
       "run_id": "pilot-qwen35-4b-20261116",
       "model_id": "Qwen/Qwen3.5-4B",
       "sample": false
