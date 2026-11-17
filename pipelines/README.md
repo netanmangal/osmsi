@@ -12,6 +12,11 @@ through the SDK, and compares compatible runs. `analyze_azure_campaign.py` check
 journal hashes and separates provider blocks, malformed formats, tool-decision
 errors, and confidence calibration. Raw responses remain private.
 
+`evaluate_cloud.py` extends this workflow to mixed Azure and Superlinked
+campaigns. `resume_cloud_parallel.py` resumes a stopped run with bounded
+concurrency and an unchanged evaluation protocol. See
+[cloud evaluations](../docs/cloud-evaluations.md) for configuration and budgets.
+
 `evaluate_wmdp.py` runs the full pinned cybersecurity knowledge split.
 `evaluate_causal_ioi.py` performs controlled interventions on local GPT-2 weights.
 `audit_scoped_evidence.py` independently recomputes their published statistics;
