@@ -255,7 +255,8 @@ def main():
     p.add_argument("--models", type=Path, required=True)
     p.add_argument("--cases", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
-    p.add_argument("--device", choices=["cpu", "mps"], default="mps")
+    p.add_argument("--device", choices=["cpu", "cuda", "mps"], default="cuda",
+                   help="Run on a cloud machine. Apple MPS requires explicit user authorization.")
     p.add_argument("--batch-size", type=int, choices=[8, 16, 32], default=16)
     args = p.parse_args()
     models, document = json.loads(args.models.read_text()), json.loads(args.cases.read_text())

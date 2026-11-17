@@ -8,9 +8,11 @@ provides a general interpretability grade. Read the
 
 ## Environment
 
-The measured run used Python 3.14 and the pinned optional dependencies below.
-The SDK itself still supports Python 3.10+. Weight experiments use CPU or Apple
-MPS; they do not require a cloud GPU. Install from the repository root:
+The historical measured run used Python 3.14 and the pinned optional dependencies
+below. The SDK itself still supports Python 3.10+. Run new weight experiments
+on a cloud machine; CUDA is the default. The historical Apple MPS results remain
+archived, but local Apple GPU inference requires explicit user authorization.
+Install from the repository root on the cloud machine:
 
 ```bash
 python3 -m venv out/evidence-venv
@@ -101,7 +103,7 @@ ignored JSON list describing the snapshots, for example:
 ```bash
 out/evidence-venv/bin/python pipelines/evaluate_causal_ioi.py \
   --models out/weight-models.json --cases suites/causal-ioi-v1/cases.json \
-  --output runs/causal-ioi --device mps --batch-size 16
+  --output runs/causal-ioi --device cuda --batch-size 16
 ```
 
 Keep batch size fixed: the mismatched-donor assignment depends on it. The
