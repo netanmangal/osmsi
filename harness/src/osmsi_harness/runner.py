@@ -218,7 +218,7 @@ def evaluate(provider, suites: list[Suite], output: str | Path, *,
         "suites": [{
             "id": suite.id, "dimension": suite.document["dimension"],
             "version": suite.document["version"], "dataset_revision": suite.revision,
-            "scoring_method": "100 * mean(1 - Brier loss)" if suite.document["scorer"] == "calibration" else "100 * exact-policy-pass proportion",
+            "scoring_method": "100 * mean(1 - Brier loss)" if suite.document["scorer"] == "calibration" else "100 * correct-response proportion",
             "interval_method": "seeded percentile bootstrap, 2000 resamples" if suite.document["scorer"] == "calibration" else "Wilson binomial interval",
             "parameters": {"maturity": suite.document["maturity"], "description": suite.document["description"],
                            "limitations": suite.document["limitations"], "license": suite.document["license"],

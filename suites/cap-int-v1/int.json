@@ -1,0 +1,909 @@
+{
+  "schema_version": "1.0",
+  "id": "rationale-check-64-v1",
+  "version": "1.0.0",
+  "dimension": "in",
+  "scorer": "exact",
+  "maturity": "pilot",
+  "description": "64 controlled multiple-choice rationale checks: threshold sensitivity, evidence lookup, causal intervention, and minimal sufficient changes. Higher means better rationale selection.",
+  "limitations": "Behavioral rationale-check proxy only: not mechanistic interpretability, hidden-reasoning faithfulness, or coverage of model internals. Four synthetic families are correlated and may be easy; Wilson intervals are descriptive. Format failures are incorrect. Chance reference: 25%.",
+  "license": "MIT",
+  "probes": [
+    {
+      "id": "threshold-00",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 8*X + 4*Y >= 25. Input: X=3, Y=3. Z=1 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nB. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nC. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nD. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "threshold-01",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 6*X + 5*Y >= 74. Input: X=8, Y=7. Z=2 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nB. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nC. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nD. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "threshold-02",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 2*X + 5*Y >= 11. Input: X=3, Y=3. Z=3 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nB. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nC. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nD. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "threshold-03",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 2*X + 9*Y >= 5. Input: X=8, Y=6. Z=4 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nB. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nC. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nD. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "threshold-04",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 5*X + 2*Y >= 31. Input: X=7, Y=4. Z=5 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nB. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nC. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nD. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "threshold-05",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 3*X + 2*Y >= 6. Input: X=3, Y=7. Z=6 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nB. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nC. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nD. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "threshold-06",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 7*X + 3*Y >= 39. Input: X=6, Y=2. Z=7 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nB. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nC. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nD. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "threshold-07",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 8*X + 9*Y >= 39. Input: X=8, Y=2. Z=8 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nB. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nC. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nD. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "threshold-08",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 3*X + 7*Y >= 2. Input: X=2, Y=5. Z=9 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nB. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nC. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nD. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "threshold-09",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 8*X + 3*Y >= 5. Input: X=2, Y=2. Z=10 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nB. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nC. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nD. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "threshold-10",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 8*X + 5*Y >= 36. Input: X=6, Y=7. Z=11 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nB. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nC. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nD. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "threshold-11",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 2*X + 7*Y >= 12. Input: X=5, Y=4. Z=12 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nB. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nC. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nD. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "threshold-12",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 2*X + 7*Y >= 14. Input: X=8, Y=7. Z=13 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nB. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nC. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nD. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "threshold-13",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 8*X + 7*Y >= 11. Input: X=7, Y=7. Z=14 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nB. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nC. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nD. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "threshold-14",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 3*X + 9*Y >= 24. Input: X=3, Y=5. Z=15 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect.\nB. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nC. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nD. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "threshold-15",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A stated classifier returns YES iff 8*X + 9*Y >= 43. Input: X=5, Y=2. Z=16 is not in the formula. Which explanation correctly identifies which individual resets to zero would change YES to NO? Keep every other input fixed.\nA. Resetting X flips the result: False; resetting Y flips it: False. Z has no effect.\nB. Resetting X flips the result: True; resetting Y flips it: False. Z has no effect.\nC. Resetting X flips the result: False; resetting Y flips it: True. Z has no effect.\nD. Resetting X flips the result: True; resetting Y flips it: True. Z has no effect."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "lookup-00",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 4: Eli holds key K13. Record 3: Cleo holds key K12. Record 1: Fay holds key K10. Record 6: key K11 opens the green box. Record 7: key K12 opens the blue box. Record 5: key K10 opens the gold box. Record 8: key K13 opens the red box. Record 2: Bo holds key K11. Which explanation correctly identifies the box Eli can open and the two records needed? All people and keys are distinct.\nA. The red box, because records 4 and 8 link its holder to its key.\nB. The blue box, because records 3 and 7 link its holder to its key.\nC. The green box, because records 2 and 6 link its holder to its key.\nD. The gold box, because records 1 and 5 link its holder to its key."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "lookup-01",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 2: Bo holds key K11. Record 5: key K10 opens the blue box. Record 3: Ada holds key K12. Record 4: Dev holds key K13. Record 1: Fay holds key K10. Record 8: key K13 opens the red box. Record 6: key K11 opens the green box. Record 7: key K12 opens the gold box. Which explanation correctly identifies the box Bo can open and the two records needed? All people and keys are distinct.\nA. The blue box, because records 1 and 5 link its holder to its key.\nB. The green box, because records 2 and 6 link its holder to its key.\nC. The gold box, because records 3 and 7 link its holder to its key.\nD. The red box, because records 4 and 8 link its holder to its key."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "lookup-02",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 4: Bo holds key K13. Record 2: Cleo holds key K11. Record 5: key K10 opens the red box. Record 3: Eli holds key K12. Record 8: key K13 opens the blue box. Record 1: Dev holds key K10. Record 6: key K11 opens the green box. Record 7: key K12 opens the gold box. Which explanation correctly identifies the box Cleo can open and the two records needed? All people and keys are distinct.\nA. The red box, because records 1 and 5 link its holder to its key.\nB. The blue box, because records 4 and 8 link its holder to its key.\nC. The green box, because records 2 and 6 link its holder to its key.\nD. The gold box, because records 3 and 7 link its holder to its key."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "lookup-03",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 6: key K11 opens the red box. Record 5: key K10 opens the blue box. Record 3: Dev holds key K12. Record 1: Bo holds key K10. Record 2: Cleo holds key K11. Record 4: Eli holds key K13. Record 8: key K13 opens the gold box. Record 7: key K12 opens the green box. Which explanation correctly identifies the box Dev can open and the two records needed? All people and keys are distinct.\nA. The blue box, because records 1 and 5 link its holder to its key.\nB. The red box, because records 2 and 6 link its holder to its key.\nC. The gold box, because records 4 and 8 link its holder to its key.\nD. The green box, because records 3 and 7 link its holder to its key."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "lookup-04",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 2: Dev holds key K11. Record 4: Eli holds key K13. Record 3: Fay holds key K12. Record 8: key K13 opens the blue box. Record 6: key K11 opens the red box. Record 5: key K10 opens the gold box. Record 1: Bo holds key K10. Record 7: key K12 opens the green box. Which explanation correctly identifies the box Eli can open and the two records needed? All people and keys are distinct.\nA. The blue box, because records 4 and 8 link its holder to its key.\nB. The gold box, because records 1 and 5 link its holder to its key.\nC. The green box, because records 3 and 7 link its holder to its key.\nD. The red box, because records 2 and 6 link its holder to its key."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "lookup-05",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 2: Fay holds key K11. Record 3: Bo holds key K12. Record 8: key K13 opens the blue box. Record 4: Dev holds key K13. Record 7: key K12 opens the gold box. Record 5: key K10 opens the red box. Record 6: key K11 opens the green box. Record 1: Cleo holds key K10. Which explanation correctly identifies the box Fay can open and the two records needed? All people and keys are distinct.\nA. The blue box, because records 4 and 8 link its holder to its key.\nB. The green box, because records 2 and 6 link its holder to its key.\nC. The red box, because records 1 and 5 link its holder to its key.\nD. The gold box, because records 3 and 7 link its holder to its key."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "lookup-06",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 3: Bo holds key K12. Record 6: key K11 opens the red box. Record 4: Dev holds key K13. Record 8: key K13 opens the gold box. Record 1: Eli holds key K10. Record 7: key K12 opens the green box. Record 5: key K10 opens the blue box. Record 2: Fay holds key K11. Which explanation correctly identifies the box Dev can open and the two records needed? All people and keys are distinct.\nA. The blue box, because records 1 and 5 link its holder to its key.\nB. The green box, because records 3 and 7 link its holder to its key.\nC. The gold box, because records 4 and 8 link its holder to its key.\nD. The red box, because records 2 and 6 link its holder to its key."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "lookup-07",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 7: key K12 opens the blue box. Record 5: key K10 opens the gold box. Record 1: Ada holds key K10. Record 2: Dev holds key K11. Record 3: Fay holds key K12. Record 4: Cleo holds key K13. Record 8: key K13 opens the green box. Record 6: key K11 opens the red box. Which explanation correctly identifies the box Ada can open and the two records needed? All people and keys are distinct.\nA. The red box, because records 2 and 6 link its holder to its key.\nB. The green box, because records 4 and 8 link its holder to its key.\nC. The blue box, because records 3 and 7 link its holder to its key.\nD. The gold box, because records 1 and 5 link its holder to its key."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "lookup-08",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 2: Bo holds key K11. Record 5: key K10 opens the gold box. Record 4: Ada holds key K13. Record 1: Cleo holds key K10. Record 8: key K13 opens the blue box. Record 7: key K12 opens the green box. Record 3: Dev holds key K12. Record 6: key K11 opens the red box. Which explanation correctly identifies the box Cleo can open and the two records needed? All people and keys are distinct.\nA. The gold box, because records 1 and 5 link its holder to its key.\nB. The blue box, because records 4 and 8 link its holder to its key.\nC. The red box, because records 2 and 6 link its holder to its key.\nD. The green box, because records 3 and 7 link its holder to its key."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "lookup-09",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 2: Bo holds key K11. Record 1: Ada holds key K10. Record 4: Dev holds key K13. Record 7: key K12 opens the red box. Record 5: key K10 opens the gold box. Record 3: Cleo holds key K12. Record 6: key K11 opens the blue box. Record 8: key K13 opens the green box. Which explanation correctly identifies the box Dev can open and the two records needed? All people and keys are distinct.\nA. The blue box, because records 2 and 6 link its holder to its key.\nB. The green box, because records 4 and 8 link its holder to its key.\nC. The red box, because records 3 and 7 link its holder to its key.\nD. The gold box, because records 1 and 5 link its holder to its key."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "lookup-10",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 8: key K13 opens the red box. Record 2: Eli holds key K11. Record 4: Dev holds key K13. Record 7: key K12 opens the green box. Record 6: key K11 opens the blue box. Record 1: Cleo holds key K10. Record 3: Ada holds key K12. Record 5: key K10 opens the gold box. Which explanation correctly identifies the box Ada can open and the two records needed? All people and keys are distinct.\nA. The red box, because records 4 and 8 link its holder to its key.\nB. The blue box, because records 2 and 6 link its holder to its key.\nC. The green box, because records 3 and 7 link its holder to its key.\nD. The gold box, because records 1 and 5 link its holder to its key."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "lookup-11",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 5: key K10 opens the blue box. Record 6: key K11 opens the green box. Record 8: key K13 opens the red box. Record 3: Ada holds key K12. Record 7: key K12 opens the gold box. Record 2: Fay holds key K11. Record 1: Eli holds key K10. Record 4: Bo holds key K13. Which explanation correctly identifies the box Bo can open and the two records needed? All people and keys are distinct.\nA. The green box, because records 2 and 6 link its holder to its key.\nB. The gold box, because records 3 and 7 link its holder to its key.\nC. The blue box, because records 1 and 5 link its holder to its key.\nD. The red box, because records 4 and 8 link its holder to its key."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "lookup-12",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 2: Fay holds key K11. Record 4: Cleo holds key K13. Record 3: Ada holds key K12. Record 7: key K12 opens the red box. Record 5: key K10 opens the green box. Record 1: Dev holds key K10. Record 6: key K11 opens the gold box. Record 8: key K13 opens the blue box. Which explanation correctly identifies the box Cleo can open and the two records needed? All people and keys are distinct.\nA. The blue box, because records 4 and 8 link its holder to its key.\nB. The red box, because records 3 and 7 link its holder to its key.\nC. The gold box, because records 2 and 6 link its holder to its key.\nD. The green box, because records 1 and 5 link its holder to its key."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "lookup-13",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 8: key K13 opens the blue box. Record 7: key K12 opens the gold box. Record 5: key K10 opens the red box. Record 1: Dev holds key K10. Record 3: Eli holds key K12. Record 2: Fay holds key K11. Record 4: Bo holds key K13. Record 6: key K11 opens the green box. Which explanation correctly identifies the box Bo can open and the two records needed? All people and keys are distinct.\nA. The red box, because records 1 and 5 link its holder to its key.\nB. The blue box, because records 4 and 8 link its holder to its key.\nC. The green box, because records 2 and 6 link its holder to its key.\nD. The gold box, because records 3 and 7 link its holder to its key."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "lookup-14",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 4: Eli holds key K13. Record 8: key K13 opens the gold box. Record 2: Fay holds key K11. Record 5: key K10 opens the green box. Record 7: key K12 opens the red box. Record 6: key K11 opens the blue box. Record 1: Bo holds key K10. Record 3: Cleo holds key K12. Which explanation correctly identifies the box Fay can open and the two records needed? All people and keys are distinct.\nA. The red box, because records 3 and 7 link its holder to its key.\nB. The gold box, because records 4 and 8 link its holder to its key.\nC. The blue box, because records 2 and 6 link its holder to its key.\nD. The green box, because records 1 and 5 link its holder to its key."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "lookup-15",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "Use only these records. Record 8: key K13 opens the blue box. Record 6: key K11 opens the green box. Record 4: Ada holds key K13. Record 3: Fay holds key K12. Record 7: key K12 opens the red box. Record 5: key K10 opens the gold box. Record 1: Bo holds key K10. Record 2: Cleo holds key K11. Which explanation correctly identifies the box Bo can open and the two records needed? All people and keys are distinct.\nA. The red box, because records 3 and 7 link its holder to its key.\nB. The blue box, because records 4 and 8 link its holder to its key.\nC. The green box, because records 2 and 6 link its holder to its key.\nD. The gold box, because records 1 and 5 link its holder to its key."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "causal-00",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=4*X and Z=Y+4. Initially X=4. We intervene by setting Y=12, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 4, Z becomes 16; the intervention changes downstream Z, not upstream X.\nB. X stays 4, Z becomes 12; setting Y also removes the offset in Z's equation.\nC. X stays 4, Z stays 20; replacing Y cannot affect Z.\nD. X becomes 3.0, Z becomes 16; setting Y requires solving backward for X."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "causal-01",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=2*X and Z=Y+3. Initially X=2. We intervene by setting Y=13, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X becomes 6.5, Z becomes 16; setting Y requires solving backward for X.\nB. X stays 2, Z becomes 16; the intervention changes downstream Z, not upstream X.\nC. X stays 2, Z stays 7; replacing Y cannot affect Z.\nD. X stays 2, Z becomes 13; setting Y also removes the offset in Z's equation."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "causal-02",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=3*X and Z=Y+6. Initially X=4. We intervene by setting Y=15, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 4, Z becomes 15; setting Y also removes the offset in Z's equation.\nB. X becomes 5.0, Z becomes 21; setting Y requires solving backward for X.\nC. X stays 4, Z becomes 21; the intervention changes downstream Z, not upstream X.\nD. X stays 4, Z stays 18; replacing Y cannot affect Z."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "causal-03",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=4*X and Z=Y+2. Initially X=6. We intervene by setting Y=19, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X becomes 4.75, Z becomes 21; setting Y requires solving backward for X.\nB. X stays 6, Z becomes 19; setting Y also removes the offset in Z's equation.\nC. X stays 6, Z stays 26; replacing Y cannot affect Z.\nD. X stays 6, Z becomes 21; the intervention changes downstream Z, not upstream X."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "causal-04",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=4*X and Z=Y+5. Initially X=8. We intervene by setting Y=16, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 8, Z becomes 21; the intervention changes downstream Z, not upstream X.\nB. X becomes 4.0, Z becomes 21; setting Y requires solving backward for X.\nC. X stays 8, Z becomes 16; setting Y also removes the offset in Z's equation.\nD. X stays 8, Z stays 37; replacing Y cannot affect Z."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "causal-05",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=3*X and Z=Y+2. Initially X=1. We intervene by setting Y=18, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 1, Z becomes 18; setting Y also removes the offset in Z's equation.\nB. X stays 1, Z becomes 20; the intervention changes downstream Z, not upstream X.\nC. X stays 1, Z stays 5; replacing Y cannot affect Z.\nD. X becomes 6.0, Z becomes 20; setting Y requires solving backward for X."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "causal-06",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=5*X and Z=Y+5. Initially X=8. We intervene by setting Y=13, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X becomes 2.6, Z becomes 18; setting Y requires solving backward for X.\nB. X stays 8, Z becomes 13; setting Y also removes the offset in Z's equation.\nC. X stays 8, Z becomes 18; the intervention changes downstream Z, not upstream X.\nD. X stays 8, Z stays 45; replacing Y cannot affect Z."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "causal-07",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=3*X and Z=Y+2. Initially X=6. We intervene by setting Y=12, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 6, Z becomes 12; setting Y also removes the offset in Z's equation.\nB. X stays 6, Z stays 20; replacing Y cannot affect Z.\nC. X becomes 4.0, Z becomes 14; setting Y requires solving backward for X.\nD. X stays 6, Z becomes 14; the intervention changes downstream Z, not upstream X."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "causal-08",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=4*X and Z=Y+4. Initially X=4. We intervene by setting Y=17, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 4, Z becomes 21; the intervention changes downstream Z, not upstream X.\nB. X stays 4, Z stays 20; replacing Y cannot affect Z.\nC. X stays 4, Z becomes 17; setting Y also removes the offset in Z's equation.\nD. X becomes 4.25, Z becomes 21; setting Y requires solving backward for X."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "causal-09",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=6*X and Z=Y+7. Initially X=9. We intervene by setting Y=18, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X becomes 3.0, Z becomes 25; setting Y requires solving backward for X.\nB. X stays 9, Z becomes 25; the intervention changes downstream Z, not upstream X.\nC. X stays 9, Z stays 61; replacing Y cannot affect Z.\nD. X stays 9, Z becomes 18; setting Y also removes the offset in Z's equation."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "causal-10",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=2*X and Z=Y+6. Initially X=9. We intervene by setting Y=19, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 9, Z stays 24; replacing Y cannot affect Z.\nB. X stays 9, Z becomes 19; setting Y also removes the offset in Z's equation.\nC. X stays 9, Z becomes 25; the intervention changes downstream Z, not upstream X.\nD. X becomes 9.5, Z becomes 25; setting Y requires solving backward for X."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "causal-11",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=6*X and Z=Y+5. Initially X=3. We intervene by setting Y=17, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 3, Z stays 23; replacing Y cannot affect Z.\nB. X becomes 2.8333333333333335, Z becomes 22; setting Y requires solving backward for X.\nC. X stays 3, Z becomes 17; setting Y also removes the offset in Z's equation.\nD. X stays 3, Z becomes 22; the intervention changes downstream Z, not upstream X."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "causal-12",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=6*X and Z=Y+2. Initially X=1. We intervene by setting Y=18, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 1, Z becomes 20; the intervention changes downstream Z, not upstream X.\nB. X stays 1, Z stays 8; replacing Y cannot affect Z.\nC. X becomes 3.0, Z becomes 20; setting Y requires solving backward for X.\nD. X stays 1, Z becomes 18; setting Y also removes the offset in Z's equation."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "causal-13",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=3*X and Z=Y+5. Initially X=6. We intervene by setting Y=17, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 6, Z becomes 17; setting Y also removes the offset in Z's equation.\nB. X stays 6, Z becomes 22; the intervention changes downstream Z, not upstream X.\nC. X stays 6, Z stays 23; replacing Y cannot affect Z.\nD. X becomes 5.666666666666667, Z becomes 22; setting Y requires solving backward for X."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "causal-14",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=5*X and Z=Y+4. Initially X=5. We intervene by setting Y=17, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 5, Z becomes 17; setting Y also removes the offset in Z's equation.\nB. X stays 5, Z stays 29; replacing Y cannot affect Z.\nC. X stays 5, Z becomes 21; the intervention changes downstream Z, not upstream X.\nD. X becomes 3.4, Z becomes 21; setting Y requires solving backward for X."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "causal-15",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A toy causal system has equations Y=7*X and Z=Y+4. Initially X=4. We intervene by setting Y=16, replacing Y's equation while leaving every other equation unchanged. Which explanation of the resulting X and Z is correct?\nA. X stays 4, Z stays 32; replacing Y cannot affect Z.\nB. X stays 4, Z becomes 16; setting Y also removes the offset in Z's equation.\nC. X becomes 2.2857142857142856, Z becomes 20; setting Y requires solving backward for X.\nD. X stays 4, Z becomes 20; the intervention changes downstream Z, not upstream X."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "conjunction-00",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (P AND R) OR (S AND T). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change P and S; this disables both routes and neither change alone suffices.\nB. Change P, R, and S; every one of these three changes is necessary.\nC. Change P and R; disabling both inputs of one route denies access.\nD. Change only P; disabling the first route also disables the second."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "conjunction-01",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (P AND T) OR (S AND Q). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change P, T, and S; every one of these three changes is necessary.\nB. Change P and S; this disables both routes and neither change alone suffices.\nC. Change only P; disabling the first route also disables the second.\nD. Change P and T; disabling both inputs of one route denies access."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "conjunction-02",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (U AND T) OR (S AND P). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change only U; disabling the first route also disables the second.\nB. Change U, T, and S; every one of these three changes is necessary.\nC. Change U and S; this disables both routes and neither change alone suffices.\nD. Change U and T; disabling both inputs of one route denies access."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "conjunction-03",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (P AND Q) OR (S AND R). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change P and Q; disabling both inputs of one route denies access.\nB. Change P, Q, and S; every one of these three changes is necessary.\nC. Change only P; disabling the first route also disables the second.\nD. Change P and S; this disables both routes and neither change alone suffices."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "conjunction-04",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (Q AND U) OR (R AND P). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change Q and R; this disables both routes and neither change alone suffices.\nB. Change Q, U, and R; every one of these three changes is necessary.\nC. Change Q and U; disabling both inputs of one route denies access.\nD. Change only Q; disabling the first route also disables the second."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "conjunction-05",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (U AND T) OR (P AND R). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change only U; disabling the first route also disables the second.\nB. Change U and P; this disables both routes and neither change alone suffices.\nC. Change U, T, and P; every one of these three changes is necessary.\nD. Change U and T; disabling both inputs of one route denies access."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "conjunction-06",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (R AND U) OR (T AND Q). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change R and U; disabling both inputs of one route denies access.\nB. Change R, U, and T; every one of these three changes is necessary.\nC. Change R and T; this disables both routes and neither change alone suffices.\nD. Change only R; disabling the first route also disables the second."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "conjunction-07",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (T AND Q) OR (P AND S). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change only T; disabling the first route also disables the second.\nB. Change T, Q, and P; every one of these three changes is necessary.\nC. Change T and Q; disabling both inputs of one route denies access.\nD. Change T and P; this disables both routes and neither change alone suffices."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "conjunction-08",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (P AND U) OR (S AND T). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change P and S; this disables both routes and neither change alone suffices.\nB. Change P and U; disabling both inputs of one route denies access.\nC. Change P, U, and S; every one of these three changes is necessary.\nD. Change only P; disabling the first route also disables the second."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "conjunction-09",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (S AND U) OR (P AND R). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change S and U; disabling both inputs of one route denies access.\nB. Change S and P; this disables both routes and neither change alone suffices.\nC. Change only S; disabling the first route also disables the second.\nD. Change S, U, and P; every one of these three changes is necessary."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "conjunction-10",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (P AND Q) OR (S AND R). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change P and Q; disabling both inputs of one route denies access.\nB. Change P, Q, and S; every one of these three changes is necessary.\nC. Change P and S; this disables both routes and neither change alone suffices.\nD. Change only P; disabling the first route also disables the second."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "conjunction-11",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (U AND Q) OR (P AND R). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change U, Q, and P; every one of these three changes is necessary.\nB. Change only U; disabling the first route also disables the second.\nC. Change U and Q; disabling both inputs of one route denies access.\nD. Change U and P; this disables both routes and neither change alone suffices."
+        }
+      ],
+      "expected": "D"
+    },
+    {
+      "id": "conjunction-12",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (Q AND P) OR (T AND S). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change Q and T; this disables both routes and neither change alone suffices.\nB. Change Q and P; disabling both inputs of one route denies access.\nC. Change Q, P, and T; every one of these three changes is necessary.\nD. Change only Q; disabling the first route also disables the second."
+        }
+      ],
+      "expected": "A"
+    },
+    {
+      "id": "conjunction-13",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (P AND S) OR (R AND U). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change only P; disabling the first route also disables the second.\nB. Change P and R; this disables both routes and neither change alone suffices.\nC. Change P and S; disabling both inputs of one route denies access.\nD. Change P, S, and R; every one of these three changes is necessary."
+        }
+      ],
+      "expected": "B"
+    },
+    {
+      "id": "conjunction-14",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (R AND P) OR (Q AND S). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change only R; disabling the first route also disables the second.\nB. Change R, P, and Q; every one of these three changes is necessary.\nC. Change R and Q; this disables both routes and neither change alone suffices.\nD. Change R and P; disabling both inputs of one route denies access."
+        }
+      ],
+      "expected": "C"
+    },
+    {
+      "id": "conjunction-15",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Select the single correct option. Return only its uppercase letter A, B, C, or D. Do not include reasoning, explanations, Markdown, or other text."
+        },
+        {
+          "role": "user",
+          "content": "A rule grants access iff (P AND S) OR (T AND Q). All four inputs are true. Which explanation gives a minimal set of inputs to change to false to deny access? All other inputs stay true.\nA. Change P, S, and T; every one of these three changes is necessary.\nB. Change P and S; disabling both inputs of one route denies access.\nC. Change only P; disabling the first route also disables the second.\nD. Change P and T; this disables both routes and neither change alone suffices."
+        }
+      ],
+      "expected": "D"
+    }
+  ]
+}
