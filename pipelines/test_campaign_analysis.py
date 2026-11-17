@@ -22,7 +22,9 @@ class CalibrationAuditTests(unittest.TestCase):
         def mixed(*args,**kwargs):
             nonlocal count
             completion=original(*args,**kwargs);count+=1
-            return replace(completion,content='invalid') if count%3 else completion
+            reply=json.loads(completion.content)
+            reply['confidence']=(count*0.17320508075688773)%1
+            return replace(completion,content=json.dumps(reply))
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)
             with patch.object(provider,'complete',side_effect=mixed):
