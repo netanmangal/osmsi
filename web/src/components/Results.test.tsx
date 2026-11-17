@@ -78,4 +78,14 @@ describe("result presentation", () => {
     expect(screen.getByText(/12 requests were blocked by the provider/)).toBeInTheDocument();
     expect(screen.getAllByText("not measured")).toHaveLength(5);
   });
+  it("explains token-limited outputs without counting provider blocks as model truncations", () => {
+    const limited = { ...run, manifest: { ...run.manifest, parameters: {
+      ...run.manifest.parameters, max_tokens: 600, observations: [
+        { finish_reason: "length", provider_blocked: false },
+        { finish_reason: "length", provider_blocked: true },
+      ],
+    } } };
+    render(<ResultsContext.Provider value={{ ...state, runs: [limited] }}><SafetyCard /></ResultsContext.Provider>);
+    expect(screen.getByText(/1 response reached the 600-token output limit/)).toBeInTheDocument();
+  });
 });

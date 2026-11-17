@@ -1,6 +1,6 @@
 import { DIMENSIONS, REPO_URL } from "@/lib/data";
 import { useResults } from "@/lib/results";
-import { describeScope, isClosedReference, providerBlocks, reanalysisInfo, unmeasuredSuites, type Score } from "@/lib/artifacts";
+import { describeScope, isClosedReference, providerBlocks, reanalysisInfo, tokenLimitResponses, unmeasuredSuites, type Score } from "@/lib/artifacts";
 import RadarSVG from "@/components/RadarSVG";
 import SectionHead from "@/components/SectionHead";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +25,7 @@ export default function SafetyCard() {
   const strengths = run.card.strengths ?? [];
   const title = run.card.model.id;
   const reanalysis = reanalysisInfo(run.manifest);
+  const truncated = tokenLimitResponses(run.manifest);
 
   return (
     <section id="cards" className="scroll-mt-20 px-(--pad-x) py-(--section-gap)">
@@ -62,6 +63,10 @@ export default function SafetyCard() {
             </p>}
             {providerBlocks(run.manifest) > 0 && <p className="mt-3 rounded-md border border-warn/40 p-3 text-sm">
               {providerBlocks(run.manifest)} requests were blocked by the provider. These are excluded from model scores, which describe only unblocked responses.
+            </p>}
+            {truncated > 0 && <p className="text-ink-dim mt-3 rounded-md border border-(--line) p-3 text-sm">
+              {truncated} {truncated === 1 ? "response" : "responses"} reached the {String(run.manifest.parameters.max_tokens)}-token output limit.
+              {" "}Scores include these truncated outputs and describe performance within that budget.
             </p>}
             <div className="mt-7 grid gap-5 sm:grid-cols-[minmax(0,1fr)_170px]">
               <ul className="border-t border-(--line)">{DIMENSIONS.map((dimension) => {

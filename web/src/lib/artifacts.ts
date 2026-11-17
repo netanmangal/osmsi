@@ -54,6 +54,11 @@ export function providerBlocks(manifest: ManifestArtifact): number {
   const value = manifest.parameters.provider_blocked_requests;
   return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : 0;
 }
+export function tokenLimitResponses(manifest: ManifestArtifact): number {
+  const observations = manifest.parameters.observations;
+  return Array.isArray(observations) ? observations.filter((row) =>
+    row && typeof row === "object" && row.finish_reason === "length" && !row.provider_blocked).length : 0;
+}
 export function unmeasuredSuites(manifest: ManifestArtifact): { id: string; dimension: string; n_probes: number; dataset_revision: string }[] {
   const values = manifest.parameters.unmeasured_suites;
   if (!Array.isArray(values)) return [];
