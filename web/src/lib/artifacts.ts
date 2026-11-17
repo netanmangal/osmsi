@@ -38,6 +38,9 @@ export interface ManifestArtifact {
   }[];
 }
 export interface PublishedRun { card: CardArtifact; manifest: ManifestArtifact }
+export function isClosedReference(modelId: string): boolean {
+  return ["gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4o", "grok-4-1-fast-non-reasoning"].includes(modelId);
+}
 export function providerBlocks(manifest: ManifestArtifact): number {
   const value = manifest.parameters.provider_blocked_requests;
   return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : 0;

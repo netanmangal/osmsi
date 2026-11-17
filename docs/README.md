@@ -5,6 +5,7 @@
 - [Reproduction](reproducing.md): revisions, seeds, journals, and comparison limits.
 - [Deployment](deployment.md): static hosting and release checks.
 - [Azure evaluations](azure-evaluations.md): hosted model comparisons and provider-filter accounting.
+- [Cloud campaigns](cloud-evaluations.md): Azure and Superlinked runs, budgets, and audited resumption.
 - [Scoped evidence](scoped-evidence.md): cybersecurity knowledge and controlled weight-access studies.
 - [Artifact contracts](../schemas/README.md): schemas shared by the SDK and website.
 

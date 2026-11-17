@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { DIMENSIONS, type DimKey } from "@/lib/data";
 import { useResults } from "@/lib/results";
-import { describeScope, protocolKey, protocolLabel, providerBlocks } from "@/lib/artifacts";
+import { describeScope, isClosedReference, protocolKey, protocolLabel, providerBlocks } from "@/lib/artifacts";
 import { scrollToHash } from "@/lib/anim";
 import SectionHead from "@/components/SectionHead";
 import BandScallop from "@/components/deco/BandScallop";
@@ -14,6 +14,7 @@ type Row = { id: string; name: string; scope: string; scores: Partial<Record<Dim
 export default function Leaderboard() {
   const results = useResults();
   const tableRegion = useRef<HTMLDivElement>(null);
+  const [tableHeight, setTableHeight] = useState<number>();
   const [query, setQuery] = useState("");
   const [chosenProtocol, setChosenProtocol] = useState("");
   const protocols = useMemo(() => {
@@ -33,7 +34,7 @@ export default function Leaderboard() {
     const published: Row[] = results.runs.filter((run) => !run.card.sample
       && protocolKey(run.manifest) === activeProtocol).map(({ card, manifest }) => ({
       id: card.run_id, name: card.model.id,
-      scope: `${describeScope(manifest)}${providerBlocks(manifest) ? ` · ${providerBlocks(manifest)} provider blocks` : ""}`,
+      scope: `${isClosedReference(card.model.id) ? "closed reference · " : ""}${describeScope(manifest)}${providerBlocks(manifest) ? ` · ${providerBlocks(manifest)} provider blocks` : ""}`,
       scores: Object.fromEntries(card.scores.map((score) => [score.dimension, score.value])),
     }));
     return published.filter((row) => row.name.toLowerCase().includes(query.toLowerCase())).sort((a, b) => {
@@ -47,6 +48,23 @@ export default function Leaderboard() {
   useEffect(() => {
     if (tableRegion.current) tableRegion.current.scrollTop = 0;
   }, [query, sort, activeProtocol]);
+  useLayoutEffect(() => {
+    const region = tableRegion.current;
+    const table = region?.querySelector("table");
+    if (!region || !table) return;
+    const measure = () => {
+      const visibleRows = [...table.querySelectorAll("tbody tr")].slice(0, 10);
+      const last = visibleRows.at(-1);
+      if (!last) return;
+      const height = last.getBoundingClientRect().bottom - table.getBoundingClientRect().top;
+      if (height > 0) setTableHeight(Math.ceil(height + region.offsetHeight - region.clientHeight));
+    };
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(table);
+    return () => observer.disconnect();
+  }, [rows]);
   const changeSort = (key: SortKey) => setSort((current) => ({ key,
     dir: current.key === key ? (current.dir === 1 ? -1 : 1) : key === "name" ? 1 : -1 }));
   const ariaSort = (key: SortKey) => sort.key === key ? (sort.dir === 1 ? "ascending" : "descending") : undefined;
@@ -91,7 +109,8 @@ export default function Leaderboard() {
           {" "}This is a dimension-specific ordering, not an overall safety rank.
         </p>}
         {rows.length > 0 ? <div ref={tableRegion} role="region" aria-label="Model evaluation index"
-          aria-describedby="index-scroll-help" tabIndex={0}
+          aria-describedby="index-scroll-help" tabIndex={0} data-lenis-prevent
+          style={{ maxHeight: tableHeight }}
           className="bg-blueprint-2 mt-5 max-h-[53rem] overflow-auto rounded-xl border border-(--line) px-5 focus-visible:outline-2 focus-visible:outline-cobalt sm:px-7">
           <table className="w-full min-w-[880px] border-collapse">
             <caption className="sr-only">Published model measurements by dimension, sorted by the selected column.</caption>

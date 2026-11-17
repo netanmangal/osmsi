@@ -1,6 +1,6 @@
 import { DIMENSIONS, REPO_URL } from "@/lib/data";
 import { useResults } from "@/lib/results";
-import { describeScope, providerBlocks, unmeasuredSuites, type Score } from "@/lib/artifacts";
+import { describeScope, isClosedReference, providerBlocks, unmeasuredSuites, type Score } from "@/lib/artifacts";
 import RadarSVG from "@/components/RadarSVG";
 import SectionHead from "@/components/SectionHead";
 import { Badge } from "@/components/ui/badge";
@@ -53,6 +53,7 @@ export default function SafetyCard() {
               <Badge variant="stamp">measured · research artifact</Badge>
             </div>
             <h3 className="font-display mt-6 break-words text-[1.9rem] leading-tight font-[600]">{title}</h3>
+            {isClosedReference(title) && <p className="mono-label mt-3 text-cobalt">Closed-model reference · hosted API</p>}
             <p className="mono-label mt-3 break-all text-[0.6rem]">{`revision · ${run.card.model.revision}`}</p>
             {<p className="text-ink-dim mt-4 rounded-md border border-(--line) p-3 text-sm">
               {describeScope(run.manifest)}. This card describes only the listed probes; it does not establish the model’s overall safety.
