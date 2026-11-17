@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { DIMENSIONS, type DimKey } from "@/lib/data";
 import { useResults } from "@/lib/results";
-import { describeScope, isClosedReference, protocolKey, protocolLabel, providerBlocks } from "@/lib/artifacts";
+import { describeScope, displayedScores, isClosedReference, protocolKey, protocolLabel, providerBlocks, supplementBaseId, supplementFor } from "@/lib/artifacts";
 import { scrollToHash } from "@/lib/anim";
 import SectionHead from "@/components/SectionHead";
 import BandScallop from "@/components/deco/BandScallop";
@@ -18,14 +18,15 @@ export default function Leaderboard() {
   const [query, setQuery] = useState("");
   const [chosenProtocol, setChosenProtocol] = useState("");
   const protocols = useMemo(() => {
-    const groups = new Map<string, { key: string; label: string; count: number }>();
+    const groups = new Map<string, { key: string; label: string; count: number; supplement: boolean }>();
     results.runs.filter((run) => !run.card.sample).forEach(({ manifest }) => {
       const key = protocolKey(manifest);
       const group = groups.get(key);
       if (group) group.count++;
-      else groups.set(key, { key, label: protocolLabel(manifest), count: 1 });
+      else groups.set(key, { key, label: protocolLabel(manifest), count: 1, supplement: Boolean(supplementBaseId(manifest)) });
     });
-    return [...groups.values()].sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+    return [...groups.values()].sort((a, b) => b.count - a.count
+      || Number(a.supplement) - Number(b.supplement) || a.label.localeCompare(b.label));
   }, [results.runs]);
   const activeProtocol = protocols.some((protocol) => protocol.key === chosenProtocol)
     ? chosenProtocol : protocols[0]?.key ?? "";
@@ -34,8 +35,8 @@ export default function Leaderboard() {
     const published: Row[] = results.runs.filter((run) => !run.card.sample
       && protocolKey(run.manifest) === activeProtocol).map(({ card, manifest }) => ({
       id: card.run_id, name: card.model.id,
-      scope: `${isClosedReference(card.model.id) ? "closed reference · " : ""}${describeScope(manifest)}${providerBlocks(manifest) ? ` · ${providerBlocks(manifest)} provider blocks` : ""}`,
-      scores: Object.fromEntries(card.scores.map((score) => [score.dimension, score.value])),
+      scope: `${isClosedReference(card.model.id) ? "closed reference · " : ""}${describeScope(manifest)}${supplementFor({ card, manifest }, results.runs) ? " + 192 supplement" : ""}${providerBlocks(manifest) ? ` · ${providerBlocks(manifest)} provider blocks` : ""}`,
+      scores: Object.fromEntries(displayedScores({ card, manifest }, results.runs).map((score) => [score.dimension, score.value])),
     }));
     return published.filter((row) => row.name.toLowerCase().includes(query.toLowerCase())).sort((a, b) => {
       if (sort.key === "name") return a.name.localeCompare(b.name) * sort.dir;
@@ -107,6 +108,12 @@ export default function Leaderboard() {
           Ordered by {sort.key === "name" ? "model name" : DIMENSIONS.find((d) => d.key === sort.key)?.name.toLowerCase()}
           {sort.key === "name" ? "." : sort.dir === -1 ? ", highest first." : ", lowest first."}
           {" "}This is a dimension-specific ordering, not an overall safety rank.
+        </p>}
+        {rows.length > 0 && <p className="text-ink-dim mt-3 max-w-4xl text-sm">
+          <strong>CAP:</strong> cybersecurity knowledge accuracy (128 questions); higher means more knowledge, not greater safety.
+          {" "}<strong>INT:</strong> behavioral rationale-check accuracy (64 questions), not a measure of model internals.
+          {" "}These labelled proxies come from a separate, linked cloud supplement.{" "}
+          <a href="#cards" className="text-cobalt underline">Inspect the evidence</a>.
         </p>}
         {rows.length > 0 ? <div ref={tableRegion} role="region" aria-label="Model evaluation index"
           aria-describedby="index-scroll-help" tabIndex={0} data-lenis-prevent

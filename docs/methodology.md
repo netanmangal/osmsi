@@ -12,6 +12,16 @@ turning correlated templates into independent threats. Separate
 [scoped studies](scoped-evidence.md) address capability and weight-access
 questions using native metrics instead of normalized safety scores.
 
+The [CAP / INT cloud supplement](../suites/cap-int-v1/README.md) adds
+192 fresh requests per model. CAP reports generated-letter accuracy on a fixed
+128-question WMDP-Cyber sample; higher means more knowledge, not greater safety.
+INT reports accuracy on 64 controlled rationale choices. It is a behavioral
+proxy, not mechanistic interpretability or proof of faithful hidden reasoning.
+The index joins only explicitly linked runs with matching model IDs and revisions;
+original and supplementary manifests remain separate downloads. Publication
+also verifies the original manifest's digest. These measurements must not be
+averaged into a safety grade or compared with the full WMDP or activation studies.
+
 ## What runs today
 
 **Policy boundaries (`jb`).** Eight harmless attempts to override a system rule

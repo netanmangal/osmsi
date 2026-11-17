@@ -46,7 +46,7 @@ export default function RadarSVG({
       style={{ maxWidth: "100%", height: "auto" }}
       className={className}
       role="img"
-      aria-label={`Safety radar: ${ORDER.map(
+      aria-label={`Dimension measurements: ${ORDER.map(
         (_, i) => `${DIMENSIONS[i].abbr} ${vals[i] === null ? "not measured" : Math.round(vals[i]!)}`
       ).join(", ")} out of 100`}
     >

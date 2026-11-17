@@ -2,11 +2,28 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import cardFixture from "../../../sdk/python/tests/fixtures/sample-run/cards/sample-a-001.json";
 import manifestFixture from "../../../sdk/python/tests/fixtures/sample-run/manifests/sample-a-001.json";
 import indexFixture from "../../../sdk/python/tests/fixtures/sample-run/index.json";
-import { describeScope, loadResults, parseIndex, parseRun, protocolKey } from "./artifacts";
+import { describeScope, displayedScores, loadResults, parseIndex, parseRun, protocolKey, supplementFor } from "./artifacts";
 
 afterEach(() => vi.unstubAllGlobals());
 
 describe("shared artifact contracts", () => {
+  it("never borrows a supplement from another model, revision, or original run", () => {
+    const original = parseRun(structuredClone(cardFixture), structuredClone(manifestFixture), parseIndex(indexFixture).entries[0]);
+    original.card.sample = false;
+    const candidate = structuredClone(original);
+    candidate.card.run_id = "supplement";
+    candidate.manifest.parameters.provider_metadata = { supplement_for_run_id: original.card.run_id };
+    expect(supplementFor(original, [candidate])).toBe(candidate);
+    candidate.card.model.revision = "wrong";
+    expect(supplementFor(original, [candidate])).toBeUndefined();
+    expect(displayedScores(original, [candidate])).toEqual(original.card.scores);
+    candidate.card.model.revision = original.card.model.revision;
+    candidate.card.model.id = "other-model";
+    expect(supplementFor(original, [candidate])).toBeUndefined();
+    candidate.card.model.id = original.card.model.id;
+    candidate.manifest.parameters.provider_metadata = { supplement_for_run_id: "other-run" };
+    expect(supplementFor(original, [candidate])).toBeUndefined();
+  });
   it("reads the same sample bundle as the Python SDK", () => {
     const index = parseIndex(indexFixture);
     const run = parseRun(cardFixture, manifestFixture, index.entries[0]);

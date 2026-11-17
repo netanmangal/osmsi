@@ -34,6 +34,26 @@ describe("result presentation", () => {
     rerender(<ResultsContext.Provider value={{ ...state, runs: [run, deepseek], selectedRun: run.card.run_id }}><SafetyCard /></ResultsContext.Provider>);
     expect(screen.getByRole("combobox", { name: "Inspect a run" })).toHaveValue(run.card.run_id);
   });
+  it("adds linked CAP and INT measurements with explicit scope and evidence links", () => {
+    const supplement = { card: { ...run.card, run_id: "supplement",
+      scores: [
+        { ...run.card.scores[0], dimension: "hc" as const, suite_id: "cap", value: 50 },
+        { ...run.card.scores[0], dimension: "in" as const, suite_id: "int", value: 75 },
+      ] }, manifest: { ...run.manifest, run_id: "supplement",
+        parameters: { ...run.manifest.parameters, max_tokens: 2048,
+          provider_metadata: { supplement_for_run_id: run.card.run_id } },
+        suites: [
+          { ...run.manifest.suites[0], id: "cap", dimension: "hc" as const },
+          { ...run.manifest.suites[0], id: "int", dimension: "in" as const },
+        ] } };
+    render(<ResultsContext.Provider value={{ ...state, runs: [run, supplement],
+      selectedRun: run.card.run_id }}><Leaderboard /><SafetyCard /></ResultsContext.Provider>);
+    expect(screen.getByRole("link", { name: /Download CAP \/ INT evidence/ })).toHaveAttribute("href", "/results/manifests/supplement.json");
+    expect(screen.getByText(/This tests rationale selection/)).toBeInTheDocument();
+    expect(screen.getAllByRole("row")[1]).toHaveTextContent("50.0");
+    expect(screen.getAllByRole("row")[1]).toHaveTextContent("75.0");
+    expect(screen.getByRole("combobox", { name: "Evaluation protocol" })).not.toHaveTextContent(/^192-case CAP/);
+  });
   it("never offers sample specimens on production pages", () => {
     render(<ResultsContext.Provider value={{ ...state, runs: [sampleRun] }}><Leaderboard /><SafetyCard /></ResultsContext.Provider>);
     expect(screen.getByText(/No reviewed model evaluations/)).toBeInTheDocument();

@@ -1,6 +1,4 @@
-/* All specimen figures are illustrative: they demonstrate the index format.
-   House rule: no fabricated statistics attached to real model names, so real
-   names appear only when real harness runs publish. */
+/* Dimension descriptions; production measurements come from published runs. */
 
 export type DimKey = "jb" | "hc" | "pi" | "uc" | "ag" | "in";
 
@@ -36,8 +34,8 @@ export const DIMENSIONS: Dimension[] = [
     name: "Harmful capability",
     abbr: "CAP",
     blurb:
-      "Hazard-related knowledge probes, with provider filtering and capability limits kept visible.",
-    probe: "scoped study: WMDP-Cyber knowledge proxy",
+      "Cybersecurity knowledge accuracy. Higher means more expressed knowledge, not greater safety; provider filtering and capability limits remain visible.",
+    probe: "cloud proxy: 128 fixed WMDP-Cyber questions",
     hue: { ink: "#b03a24", bright: "#d95c40" },
   },
   {
@@ -76,8 +74,8 @@ export const DIMENSIONS: Dimension[] = [
     name: "Interpretability",
     abbr: "INT",
     blurb:
-      "Activation interventions, held-out prompts, and matched controls. Which internal states affect a specific behavior?",
-    probe: "scoped study: controlled residual-state patching",
+      "The cloud index tests rationale selection on controlled problems. Separate weight-access studies examine internal states; the behavioral proxy is not a mechanistic interpretability grade.",
+    probe: "cloud proxy: 64 rationale checks; separate activation studies",
     hue: { ink: "#256e47", bright: "#3f9e6b" },
   },
 ];

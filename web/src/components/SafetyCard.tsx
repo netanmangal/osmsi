@@ -1,6 +1,6 @@
 import { DIMENSIONS, REPO_URL } from "@/lib/data";
 import { useResults } from "@/lib/results";
-import { describeScope, isClosedReference, providerBlocks, reanalysisInfo, tokenLimitResponses, unmeasuredSuites, type Score } from "@/lib/artifacts";
+import { describeScope, displayedScores, isClosedReference, providerBlocks, reanalysisInfo, supplementBaseId, supplementFor, tokenLimitResponses, unmeasuredSuites, type Score } from "@/lib/artifacts";
 import RadarSVG from "@/components/RadarSVG";
 import SectionHead from "@/components/SectionHead";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +10,7 @@ export default function SafetyCard() {
   const runs = results.runs.filter((entry) => !entry.card.sample)
     .sort((a, b) => b.manifest.completed_at.localeCompare(a.manifest.completed_at));
   const run = runs.find((entry) => entry.card.run_id === results.selectedRun)
-    ?? runs.find((entry) => entry.card.model.id.toLowerCase() === "deepseek-v4-pro")
+    ?? runs.find((entry) => entry.card.model.id.toLowerCase() === "deepseek-v4-pro" && !supplementBaseId(entry.manifest))
     ?? runs[0];
   if (!run) return <section id="cards" className="scroll-mt-20 px-(--pad-x) py-(--section-gap)">
     <SectionHead clause="04 · safety cards" title="A number, with its evidence."
@@ -21,9 +21,11 @@ export default function SafetyCard() {
         <button type="button" onClick={results.retry} className="mt-3 cursor-pointer text-cobalt underline">Retry cards</button>
       </div> : <p className="mt-8 text-ink-dim">No measured cards are published yet.</p>}
   </section>;
-  const scores: Score[] = run.card.scores;
+  const supplement = supplementFor(run, runs);
+  const scores: Score[] = displayedScores(run, runs);
+  const proxyRun = supplement ?? (supplementBaseId(run.manifest) ? run : undefined);
   const byDimension = new Map(scores.map((score) => [score.dimension, score]));
-  const concerns = run.card.concerns;
+  const concerns = [...new Set([...run.card.concerns, ...(supplement?.card.concerns ?? [])])];
   const strengths = run.card.strengths ?? [];
   const title = run.card.model.id;
   const reanalysis = reanalysisInfo(run.manifest);
@@ -70,6 +72,13 @@ export default function SafetyCard() {
               {truncated} {truncated === 1 ? "response" : "responses"} reached the {String(run.manifest.parameters.max_tokens)}-token output limit.
               {" "}Scores include these truncated outputs and describe performance within that budget.
             </p>}
+            {proxyRun && <div className="text-ink-dim mt-3 rounded-md border border-(--line) p-3 text-sm">
+              <p><strong>CAP — knowledge accuracy:</strong> 128 WMDP-Cyber questions. Higher means more expressed knowledge, not greater safety.</p>
+              <p className="mt-2"><strong>INT — rationale-check proxy:</strong> 64 controlled explanation choices. This tests rationale selection, not internal mechanisms or hidden-reasoning faithfulness.</p>
+              <p className="mt-2">Supplement: {providerBlocks(proxyRun.manifest)} provider blocks excluded; {tokenLimitResponses(proxyRun.manifest)} responses reached the {String(proxyRun.manifest.parameters.max_tokens)}-token limit. Format failures count as incorrect.</p>
+              <a href={`/results/manifests/${proxyRun.card.run_id}.json`} className="mt-2 inline-block text-cobalt underline">Download CAP / INT evidence ↗</a>
+              {" · "}<a href={`/results/cards/${proxyRun.card.run_id}.json`} className="text-cobalt underline">Supplement scores ↗</a>
+            </div>}
             <div className="mt-7 grid gap-5 sm:grid-cols-[minmax(0,1fr)_170px]">
               <ul className="border-t border-(--line)">{DIMENSIONS.map((dimension) => {
                 const score = byDimension.get(dimension.key);
@@ -84,7 +93,9 @@ export default function SafetyCard() {
                     && <p className="text-ink-dim mt-2 text-xs">Too few unblocked responses to estimate a model score.</p>}
                 </li>;
               })}</ul>
-              <div className="mx-auto"><RadarSVG values={DIMENSIONS.map((dimension) => byDimension.get(dimension.key)?.value ?? null)} size={170} /></div>
+              <div className="mx-auto"><RadarSVG values={DIMENSIONS.map((dimension) => byDimension.get(dimension.key)?.value ?? null)} size={170} />
+                {proxyRun && <p className="text-ink-mute mt-2 max-w-[170px] text-xs">Axes have different meanings. A larger polygon does not mean a safer model.</p>}
+              </div>
             </div>
             <p className="mono-label mt-7 text-flag">Scope and limitations</p>
             {<p className="text-ink-dim mt-3 text-sm leading-relaxed">
@@ -94,7 +105,7 @@ export default function SafetyCard() {
             <ul className="text-ink-dim mt-3 space-y-2 text-sm leading-relaxed">{concerns.map((concern) => <li key={concern}>{concern}</li>)}</ul>
             {strengths.length > 0 && <><p className="mono-label mt-6 text-pass">Recorded strengths</p><ul className="mt-3 space-y-2 text-sm">{strengths.map((strength) => <li key={strength}>{strength}</li>)}</ul></>}
             {<details className="mt-6 border-t border-(--line) pt-4"><summary className="mono-label cursor-pointer">Suites and provenance</summary>
-              <ul className="mt-4 space-y-4 text-sm">{run.manifest.suites.map((suite) => <li key={suite.id}>
+              <ul className="mt-4 space-y-4 text-sm">{[...run.manifest.suites, ...(supplement?.manifest.suites ?? [])].map((suite) => <li key={suite.id}>
                 <p className="font-medium">{suite.id} · {suite.version} · {String(suite.parameters.maturity ?? "scope in manifest")}</p>
                 <p className="text-ink-dim">{suite.scoring_method}; {suite.interval_method}</p>
               </li>)}</ul>

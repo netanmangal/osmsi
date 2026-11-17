@@ -71,9 +71,34 @@ export function protocolKey(manifest: ManifestArtifact): string {
     suites.map((suite) => [suite.id, suite.dataset_revision]).sort((a, b) => a[0].localeCompare(b[0]))]);
 }
 export function protocolLabel(manifest: ManifestArtifact): string {
+  if (supplementBaseId(manifest)) return "192-case CAP / INT supplement";
   return [...manifest.suites, ...unmeasuredSuites(manifest)].some((suite) => suite.id.includes("expanded"))
     ? reanalysisInfo(manifest) ? "544-case cloud comparison" : "Expanded cloud diagnostics"
     : manifest.suites.map((suite) => suite.id).join(", ");
+}
+
+export function supplementBaseId(manifest: ManifestArtifact): string | undefined {
+  const metadata = manifest.parameters.provider_metadata;
+  if (!metadata || typeof metadata !== "object") return undefined;
+  const value = (metadata as Record<string, unknown>).supplement_for_run_id;
+  return typeof value === "string" && value.length > 0 ? value : undefined;
+}
+
+/** Only explicit, same-model and same-revision links can supply missing scores. */
+export function supplementFor(run: PublishedRun, runs: PublishedRun[]): PublishedRun | undefined {
+  if (run.card.sample || supplementBaseId(run.manifest)) return undefined;
+  return runs.filter((candidate) => !candidate.card.sample
+    && supplementBaseId(candidate.manifest) === run.card.run_id
+    && candidate.card.model.id === run.card.model.id
+    && candidate.card.model.revision === run.card.model.revision)
+    .sort((a, b) => b.manifest.completed_at.localeCompare(a.manifest.completed_at))[0];
+}
+
+export function displayedScores(run: PublishedRun, runs: PublishedRun[]): Score[] {
+  const supplement = supplementFor(run, runs);
+  const measured = new Set(run.card.scores.map((score) => score.dimension));
+  return [...run.card.scores, ...(supplement?.card.scores ?? [])
+    .filter((score) => !measured.has(score.dimension))];
 }
 export function describeScope(manifest: ManifestArtifact): string {
   const pilot = manifest.suites.some((suite) => suite.parameters.maturity !== "reviewed");
