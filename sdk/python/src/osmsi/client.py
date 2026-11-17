@@ -1,6 +1,7 @@
 """Read local result bundles with matching cards, manifests, and index entries."""
 
 from pathlib import Path
+import hashlib
 import re
 
 from .models import (
@@ -64,6 +65,7 @@ class Index:
     """A validated local index. Constructing it checks every referenced run."""
 
     def __init__(self, root: str | Path, *, allow_samples: bool = False):
+        self._root = Path(root)
         document = read_artifact(artifact_path(root, "index.json"), "index")
         runs = []
         for entry in document["entries"]:
@@ -79,3 +81,25 @@ class Index:
             if run.card.run_id == run_id:
                 return run
         raise KeyError(run_id)
+
+    def supplements(self, run_id: str) -> tuple[EvaluationRun, ...]:
+        """Return explicitly linked supplements after checking identity and source bytes.
+
+        Scores remain separate runs with their own protocols; this does not
+        manufacture a combined card or an overall safety score.
+        """
+        original = self.get(run_id)
+        digest = hashlib.sha256(artifact_path(
+            self._root, f"manifests/{run_id}.json").read_bytes()).hexdigest()
+        supplements = []
+        for candidate in self.runs:
+            metadata = candidate.manifest.parameters.get("provider_metadata", {})
+            if not isinstance(metadata, dict) or metadata.get("supplement_for_run_id") != run_id:
+                continue
+            if (candidate.card.model != original.card.model
+                    or candidate.card.sample != original.card.sample
+                    or candidate.card.run_id == run_id
+                    or metadata.get("supplement_base_manifest_sha256") != digest):
+                raise ArtifactError("Supplement identity or original manifest digest differs.")
+            supplements.append(candidate)
+        return tuple(sorted(supplements, key=lambda r: r.manifest.completed_at, reverse=True))

@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 import tempfile
 
-from osmsi import ArtifactError
+from osmsi import ArtifactError, Index
 from prepare_web import prepare_web
 from prepare_evidence import prepare_evidence
 
@@ -15,6 +15,17 @@ def verify_publication(data: Path, website: Path) -> int:
         raise ArtifactError("No published bundles found.")
     with tempfile.TemporaryDirectory() as scratch:
         expected = prepare_web(bundles, Path(scratch) / "results")
+        index = Index(expected)
+        original_ids = set()
+        for run in index.runs:
+            metadata = run.manifest.parameters.get("provider_metadata", {})
+            if isinstance(metadata, dict) and "supplement_for_run_id" in metadata:
+                original_ids.add(metadata["supplement_for_run_id"])
+        for run_id in original_ids:
+            try:
+                index.supplements(run_id)
+            except KeyError:
+                raise ArtifactError("A published supplement has no original run.") from None
         expected_files = {
             path.relative_to(expected): path.read_bytes()
             for path in expected.rglob("*") if path.is_file()

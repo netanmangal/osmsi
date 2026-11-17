@@ -1,5 +1,11 @@
 # OSMSI Python SDK
 
+Cloud CAP / INT supplements remain separate runs. In an index containing the
+original and its supplements, `index.supplements(original_run_id)` checks model
+identity and the original manifest's byte digest before returning the linked
+runs. Read each suite's scope: CAP knowledge accuracy and INT rationale-check
+accuracy are not general safety or mechanistic interpretability grades.
+
 Read typed Safety Cards and manifests, validate provenance, download static
 indexes, and compare compatible runs. Install from the repository root:
 
